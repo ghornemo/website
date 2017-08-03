@@ -1,0 +1,174 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Order Menu</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="google-signin-scope" content="profile email"></meta>
+    <meta name="google-signin-client_id" content="852521934104-53fctdku5insugcv04iejnloqjqjtmot.apps.googleusercontent.com"></meta>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+    <link href="css/shop.css" rel="stylesheet"/>
+    <link href="css/main.css" rel="stylesheet"/>
+    <script src="https://apis.google.com/js/platform.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYyBk1Gmex9qo6Qvv8aYVqsPH1OQJaEaM"></script>
+
+
+    <script src="js/shop.js"></script>
+</head>
+<body>
+ <nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Gemal's World</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li><a href="/">Home</a></li>
+      <li class="active"><a href="/store">Store</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li><p class="navbar-text" id="nameField" th:text="${name}"></p></li>
+      <li><div class="g-signin2" th:text="${name}" data-onsuccess="onSignIn" data-theme="dark"></div></li>
+    </ul>
+  </div>
+</nav>
+<div class="container-fluid" style="margin-top:50px">
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-3">
+	<h1>The Kitchen</h1>
+    <p>"Fresh food prepared every day"</p>
+    </div>
+	</div>
+	
+	<div id="menuWrapper" class="container col-md-9">
+	
+	<div align="center" class="container col-md-4" id="productPanel" style="height:300px; width:250px; margin:10px">
+			<div class="row"><h3 id="productTitle">12" Pepperoni Pizza</h3></div>
+			<div class="row">
+			<img src="images/pizza.png"/>
+			<p id="description">A delicious pepperoni made using delicious store made dough, covered in tons of mozzarella cheese</p>
+			</div>
+			<p class="row" id="price">$12.99</p>
+			<form class="row" name="login" action="/additem" method="post">
+				<input type="submit" id="orderButton" value="Order"></input>
+				<input type="hidden" name="name" value="Pepperoni PIzza"></input>
+				<input type="hidden" name="price" value="12.99"></input>
+			</form>
+	</div>	
+			<div align="center" class="container col-md-4" id="productPanel" style="height:300px; width:250px; margin:10px">
+			<div class="row"><h3 id="productTitle">Bread Sticks</h3></div>
+			<div class="row">
+			<img src="images/breadsticks.jpeg"/>
+			<p id="description">A generous portion of bread sticks made from house made dough, served with marinara sauce.</p>
+			</div>
+			<p class="row" id="price">$7.99</p>
+			<form class="row" name="login" action="/additem" method="post">
+				<input type="submit" id="orderButton" value="Order"></input>
+				<input type="hidden" name="name" value="Bread Sticks"></input>
+				<input type="hidden" name="price" value="7.99"></input>
+			</form>
+	</div>	
+			<div align="center" class="container col-md-4" id="productPanel" style="height:300px; width:250px; margin:10px">
+			<div class="row"><h3 id="productTitle">Donair</h3></div>
+			<div class="row">
+			<img src="images/donair.jpg"/>
+			<p id="description">A donair made with spicy donair meat, donair sauce, tomatoes, and onions.</p>
+			</div>
+			<p class="row" id="price">$9.99</p>
+			<form class="row" name="login" action="/additem" method="post">
+				<input type="submit" id="orderButton" value="Order"></input>
+				<input type="hidden" name="name" value="Donair"></input>
+				<input type="hidden" name="price" value="9.99"></input>
+			</form>
+	</div>	
+	
+			<div align="center" class="container col-md-4" id="productPanel" style="height:300px; width:250px; margin:10px">
+			<div class="row"><h3 id="productTitle">12" Garlic Finger</h3></div>
+			<div class="row">
+			<img src="images/garlicfingers.jpeg"/>
+			<p id="description">Fresh garlic fingers made with mozzeralla cheese, served with donair sauce.</p>
+			</div>
+			<p class="row" id="price">$9.99</p>
+			<form class="row" name="login" action="/additem" method="post">
+				<input type="submit" id="orderButton" value="Order"></input>
+				<input type="hidden" name="name" value="Garlic Fingers"></input>
+				<input type="hidden" name="price" value="9.99"></input>
+			</form>
+	</div>	
+	
+				<div align="center" class="container col-md-4" id="productPanel" style="height:300px; width:250px; margin:10px">
+			<div class="row"><h3 id="productTitle">Mozzeralla Cheese Sticks</h3></div>
+			<div class="row">
+			<img src="images/mozzasticks.jpg"/>
+			<p id="description">8 cheese filled mozzeralla cheese served with marinara sauce or ranch.</p>
+			</div>
+			<p class="row" id="price">$9.99</p>
+			<form class="row" name="login" action="/additem" method="post">
+				<input type="submit" id="orderButton" value="Order"></input>
+				<input type="hidden" name="name" value="Mozza Sticks Fingers"></input>
+				<input type="hidden" name="price" value="9.99"></input>
+			</form>
+	</div>
+	
+					<div align="center" class="container col-md-4" id="productPanel" style="height:300px; width:250px; margin:10px">
+			<div class="row"><h3 id="productTitle">Oven Baked Spaghetti</h3></div>
+			<div class="row">
+			<img src="images/spaghetti.jpg"/>
+			<p id="description">Oven baked spaghetti served with a layer of cheese and meatballs.</p>
+			<p class="row" id="price">$10.99</p>
+			</div>
+			<form class="row" name="login" action="/additem" method="post">
+				<input type="submit" id="orderButton" value="Order"></input>
+				<input type="hidden" name="name" value="Spaghetti"></input>
+				<input type="hidden" name="price" value="10.99"></input>
+			</form>
+	</div>
+	
+					<div align="center" class="container col-md-4" id="productPanel" style="height:300px; width:250px; margin:10px">
+			<div class="row"><h3 id="productTitle">Chicken Wings</h3></div>
+			<div class="row">
+			<img src="images/Wings.jpg"/>
+			<p id="description">Crispy baked chicken wings served with hot or ranch dip.</p>
+			</div>
+			<p class="row" id="price">$9.99</p>
+			<form class="row" name="login" action="/additem" method="post">
+				<input type="submit" id="orderButton" value="Order"></input>
+				<input type="hidden" name="name" value="Chicken Wings"></input>
+				<input type="hidden" name="price" value="9.99"></input>
+			</form>
+	</div>
+	</div>
+	
+	
+	<div align="center" class="container col-md-3">
+	    <div id="cart" class="row container">
+	    <div class="row">Shopping Cart</div>
+	     <div class="row" th:each="item : ${items}">
+        <p th:text="${item.quantity + ' x ' + item.name + ':'+item.price*item.quantity}" style="font-size: 10px"></p>
+	     </div>
+	     <div>
+	       		<p th:text="${total}"></p>
+	       		<p th:text="${HST}"></p>
+	       		<p th:text="${grandtotal}"></p>
+  			<form action="/clearCart">
+				<input type="submit" value="Clear"></input>
+			</form>
+  			<form action="/confirmOrder">
+				<input type="submit" value="Submit Order"></input>
+			</form>
+		</div>
+    </div>
+	<div id="details" class="row">
+<div id="map"></div>
+<label for="map"><span class="glyphicon glyphicon-map-marker"></span>39 example street,</label>
+<label for="map"><span class="glyphicon glyphicon-earphone"></span>(123)456-7890</label>
+<label for="map"><span class="glyphicon glyphicon-time"></span>Mon-Sat, 11am - 1am</label>
+<label for="map"><span class="glyphicon glyphicon-envelope"></span>Admin@example.com</label>
+
+</div>
+    </div>
+</div>
+</body>
+</html>
