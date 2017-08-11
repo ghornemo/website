@@ -1,4 +1,4 @@
-package com.example;
+package com.example.controller;
 
 import org.springframework.social.*;
 import org.springframework.social.connect.Connection;
@@ -13,6 +13,11 @@ import org.springframework.social.twitter.*;
 import org.springframework.jdbc.core.*;
 import javax.sql.DataSource;
 
+import com.example.model.Cart;
+import com.example.model.Comment;
+import com.example.model.Item;
+import com.example.model.Post;
+import com.example.model.Profile;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
@@ -54,7 +59,7 @@ import org.springframework.web.servlet.view.RedirectView;
 @Repository
 public class SampleController {
 	
-	public ArrayList<cart> todayOrders = new ArrayList<cart>();
+	public ArrayList<Cart> todayOrders = new ArrayList<Cart>();
 	
     @Autowired
     public void setDataSource(DataSource dataSource) {
@@ -77,8 +82,8 @@ public class SampleController {
 
         HttpSession session = request.getSession(false);
         if(session != null) {
-        	cart cart = (cart) session.getAttribute("cart");
-        	item item = new item(name, Float.parseFloat(price));
+        	Cart cart = (Cart) session.getAttribute("cart");
+        	Item item = new Item(name, Float.parseFloat(price));
         	cart.add(item);
         	session.setAttribute("cart", cart);
         	
@@ -97,7 +102,7 @@ public class SampleController {
         String header = "";
         String inner = "";
         if(session != null) {
-        	cart cart = (cart) session.getAttribute("cart");
+        	Cart cart = (Cart) session.getAttribute("cart");
         	double total = cart.total();
         	if(total <= 0) {
         		header = "You must first build an order";
@@ -105,7 +110,7 @@ public class SampleController {
         	}else{
         		todayOrders.add(cart);
         	//cart = new cart();
-        	session.setAttribute("cart", new cart());
+        	session.setAttribute("cart", new Cart());
         	int orderCount = todayOrders.size();
 		header = "Thank you for your order";
 		inner = "Your order has been accepted, and\n";
@@ -127,7 +132,7 @@ public class SampleController {
 
         HttpSession session = request.getSession(false);
         if(session != null) {
-        	cart cart = (cart) session.getAttribute("cart");
+        	Cart cart = (Cart) session.getAttribute("cart");
         	cart.clear();
         	session.setAttribute("cart", cart);
         	
@@ -145,7 +150,7 @@ public class SampleController {
         HttpSession session = request.getSession(false);
         if(session != null) {
         	Profile profile = (Profile) session.getAttribute("profile");
-        	cart cart = (cart) session.getAttribute("cart");
+        	Cart cart = (Cart) session.getAttribute("cart");
         	double total = cart.total();
         	if(total <= 0) {
             	model.addAttribute("name", profile.name);
@@ -174,7 +179,7 @@ public class SampleController {
     	HttpSession session = request.getSession();
     	String token = request.getParameter("idtoken");
     	session.setAttribute("idToken", token);
-    	session.setAttribute("cart", new cart());
+    	session.setAttribute("cart", new Cart());
     	addDetails(session);
     	System.out.println("This is the server receiving the token. ID is");
     	System.out.println(token);
@@ -290,205 +295,6 @@ public class SampleController {
     public List<Comment> findAllComments(int id) {
         return this.jdbcTemplate.query( "select * from comment where id = "+id, new CommentMapper());
     }
-    
-    
-    
-    class cart {
-    	public ArrayList<item> items = new ArrayList<>();
-    	public void add(item i) {
-    		for(item item : items) {
-    			if(item.name.equals(i.name)) {
-    				item.quantity++;
-    				return;
-    			}
-    		}
-    		i.quantity = 1;
-    		items.add(i);
-    	}
-    	public void clear() {
-    		items = new ArrayList<>();
-    	}
-    	public float total() {
-    		float price = 0;
-    		for(item item : items)
-    			price += item.price*item.quantity;
-    		return price;
-    	}
-    	
-    }
-    
-    class item {
-    	String name;
-    	float price;
-    	int quantity;
-    	public item(String name, float price) {
-    		this.name = name;
-    		this.price = price;
-    	}
-		public String getName() {
-			return name;
-		}
-		public void setName(String name) {
-			this.name = name;
-		}
-		public float getPrice() {
-			return price;
-		}
-		public void setPrice(float price) {
-			this.price = price;
-		}
-		public int getQuantity() {
-			return quantity;
-		}
-		public void setQuantity(int quantity) {
-			this.quantity = quantity;
-		}
-    	
-    }
-    
-    class Profile {
-    	 public String email;
-    	 public String email_verified;
-    	 public String name;
-    	 public String picture;
-    	 public String given_name;
-    	 public String family_name;
-    	 public String locale;
-		public String getEmail() {
-			return email;
-		}
-		public void setEmail(String email) {
-			this.email = email;
-		}
-		public String getEmail_verified() {
-			return email_verified;
-		}
-		public void setEmail_verified(String email_verified) {
-			this.email_verified = email_verified;
-		}
-		public String getName() {
-			return name;
-		}
-		public void setName(String name) {
-			this.name = name;
-		}
-		public String getPicture() {
-			return picture;
-		}
-		public void setPicture(String picture) {
-			this.picture = picture;
-		}
-		public String getGiven_name() {
-			return given_name;
-		}
-		public void setGiven_name(String given_name) {
-			this.given_name = given_name;
-		}
-		public String getFamily_name() {
-			return family_name;
-		}
-		public void setFamily_name(String family_name) {
-			this.family_name = family_name;
-		}
-		public String getLocale() {
-			return locale;
-		}
-		public void setLocale(String locale) {
-			this.locale = locale;
-		}
-    	 
-    }
-    
-    class Post {
-    	public String body;
-    	public String user;
-    	public int Id;
-    	public Date date;
-    	public int getId() {
-			return Id;
-		}
-		public void setId(int id) {
-			Id = id;
-		}
-		public Post() {
-    		
-    	}
-    	public Post(String body, String user, Date date) {
-    		this.body = body;
-    		this.user = user;
-    		this.date = date;
-    	}
-    	
-    	public String getBody() {
-			return body;
-		}
-		public String getUser() {
-			return user;
-		}
-		public Date getDate() {
-			return date;
-		}
-		public void setBody(String data) {
-    		body = data;
-    	}
-    	public void setUser(String data) {
-    		user = data;
-    	}
-
-    	public void setDate(Date data) {
-    		date = data;
-    	}
-    }
-    
-   class Comment {
-	   public int id;
-	   public Date date;
-	   public String name;
-	   public String comment;
-	   
-	   public Comment(int id, Date date, String name, String comment) {
-		   this.id = id;
-		   this.date = date;
-		   this.name = name;
-		   this.comment = comment;
-	   }
-	   
-	   public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getComment() {
-		return comment;
-	}
-
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
-
-	public Comment() {
-		   
-	   }
-   }
 	
     final class CommentMapper implements RowMapper<Comment> {
 

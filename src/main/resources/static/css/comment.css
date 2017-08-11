@@ -1,0 +1,37 @@
+@charset "UTF-8";
+
+#tweetContainer {
+	border-radius: 25px;
+    border: 2px solid black;
+    background: #99f4f9;
+    height:300px;
+    width:300px;
+    float:left;
+}
+
+input[type=text] {
+  width: 150px;
+  -webkit-transition: width .35s ease-in-out;
+  transition: width .35s ease-in-out;
+}
+input[type=text]:focus {
+  width: 200px;
+}
+
+.panel-footer {
+	background:white;
+}
+
+#commentTable {
+	overflow: auto;
+	height:250px;
+}
+
+#comments {
+	border-radius: 25px;
+    border: 2px solid black;
+    background: #99f4f9;
+    height:300px;
+    width:300px;
+    float:right;
+}
