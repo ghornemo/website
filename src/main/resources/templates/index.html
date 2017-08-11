@@ -27,6 +27,7 @@
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="/">Home</a></li>
 				<li><a href="/store">Store</a></li>
+				<li><a href="/login">login</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li><p class="navbar-text" id="nameField" th:text="${name}"></p></li>
@@ -35,35 +36,38 @@
 			</ul>
 		</div>
 	</nav>
-	<h1 style="margin-top: 50px">Welcome to the blog center.</h1>
-	<p>This is the blog center. This blog is used to analyze a
-		collection of presidential</p>
-	<p>social media messages, and to comment and discuss the impacts on
-		society.</p>
-	<p>Effortless authentication using your Google Account.</p>
+	<div style="height: 100px;"></div>
+	<div class="container" id="introduction">
+		<h1 style="margin-top: 50px">Welcome to the blog center.</h1>
+		<p>This is the blog center. This blog is used to analyze a
+			collection of presidential
+		social media messages, and to comment and discuss the impacts on
+			society.</p>
+		<p>Effortless authentication using your Google Account.</p>
 
-
-	<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-
-		<!-- Identify your business so that you can collect the payments. -->
-		<input type="hidden" name="business" value="gemal.horne@unb.ca"></input>
-
-		<!-- Specify a Donate button. -->
-		<input type="hidden" name="cmd" value="_donations"></input>
-
-		<!-- Specify details about the contribution -->
-		<input type="hidden" name="item_name"
-			value="Website Development Funds."></input> <input type="hidden"
-			name="item_number" value="Help build a better website."></input> <input
-			type="hidden" name="currency_code" value="CAD"></input>
-
-		<!-- Display the payment button. -->
-		<input type="image" name="submit"
-			src="https://www.paypalobjects.com/webstatic/en_US/i/btn/png/btn_donate_92x26.png"
-			alt="Donate"></input> <img alt="" width="1" height="1"
-			src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif"></img>
-
-	</form>
+	
+		<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+	
+			<!-- Identify your business so that you can collect the payments. -->
+			<input type="hidden" name="business" value="gemal.horne@unb.ca"></input>
+	
+			<!-- Specify a Donate button. -->
+			<input type="hidden" name="cmd" value="_donations"></input>
+	
+			<!-- Specify details about the contribution -->
+			<input type="hidden" name="item_name"
+				value="Website Development Funds."></input> <input type="hidden"
+				name="item_number" value="Help build a better website."></input> <input
+				type="hidden" name="currency_code" value="CAD"></input>
+	
+			<!-- Display the payment button. -->
+			<input type="image" name="submit"
+				src="https://www.paypalobjects.com/webstatic/en_US/i/btn/png/btn_donate_92x26.png"
+				alt="Donate"></input> <img alt="" width="1" height="1"
+				src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif"></img>
+	
+		</form>
+	</div>
 	<div class="container-fluid row">
 
 		<div class="modal fade" id="myModal" role="dialog">
@@ -72,7 +76,7 @@
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
 						<h4 class="modal-header">Pinned Posts</h4>
-						<label class="radio-inline"><input type="radio" value="trump" id="radiotrump" name="optradio" checked="checked">Trump</input></label>
+						<label class="radio-inline"><input type="radio" value="trump" id="radiotrump" name="optradio">Trump</input></label>
 						<label class="radio-inline"><input type="radio" value="trudeau" id="radiotrudeau" name="optradio">Trudeau</input></label>
 					</div>
 
@@ -126,7 +130,7 @@
 											th:value="${tweet.fromUser}" name="user" /> <input
 											type="hidden" th:value="${tweet.createdAt}" name="date" />
 										<button type="submit" value="save" class="btn">
-											Save <i class="glyphicon glyphicon-pushpin"></i>
+											Pin <i class="glyphicon glyphicon-pushpin"></i>
 										</button>
 									</form>
 								</td>
@@ -149,7 +153,7 @@
 											th:value="${tweet.fromUser}" name="user" /> <input
 											type="hidden" th:value="${tweet.createdAt}" name="date" />
 										<button type="submit" value="save" class="btn">
-											Save <i class="glyphicon glyphicon-pushpin"></i>
+											Pin <i class="glyphicon glyphicon-pushpin"></i>
 										</button>
 									</form>
 								</td>

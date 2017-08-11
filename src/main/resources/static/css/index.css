@@ -10,6 +10,13 @@ table#theTable
     border: 2px solid black;
     background: #99f4f9;
 }
+#introduction {
+	border: 2px solid black;
+	height:300px;
+	width:400px;
+	float:right;
+	text-align:left;
+}
 .btn {
 	border: 2px solid black;
 	background: #99f4f9;
