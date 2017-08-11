@@ -2,122 +2,165 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8"></meta>
-    <meta name="google-signin-scope" content="profile email"></meta>
-    <meta name="google-signin-client_id" content="852521934104-53fctdku5insugcv04iejnloqjqjtmot.apps.googleusercontent.com"></meta>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
-    <link href="css/index.css" rel="stylesheet"/>
-    <link href="css/main.css" rel="stylesheet"/>
-    <script src="https://apis.google.com/js/platform.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <script src="js/index.js"></script>
-    
+<meta name="google-signin-scope" content="profile email"></meta>
+<meta name="google-signin-client_id"
+	content="852521934104-53fctdku5insugcv04iejnloqjqjtmot.apps.googleusercontent.com"></meta>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+<link href="css/index.css" rel="stylesheet" />
+<link href="css/main.css" rel="stylesheet" />
+<script src="https://apis.google.com/js/platform.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="js/index.js"></script>
+
 <title>Gemal's World</title>
 </head>
 <body>
- <nav class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">Gemal's World</a>
-    </div>
-    <ul class="nav navbar-nav">
-      <li class="active"><a href="/">Home</a></li>
-      <li><a href="/store">Store</a></li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-      <li><p class="navbar-text" id="nameField" th:text="${name}"></p></li>
-      <li><div class="g-signin2" th:text="${name}" data-onsuccess="onSignIn" data-theme="dark"></div></li>
-    </ul>
-  </div>
-</nav>
-<h1 style="margin-top:50px">Welcome to the blog center.</h1>
-<p>This is the blog center. This blog is used to analyze a collection of presidential </p>
-<p>social media messages, and to comment and discuss the impacts on society.</p>
-<p>Effortless authentication using your Google Account. </p>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">Gemal's World</a>
+			</div>
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="/">Home</a></li>
+				<li><a href="/store">Store</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><p class="navbar-text" id="nameField" th:text="${name}"></p></li>
+				<li><div class="g-signin2" th:text="${name}"
+						data-onsuccess="onSignIn" data-theme="dark"></div></li>
+			</ul>
+		</div>
+	</nav>
+	<h1 style="margin-top: 50px">Welcome to the blog center.</h1>
+	<p>This is the blog center. This blog is used to analyze a
+		collection of presidential</p>
+	<p>social media messages, and to comment and discuss the impacts on
+		society.</p>
+	<p>Effortless authentication using your Google Account.</p>
 
 
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+	<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 
-    <!-- Identify your business so that you can collect the payments. -->
-    <input type="hidden" name="business"
-        value="gemal.horne@unb.ca"></input>
+		<!-- Identify your business so that you can collect the payments. -->
+		<input type="hidden" name="business" value="gemal.horne@unb.ca"></input>
 
-    <!-- Specify a Donate button. -->
-    <input type="hidden" name="cmd" value="_donations"></input>
+		<!-- Specify a Donate button. -->
+		<input type="hidden" name="cmd" value="_donations"></input>
 
-    <!-- Specify details about the contribution -->
-    <input type="hidden" name="item_name" value="Website Development Funds."></input>
-    <input type="hidden" name="item_number" value="Help build a better website."></input>
-    <input type="hidden" name="currency_code" value="CAD"></input>
+		<!-- Specify details about the contribution -->
+		<input type="hidden" name="item_name"
+			value="Website Development Funds."></input> <input type="hidden"
+			name="item_number" value="Help build a better website."></input> <input
+			type="hidden" name="currency_code" value="CAD"></input>
 
-    <!-- Display the payment button. -->
-    <input type="image" name="submit"
-    src="https://www.paypalobjects.com/webstatic/en_US/i/btn/png/btn_donate_92x26.png"
-    alt="Donate"></input>
-    <img alt="" width="1" height="1"
-    src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" ></img>
+		<!-- Display the payment button. -->
+		<input type="image" name="submit"
+			src="https://www.paypalobjects.com/webstatic/en_US/i/btn/png/btn_donate_92x26.png"
+			alt="Donate"></input> <img alt="" width="1" height="1"
+			src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif"></img>
 
-</form>
-<div class="container-fluid row">
-		<div class="panel panel-primary col-md-4" style="height:400px; width:400px">
-			<div class="panel-header"><h2>Latest Presidential Tweets</h2></div>
-			<div class="panel-body" style="height:80%; overflow:auto">
-   <table class="table" id="theTable">
-      <tr th:each="tweet : ${tweets}">
-      		<td>
-	        	<form action="post" method="post">
-	        	<span th:text="${' @' + tweet.fromUser}" style="text-decoration:underline"></span>
-	        		<span th:text="${tweet.text}" data-toggle="tooltip" th:title="${tweet.createdAt}"></span>
-					<input type="hidden" th:value="${tweet.text}" name="body" />
-					<input type="hidden" th:value="${tweet.fromUser}" name="user" />
-					<input type="hidden" th:value="${tweet.createdAt}" name="date" />
-	        		<input type="submit" value="Save"></input>
-	        	</form>
-	        </td>
-      </tr>
-            <tr th:each="tweet : ${trudeauTweets}">
-      		<td>
-	        	<form action="post" method="post">
-	        	<span th:text="${' @' + tweet.fromUser}" style="text-decoration:underline"></span>
-	        		<span th:text="${tweet.text}" data-toggle="tooltip" th:title="${tweet.createdAt}"></span>
-					<input type="hidden" th:value="${tweet.text}" name="body" />
-					<input type="hidden" th:value="${tweet.fromUser}" name="user" />
-					<input type="hidden" th:value="${tweet.createdAt}" name="date" />
-	        		<input type="submit" value="Save"></input>
-	        	</form>
-	        </td>
-      </tr>
-    </table>
-    </div>
-	    <div class="panel-footer">
+	</form>
+	<div class="container-fluid row">
+
+		<div class="modal fade" id="myModal" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-header">Pinned Posts</h4>
+						<label class="radio-inline"><input type="radio" value="trump" id="radiotrump" name="optradio" checked="checked">Trump</input></label>
+						<label class="radio-inline"><input type="radio" value="trudeau" id="radiotrudeau" name="optradio">Trudeau</input></label>
+					</div>
+
+					<div class="modal-body" style="height: 80%; overflow: auto">
+						<table class="table" id="pinnedPosts">
+							<tr th:each="post : ${posts}">
+								<td>
+									<form name="login" action="/comments" method="post">
+										<span th:text="${' @' + post.user}"
+											style="text-decoration: underline"></span> <span
+											th:text="${post.body}" data-toggle="tooltip"
+											th:title="${post.date}"></span> <input type="hidden"
+											th:value="${post.id}" name="id" /> <input type="hidden"
+											th:value="${post.user}" name="user" /> <input type="hidden"
+											th:value="${post.body}" name="body" /> <input type="submit"
+											class="btn" value="Comments"></input>
+									</form>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div class="modal-footer">
+						<p th:text="'Total pinned posts: ' + ${size} + ''" />
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+
+		<div class="container presidentContainer col-md-6">
+			<h2>President Tweets!</h2>
+			<button type="button" class="btn-info btn-lg" data-toggle="modal"
+				data-target="#myModal">View pinned tweets</button>
 			<p th:text="'Result tweets: ' + ${tweetsize} + ''" />
-	    </div>
-    </div>
-    		
-		<div class="panel panel-primary col-md-4" style="height:400px; width:400px">
-			<div class="panel-header"><h2>Pinned Posts</h2></div>
-			<div class="panel-body" style="height:80%; overflow:auto">
-	 		  <table class="table" id="theTable">
-	    		  <tr th:each="post : ${posts}">
-	      			<td>
-		        		<form name="login" action="/comments" method="post">
-			        		<span th:text="${' @' + post.user}" style="text-decoration:underline"></span>
-			        		<span th:text="${post.body}" data-toggle="tooltip" th:title="${post.date}"></span>
-							<input type="hidden" th:value="${post.id}" name="id" />
-							<input type="hidden" th:value="${post.user}" name="user" />
-							<input type="hidden" th:value="${post.body}" name="body" />
-			        		<input type="submit" value="Comments"></input>
-			        	</form>
-			        </td> 
-	     		 </tr>
-	    		</table>
-	    	</div>
-	    <div class="panel-footer">
-			<p th:text="'Total pinned posts: ' + ${size} + ''" />
-	    </div>
-	    </div>
-    </div>
-    
+			<div class="row">
+				<div class="panel presidentPanel col-sm-6"
+					style="border-right: 2px solid black;">
+					<div class="panel-header">Trump</div>
+					<div class="panel-body">
+						<table class="table presidentTable" id="theTable">
+							<tr th:each="tweet : ${tweets}">
+								<td>
+									<form action="post" method="post">
+										<span th:text="${' @' + tweet.fromUser}"
+											style="text-decoration: underline"></span> <span
+											th:text="${tweet.text}" data-toggle="tooltip"
+											th:title="${tweet.createdAt}"></span> <input type="hidden"
+											th:value="${tweet.text}" name="body" /> <input type="hidden"
+											th:value="${tweet.fromUser}" name="user" /> <input
+											type="hidden" th:value="${tweet.createdAt}" name="date" />
+										<button type="submit" value="save" class="btn">
+											Save <i class="glyphicon glyphicon-pushpin"></i>
+										</button>
+									</form>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div class="panel presidentPanel col-sm-6">
+					<div class="panel-header">Trudeau</div>
+					<div class="panel-body">
+						<table class="table presidentTable" id="theTable">
+							<tr th:each="tweet : ${trudeauTweets}">
+								<td>
+									<form action="post" method="post">
+										<span th:text="${' @' + tweet.fromUser}"
+											style="text-decoration: underline"></span> <span
+											th:text="${tweet.text}" data-toggle="tooltip"
+											th:title="${tweet.createdAt}"></span> <input type="hidden"
+											th:value="${tweet.text}" name="body" /> <input type="hidden"
+											th:value="${tweet.fromUser}" name="user" /> <input
+											type="hidden" th:value="${tweet.createdAt}" name="date" />
+										<button type="submit" value="save" class="btn">
+											Save <i class="glyphicon glyphicon-pushpin"></i>
+										</button>
+									</form>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
 </body>
 
 </html>

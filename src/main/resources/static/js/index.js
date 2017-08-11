@@ -1,7 +1,19 @@
 /**
  * google authentication api
  */
+$(function(){
+	$("#radiotrump").change(function() {
+		$('#pinnedPosts tr:has(td:contains("realDonaldTrump"))').show();
+		$('#pinnedPosts tr:has(td:contains("JustinTrudeau"))').hide();
 
+	});
+	
+	$("#radiotrudeau").change(function() {
+		$('#pinnedPosts tr:has(td:contains("realDonaldTrump"))').hide();
+		$('#pinnedPosts tr:has(td:contains("JustinTrudeau"))').show();
+
+	});
+});
     window.onbeforeunload = function(e){
       gapi.auth2.getAuthInstance().signOut();
     };

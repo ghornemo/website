@@ -4,6 +4,29 @@ table#theTable
     border-collapse:inherit;
     border-spacing:0 2px
 }
+.presidentContainer {
+	width:700px;
+    border-radius: 25px;
+    border: 2px solid black;
+    background: #99f4f9;
+}
+.btn {
+	border: 2px solid black;
+	background: #99f4f9;
+}
+.btn:hover {
+	color:white;
+}
+.presidentPanel {
+	width:348px;
+	height:600px;
+}
+.presidentTable {
+}
+.panel-body {
+	height:90%;
+	overflow:auto;
+}
 body {
   box-sizing: border-box;
   width: 100%;
