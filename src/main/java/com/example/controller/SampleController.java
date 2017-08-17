@@ -15,6 +15,7 @@ import javax.sql.DataSource;
 
 import com.example.model.Cart;
 import com.example.model.Comment;
+import com.example.model.GoogleProfile;
 import com.example.model.Item;
 import com.example.model.Post;
 import com.example.model.Profile;
@@ -153,7 +154,7 @@ public class SampleController {
         	Cart cart = (Cart) session.getAttribute("cart");
         	double total = cart.total();
         	if(total <= 0) {
-            	model.addAttribute("name", profile.name);
+            	model.addAttribute("name", profile.getName());
             	model.addAttribute("total", "Total: $0.00");
             	model.addAttribute("HST", "HST: $0.00");
             	model.addAttribute("grandtotal", "Grand total: $0.00");
@@ -164,7 +165,7 @@ public class SampleController {
         	model.addAttribute("total", "Subtotal: $"+round(total));
         	model.addAttribute("HST", "HST: $"+round(HST));
         	model.addAttribute("grandtotal", "Grand total: $"+round(grandtotal));
-        	model.addAttribute("name", profile.name);
+        	model.addAttribute("name", profile.getName());
         	}
         }else {
         	model.addAttribute("name", "Not signed in");
@@ -206,15 +207,16 @@ public class SampleController {
     	return "redirect:";
     }
     @RequestMapping("/comments")
-    String comments(HttpServletRequest request, @RequestParam("user") String user, @RequestParam("body") String body, @RequestParam("id") int id, Model model) {
+    String comments(HttpServletRequest request, @RequestParam("user") String user, @RequestParam("date") String date, @RequestParam("body") String body, @RequestParam("id") int id, Model model) {
     	List<Comment> comments = findAllComments(id);
     	HttpSession session = request.getSession(false);
         if(session != null) {
         	Profile profile = (Profile) session.getAttribute("profile");
-        model.addAttribute("name", profile.name);
+        model.addAttribute("name", profile.getName());
         }
         model.addAttribute("size",comments.size());
     	model.addAttribute("comments",comments);
+    	model.addAttribute("date",date);
     	model.addAttribute("user",user);
     	model.addAttribute("body",body);
     	model.addAttribute("id",id);
@@ -254,7 +256,8 @@ public class SampleController {
         HttpSession session = request.getSession(false);
         if(session != null) {
         	Profile profile = (Profile) session.getAttribute("profile");
-        model.addAttribute("name", profile.name);
+        	if(profile != null)
+        model.addAttribute("name", profile.getName());
         }else
         	model.addAttribute("name", "Not signed in");
         model.addAttribute("posts", posts);
@@ -278,8 +281,8 @@ public class SampleController {
 	                    System.out.println("result json:");
 	                    System.out.println(result);
 	                in.close();
-	                 Profile profile = gson.fromJson(result, Profile.class);
-	                 session.setAttribute("profile", profile);
+	                 GoogleProfile profile = gson.fromJson(result, GoogleProfile.class);
+	                 session.setAttribute("profile", profile.toProfile());
 	                //Resulting JSON object is now in result.
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

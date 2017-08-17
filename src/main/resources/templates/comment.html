@@ -39,6 +39,8 @@
 	<div class="container" id="tweetContainer">
 		<h1 style="margin-top: 50px" th:text="${user}"></h1>
 		<span th:text="${body}"></span>
+		<br/>
+		<span th:text="${date}" style="font-size:8px; float:right;"></span>
 	</div>
 	<div class="panel" id="comments">
 			<div class="panel-header" style="text-align:center;">
@@ -49,7 +51,8 @@
 					<tr th:each="Comment : ${comments}">
 						<td><span style="text-decoration: underline"
 							th:text="${Comment.name}"></span> <span
-							th:text="${Comment.comment}"></span></td>
+							th:text="${Comment.comment}"></span><br/><span
+							th:text="${Comment.date}" style="font-size:8px; float:right;"></span></td>
 					</tr>
 				</table>
 			</div>
