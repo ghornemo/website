@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="google-signin-scope" content="profile email"></meta>
+<meta name="google-signin-client_id"
+	content="852521934104-53fctdku5insugcv04iejnloqjqjtmot.apps.googleusercontent.com"></meta>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+<link href="css/comment.css" rel="stylesheet" />
+<link href="css/main.css" rel="stylesheet" />
+<script src="https://apis.google.com/js/platform.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="js/login.js"></script>
+<style>
+	.detailLabel, .historyLabel {
+		font-weight:500;
+		font-size:30px;
+		margin:auto;
+	}
+</style>
+
+<title>Order Details</title>
+</head>
+<body>
+	<div th:replace="Header :: Header"></div>
+	<div class="divider" style="height:100px"></div>
+	<div class="outer-page" style="padding-left:25%;padding-right:25%;">
+		<div class="page-title" style="margin-bottom:100px;">Order Details			
+			<form name="login" action="/repeatOrder" method="post" style="float:right; padding-right:40%;">
+				<input type="hidden" th:value="${order.ID}" name="orderid"></input>
+				<button type="submit" class="btn btn-primary">Order Again<span class="glyphicon glyphicon-arrow-right"></span></button>
+			</form>
+		</div>
+		<div class="container row" style="width:100%;">
+			<div class="col-sm-8">
+				<h3>Details</h3>
+				<span class="detailLabel">Order ID: </span><span th:text="${order.ID}"></span> <br/>
+				<span class="detailLabel">Total cost: </span><span th:text="${order.total()}"></span> <br/>
+				<span class="detailLabel">Time: </span><span th:text="${'Order time: '}"></span> <br/>
+				<span class="detailLabel">Cart size: </span><span th:text="${#lists.size(order.items)} "></span>
+			</div>
+			<div class="col-sm-4">
+				<h3>History</h3>
+				<span class="historyLabel">Total orders: </span><span th:text="${#lists.size(previousOrders)}"></span> <br/>
+				<span class="historyLabel">Average Cost: </span><span th:text="${#numbers.formatDecimal(averageCost, 0, 'COMMA', 2, 'POINT')}"></span> <br/>
+				<span class="historyLabel">Total cost: </span><span th:text="${#numbers.formatDecimal(totalCost, 0, 'COMMA', 2, 'POINT')}"></span>
+			</div>
+			<div class="row col-sm-12">
+				<table style="padding:100px; margin:50px; width: 100%; border-top: thin solid black;">
+					<tr>
+						<td>Name</td>   <td>Unit Price</td>    <td>Quantity</td>     <td>Total Cost</td>
+					</tr>
+					<tr th:each="item : ${order.items}">
+						<td th:text="${item.name}"></td>
+						<td th:text="${item.price}"></td>
+						<td th:text="${item.quantity}"></td>
+						<td th:text="${item.price * item.quantity}"></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
