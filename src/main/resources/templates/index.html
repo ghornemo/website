@@ -3,77 +3,21 @@
 <head>
 <meta charset="UTF-8"></meta>
 <meta name="google-signin-scope" content="profile email"></meta>
-<meta name="google-signin-client_id"
-	content="852521934104-53fctdku5insugcv04iejnloqjqjtmot.apps.googleusercontent.com"></meta>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+<meta name="google-signin-client_id" content="852521934104-53fctdku5insugcv04iejnloqjqjtmot.apps.googleusercontent.com"></meta>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
 <link href="css/index.css" rel="stylesheet" />
 <link href="css/main.css" rel="stylesheet" />
 <script src="https://apis.google.com/js/platform.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="js/index.js"></script>
+<script src="js/login.js"></script>
 
 <title>Gemal's World</title>
 </head>
 <body>
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="#">Gemal's World</a>
-			</div>
-			<ul class="nav navbar-nav">
-				<li class="active"><a href="/">Home</a></li>
-				<li><a href="/store">Store</a></li>
-				<li><a href="/login">login</a></li>
-				<li><a href="/register.html">register</a></li>
-				<li><a href="/logout">logout</a></li>
-			</ul>
-			<ul class="nav navbar-nav navbar-right">
-				<li><p class="navbar-text" id="nameField" th:text="${name}"></p></li>
-						        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
-			<ul id="login-dp" class="dropdown-menu">
-				<li>
-					 <div class="row">
-							<div class="col-md-12">
-								Login via
-								<div class="social-buttons">
-									<div class="g-signin2" th:text="${name}" data-onsuccess="onSignIn" data-theme="dark"></div>
-								</div>
-                                or
-								 <form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="loginForm">
-										<div class="form-group">
-											 <label class="sr-only" for="email">Email address</label>
-											 <input type="email" class="form-control" required="true" id="email" name="email" placeholder="Email address"></input>
-										</div>
-										<div class="form-group">
-											 <label class="sr-only" for="password">Password</label>
-											 <input type="password" class="form-control" required="true" id="password" name="password" placeholder="Password"></input>
-                                             <div class="help-block text-right"><a href="">Forget the password ?</a></div>
-										</div>
-										<div class="form-group">
-											 <button type="submit" class="btn btn-primary btn-block">Sign in</button>
-										</div>
-										<div class="checkbox">
-											 <label>
-											 <input type="checkbox" id = "rememberMe"> Remember Email</input>
-											 </label>
-										</div>
-								 </form>
-							</div>
-							<div class="bottom text-center">
-								New here ? <a href="/register.html"><b>Join Us</b></a>
-							</div>
-					 </div>
-				</li>
-							</ul>
-        </li>
-			</ul>
-		</div>
-	</nav>
+<div th:replace="Header :: Header"></div>
+
 	<div style="height: 100px;"></div>
 	<div class="container" id="introduction">
 		<h1 style="margin-top: 50px">Welcome to the blog center.</h1>
@@ -82,6 +26,7 @@
 		social media messages, and to comment and discuss the impacts on
 			society.</p>
 		<p>Effortless authentication using your Google Account.</p>
+		<span th:text="${'model value: '+test}"></span>
 
 	
 		<form action="https://www.paypal.com/cgi-bin/webscr" method="post">

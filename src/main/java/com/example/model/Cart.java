@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 
 public class Cart {
+	public int ID;
 	public ArrayList<Item> items = new ArrayList<>();
 	public void add(Item i) {
 		for(Item item : items) {
@@ -15,6 +16,23 @@ public class Cart {
 		i.quantity = 1;
 		items.add(i);
 	}
+	
+	public int getID() {
+		return ID;
+	}
+
+	public void setID(int iD) {
+		ID = iD;
+	}
+
+	public ArrayList<Item> getItems() {
+		return items;
+	}
+
+	public void setItems(ArrayList<Item> items) {
+		this.items = items;
+	}
+
 	public void clear() {
 		items = new ArrayList<>();
 	}

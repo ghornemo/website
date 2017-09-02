@@ -53,12 +53,109 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.*;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 @EnableAutoConfiguration
 @Repository
 public class SampleController {
+	
+	@ModelAttribute("previousOrders")
+	public ArrayList<Cart> getOrderHistory(HttpServletRequest request){
+		HttpSession session = request.getSession(false);
+		ArrayList<Cart> orders = new ArrayList<>();
+        if(session != null) {
+        	Profile profile = (Profile) session.getAttribute("profile");
+        	if(profile != null) {
+        		String email = profile.getEmail();
+        		orders = getOrders(email);
+        		session.setAttribute("orderHistory", orders);
+        	}
+        	
+        }
+	    return orders;
+	}
+	
+	@ModelAttribute("email")
+	public String getEmail(HttpServletRequest request){
+		HttpSession session = request.getSession(false);
+		String email = "none";
+        if(session != null) {
+        	Profile profile = (Profile) session.getAttribute("profile");
+        	if(profile != null)
+        email = profile.getEmail();
+        	
+        }
+	    return email;
+	}
+	
+	@ModelAttribute("memberSince")
+	public Date getJoinDate(HttpServletRequest request){
+		HttpSession session = request.getSession(false);
+		Date joinDate = new Date(0);
+        if(session != null) {
+        	Profile profile = (Profile) session.getAttribute("profile");
+        	if(profile != null) {
+        		if(profile.getMemberSince() != null)
+        joinDate = profile.getMemberSince();
+        		if(joinDate != null)
+        		return joinDate;
+        	}
+        }
+	    return joinDate;
+	}
+	
+	@ModelAttribute("fullName")
+	public String getFullName(HttpServletRequest request){
+		HttpSession session = request.getSession(false);
+		String name = "none";
+        if(session != null) {
+        	Profile profile = (Profile) session.getAttribute("profile");
+        	if(profile != null)
+        name = profile.getName();
+        	
+        }
+	    return name;
+	}
+	
+	@ModelAttribute("followedPosts")
+	public ArrayList<Post> getPosts(HttpServletRequest request){
+		HttpSession session = request.getSession(false);
+		String email = "none";
+		ArrayList<Post> posts = new ArrayList<>();
+        if(session != null) {
+        	Profile profile = (Profile) session.getAttribute("profile");
+        	if(profile != null) {
+        email = profile.getEmail();
+        	
+        	posts = (ArrayList<Post>) findAllPosts(email);
+        	}
+        	}
+	    return posts;
+	}
+	
+	@ModelAttribute("test")
+	public String getPerson(HttpServletRequest request){
+		/*HttpSession session = request.getSession(false);
+		String name = "none";
+        if(session != null) {
+        	Profile profile = (Profile) session.getAttribute("profile");
+        name = profile.getName();
+        	
+        }*/
+	    return "test";
+	}
+	
+	@ModelAttribute("loggedIn")
+	public boolean loggedIn(HttpServletRequest request){
+		HttpSession session = request.getSession(false);
+        if(session != null) {
+        return true;
+        }
+	    return false;
+	}
 	
 	public ArrayList<Cart> todayOrders = new ArrayList<Cart>();
 	
@@ -78,6 +175,48 @@ public class SampleController {
         this.twitter = twitter;
         this.connectionRepository = connectionRepository;
     }*/
+    
+    @PostMapping("repeatOrder")
+    String repeat(Model model, HttpServletRequest request, @RequestParam("orderid") int Id) {
+    	Cart order = new Cart();
+        HttpSession session = request.getSession(false);
+        ArrayList<Cart> orders = new ArrayList<>();
+        if(session != null) {
+        		Profile profile = (Profile)session.getAttribute("profile");
+        		String email = profile.getEmail();
+        		orders = (ArrayList<Cart>) session.getAttribute("orderHistory");
+        		if(orders == null) {
+        			orders = getOrders(email);
+        		}
+    		}
+        Cart tmp = findOrder(orders, Id);
+        if(tmp != null)
+        		order = tmp;
+        session.setAttribute("cart", order);
+        return "redirect:/store";
+        }
+    
+    @PostMapping("OrderDetails")
+    String details(Model model, HttpServletRequest request, @RequestParam("orderid") int Id) {
+    	Cart order = new Cart();
+        HttpSession session = request.getSession(false);
+        ArrayList<Cart> orders = new ArrayList<>();
+        if(session != null) {
+        		Profile profile = (Profile)session.getAttribute("profile");
+        		String email = profile.getEmail();
+        		orders = (ArrayList<Cart>) session.getAttribute("orderHistory");
+        		if(orders == null) {
+        			orders = getOrders(email);
+        		}
+    			model.addAttribute("totalCost", totalCost(orders));
+    			model.addAttribute("averageCost", averageCost(orders));
+    		}
+        Cart tmp = findOrder(orders, Id);
+        if(tmp != null)
+        		order = tmp;
+    	model.addAttribute("order", order);
+    		return "OrderDetails";
+    }
     @RequestMapping("/additem")
     String add(Model model, HttpServletRequest request, @RequestParam("name") String name, @RequestParam("price") String price) {
 
@@ -110,6 +249,9 @@ public class SampleController {
         		inner = "Your cart seems to be empty, please add an item to submit your order";
         	}else{
         		todayOrders.add(cart);
+        		Profile profile = (Profile) session.getAttribute("profile");
+        		String email = profile.getEmail();
+        		insertOrder(cart, email);
         	//cart = new cart();
         	session.setAttribute("cart", new Cart());
         	int orderCount = todayOrders.size();
@@ -223,9 +365,16 @@ public class SampleController {
     	return "comment";
     }
     @RequestMapping("/post")
-    String share(@RequestParam("user") String user, @RequestParam("body") String body, @RequestParam("date") String time) {
+    String share(HttpServletRequest request, @RequestParam("user") String user, @RequestParam("body") String body, @RequestParam("date") String time) {
+    	HttpSession session = request.getSession(false);
+		String email = "";
+        if(session != null) {
+        	Profile profile = (Profile) session.getAttribute("profile");
+        	if(profile != null)
+        email = profile.getEmail();
+        }
     	this.jdbcTemplate.update(
-    	        "insert into posts (text, name, time) values ('"+body+"', '"+user+"', '"+time+"');");
+    	        "insert into posts (text, name, time, pinner) values ('"+body+"', '"+user+"', '"+time+"', '"+email+"');");
         
         String response = "user: "+user;
         response += "\n body: "+body;
@@ -295,8 +444,81 @@ public class SampleController {
         return this.jdbcTemplate.query( "select * from posts", new ActorMapper());
     }
     
+    public List<Post> findAllPosts(String email) {
+        return this.jdbcTemplate.query( "select * from posts where pinner = '"+email+"'", new ActorMapper());
+    }
+    
     public List<Comment> findAllComments(int id) {
         return this.jdbcTemplate.query( "select * from comment where id = "+id, new CommentMapper());
+    }
+    
+    public List<Item> findAllItems(String email) {
+        return (List<Item>) this.jdbcTemplate.query( "select * from (item natural join orders) where email = '"+email+"'", new ItemMapper());
+    }
+    
+    public void insertOrder(Cart order, String email) {
+    		
+        Integer ID = this.jdbcTemplate.query("insert into orders (email) values ('"+email+"') RETURNING orderid", new OrderMapper()).get(0);
+        
+        for(Item item : order.items) {
+        	String sql = "insert into item (orderId, name, quantity, price) values ('"+ID+"', '"+item.getName()+"', '"+item.getQuantity()+"', '"+item.getPrice()+"');";
+        this.jdbcTemplate.update(sql);
+        }
+    }
+    
+    public ArrayList<Cart> convertItemsToOrders(ArrayList<Item> items) {
+    		ArrayList<Cart> orders = new ArrayList<>();
+    		Cart order = new Cart();
+    		int current = -1;//index of current order...
+    		for(Item item : items) {
+    			
+    			if(current != item.getOrderId()) {//Setting up new order...
+    				if(order.items.size() > 0)
+    					orders.add(order);
+    				order = new Cart();
+    				order.setID(item.getOrderId());
+    				current = order.getID();
+    			}
+    			order.add(item);
+    		}
+    		if(order.items.size() > 0)
+    		orders.add(order);
+    		return orders;
+    }
+    
+public ArrayList<Cart> getOrders(String email) {
+	ArrayList<Item> items = (ArrayList<Item>) findAllItems(email);
+	System.out.println("items returned: "+items.size());
+	return convertItemsToOrders(items);
+}
+    
+final class ItemMapper implements RowMapper<Item> {
+
+    public Item mapRow(ResultSet rs, int rowNum) throws SQLException {
+        /*Comment comment = new Comment();
+        comment.setComment(rs.getString("comment"));
+        comment.setName(rs.getString("name"));
+        comment.setId(rs.getInt("id"));
+        comment.setDate(rs.getDate("time"));*/
+    		Item item = new Item();
+    		item.orderId = rs.getInt("orderid");
+    		item.setName(rs.getString("name"));
+    		item.setPrice(rs.getFloat("price"));
+    		item.setQuantity(rs.getInt("quantity"));
+        return item;
+    }
+}
+    
+    final class OrderMapper implements RowMapper<Integer> {
+
+        public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+            /*Comment comment = new Comment();
+            comment.setComment(rs.getString("comment"));
+            comment.setName(rs.getString("name"));
+            comment.setId(rs.getInt("id"));
+            comment.setDate(rs.getDate("time"));*/
+            return rs.getInt("orderId");
+        }
     }
 	
     final class CommentMapper implements RowMapper<Comment> {
@@ -321,6 +543,41 @@ public class SampleController {
             post.setDate(rs.getDate("time"));
             return post;
         }
+    }
+    
+    @ResponseBody
+    @PostMapping("/changePicture")
+    public String handleFileUpload(@RequestParam("file") MultipartFile file,
+            RedirectAttributes redirectAttributes) {
+
+    		return "You successfully uploaded " + file.getOriginalFilename() + "!";
+    }
+    
+    public Cart findOrder(List<Cart> orders, int ID) {
+    		for(Cart order : orders) {
+    			if(order.ID == ID)
+    				return order;
+    		}
+    		return null;
+    }
+    
+    public double averageCost(ArrayList<Cart> orders) {
+		double cost = 0;
+		int size = orders.size();
+			for(Cart order : orders) {
+				cost += order.total();
+			}
+			if(size > 0)
+				cost /= size;
+		return cost;
+    }
+    
+    public double totalCost(ArrayList<Cart> orders) {
+    		double total = 0;
+    			for(Cart order : orders) {
+    				total += order.total();
+    			}
+    		return total;
     }
 
     public static void main(String[] args) throws Exception {

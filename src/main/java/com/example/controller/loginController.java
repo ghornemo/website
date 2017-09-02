@@ -12,16 +12,29 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.example.model.Cart;
 import com.example.model.Profile;
 
 @Controller
 public class loginController {
+	
+	@ModelAttribute("loggedIn")
+	public boolean loggedIn(HttpServletRequest request){
+		try {
+		HttpSession session = request.getSession(false);
+      if(session != null) {
+      return true;
+      }
+		}catch(Exception e) {}
+		return false;
+	}
 	
 	 @Autowired
 	  JdbcTemplate jdbcTemplate;
@@ -79,8 +92,47 @@ public class loginController {
     profile.setFirstName(rs.getString("firstname"));
     profile.setLastName(rs.getString("lastname"));
     profile.setEmail(rs.getString("email"));
+    profile.setMemberSince(rs.getDate("membersince"));
     return profile;
   }
+  
+	@ModelAttribute("email")
+	public String getEmail(HttpServletRequest request){
+		HttpSession session = request.getSession(false);
+		String email = "none";
+      if(session != null) {
+      	Profile profile = (Profile) session.getAttribute("profile");
+      	if(profile != null)
+      email = profile.getEmail();
+      	
+      }
+	    return email;
+	}
+	
+	@ModelAttribute("fullName")
+	public String getFullName(HttpServletRequest request){
+		HttpSession session = request.getSession(false);
+		String name = "none";
+      if(session != null) {
+      	Profile profile = (Profile) session.getAttribute("profile");
+      	if(profile != null)
+      name = profile.getName();
+      	
+      }
+	    return name;
+	}
+	
+	@ModelAttribute("test")
+	public String getPerson(HttpServletRequest request){
+		/*HttpSession session = request.getSession(false);
+		String name = "none";
+      if(session != null) {
+      	Profile profile = (Profile) session.getAttribute("profile");
+      name = profile.getName();
+      	
+      }*/
+	    return "test";
+	}
 	
 	
 }

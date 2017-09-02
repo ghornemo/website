@@ -4,9 +4,19 @@ public class Item {
 	String name;
 	float price;
 	int quantity;
+	public int getOrderId() {
+		return orderId;
+	}
+	public void setOrderId(int orderId) {
+		this.orderId = orderId;
+	}
+	public int orderId;
 	public Item(String name, float price) {
 		this.name = name;
 		this.price = price;
+	}
+	public Item() {
+		
 	}
 	public String getName() {
 		return name;

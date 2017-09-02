@@ -9,21 +9,7 @@
 <title>Gemal's World</title>
 </head>
 <body>
- <nav class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">Gemal's World</a>
-    </div>
-    <ul class="nav navbar-nav">
-      <li><a href="/">Home</a></li>
-      <li><a href="/store">Store</a></li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-      <li><p class="navbar-text" id="nameField" th:text="${name}"></p></li>
-      <li><div class="g-signin2" th:text="${name}" data-onsuccess="onSignIn" data-theme="dark"></div></li>
-    </ul>
-  </div>
-</nav>
+<div th:replace="Header :: Header"></div>
 	<h1 style="margin-top:150px" th:text="${header}"></h1>
 	<p th:text="${body}"></p>
 </body>

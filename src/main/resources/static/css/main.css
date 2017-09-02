@@ -1,1 +1,36 @@
 @CHARSET "UTF-8";
+
+.page-title {
+	width: 80%;
+	border-bottom: thin solid black;
+	font-size:30px;
+}
+
+.followedTweetPanel {
+	
+	width:80%;
+	margin-left:10%;
+	
+}
+
+.changePicture {
+	cursor:pointer;
+}
+
+.dropdown .dropdown-menu {
+    -webkit-transition: all 0.6s;
+    -moz-transition: all 0.6s;
+    -ms-transition: all 0.6s;
+    -o-transition: all 0.6s;
+    transition: all 0.6s;
+
+    max-height: 0;
+    display: block;
+    overflow: hidden;
+    opacity: 0;
+}
+
+.dropdown.open .dropdown-menu {
+    max-height: 300px;
+    opacity: 1;
+}

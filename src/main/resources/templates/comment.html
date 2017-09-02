@@ -15,55 +15,40 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="js/comment.js"></script>
+<script src="js/login.js"></script>
 
 <title>Make a comment</title>
 </head>
 <body>
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="#">Gemal's World</a>
-			</div>
-			<ul class="nav navbar-nav">
-				<li><a href="/">Home</a></li>
-				<li><a href="/store">Store</a></li>
-			</ul>
-			<ul class="nav navbar-nav navbar-right">
-				<li><p class="navbar-text" id="nameField" th:text="${name}"></p></li>
-				<li><div class="g-signin2" th:text="${name}"
-						data-onsuccess="onSignIn" data-theme="dark"></div></li>
-			</ul>
-		</div>
-	</nav>
+	<div th:replace="Header :: Header"></div>
 	<div class="divider" style="height:100px"></div>
-	<div class="container" id="tweetContainer">
+	<div class="container row">
+	<div class="col-sm-3" id="tweetContainer">
 		<h1 style="margin-top: 50px" th:text="${user}"></h1>
 		<span th:text="${body}"></span>
 		<br/>
 		<span th:text="${date}" style="font-size:8px; float:right;"></span>
 	</div>
-	<div class="panel" id="comments">
-			<div class="panel-header" style="text-align:center;">
-			<h3>Comments</h3>
-			</div>
-			<div class="panel-body" id="commentTable">
+			<div id="commentTable" class=" col-sm-7">
 				<table class="table">
 					<tr th:each="Comment : ${comments}">
 						<td><span style="text-decoration: underline"
 							th:text="${Comment.name}"></span> <span
 							th:text="${Comment.comment}"></span><br/><span
-							th:text="${Comment.date}" style="font-size:8px; float:right;"></span></td>
+							th:text="*{#calendars.format(Comment.date,'dd MMM yyyy')}" style="font-size:8px; float:right;"></span></td>
 					</tr>
 				</table>
 			</div>
-			<div class="panel-footer" style="background:">
-				<form action="addcomment" method="post">
-					<input type="hidden" th:value="${id}" name="id"></input> <input
-					type="hidden" th:value="${name}" name="user"></input> <input
-					type="text" required="true" placeholder="Enter Comment*" name="body"></input> <input type="submit" class="btn"
-					value="Post Comment"></input>
-				</form>
-			</div>
+	
+	<div class="col-sm-2">
+		<form action="addcomment" method="post" id="commentForm"> 
+			<input type="hidden" th:value="${id}" name="id"></input> <input
+			type="hidden" th:value="${name}" name="user"></input> 
+			<textarea name="body" placeholder="Enter Comment*" required="true" form="commentForm"></textarea>
+			 <input type="submit" class="btn"
+			value="Post Comment"></input>
+		</form>
+	</div>
 	</div>
 
 </body>
