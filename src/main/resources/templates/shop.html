@@ -33,6 +33,7 @@
 	
 	<div align="center" class="container col-md-4" id="productPanel" style="height:300px; width:250px; margin:10px">
 			<div class="row"><h3 id="productTitle">12" Pepperoni Pizza</h3></div>
+			<span th:text="${FoodRatings.average('pepperoni pizza')}"></span>
 			<div class="row">
 			<img src="images/pizza.png"/>
 			<p id="description">A delicious pepperoni made using delicious store made dough, covered in tons of mozzarella cheese</p>
@@ -46,6 +47,7 @@
 	</div>	
 			<div align="center" class="container col-md-4" id="productPanel" style="height:300px; width:250px; margin:10px">
 			<div class="row"><h3 id="productTitle">Bread Sticks</h3></div>
+			<span th:text="${FoodRatings.average('bread sticks')}"></span>
 			<div class="row">
 			<img src="images/breadsticks.jpeg"/>
 			<p id="description">A generous portion of bread sticks made from house made dough, served with marinara sauce.</p>
@@ -59,6 +61,7 @@
 	</div>	
 			<div align="center" class="container col-md-4" id="productPanel" style="height:300px; width:250px; margin:10px">
 			<div class="row"><h3 id="productTitle">Donair</h3></div>
+			<span th:text="${FoodRatings.average('donair')}"></span>
 			<div class="row">
 			<img src="images/donair.jpg"/>
 			<p id="description">A donair made with spicy donair meat, donair sauce, tomatoes, and onions.</p>
@@ -73,6 +76,7 @@
 	
 			<div align="center" class="container col-md-4" id="productPanel" style="height:300px; width:250px; margin:10px">
 			<div class="row"><h3 id="productTitle">12" Garlic Finger</h3></div>
+			<span th:text="${FoodRatings.average('Garlic Fingers')}"></span>
 			<div class="row">
 			<img src="images/garlicfingers.jpeg"/>
 			<p id="description">Fresh garlic fingers made with mozzeralla cheese, served with donair sauce.</p>
@@ -87,6 +91,7 @@
 	
 				<div align="center" class="container col-md-4" id="productPanel" style="height:300px; width:250px; margin:10px">
 			<div class="row"><h3 id="productTitle">Mozzeralla Cheese Sticks</h3></div>
+			<span th:text="${FoodRatings.average('mozza sticks')}"></span>
 			<div class="row">
 			<img src="images/mozzasticks.jpg"/>
 			<p id="description">8 cheese filled mozzeralla cheese served with marinara sauce or ranch.</p>
@@ -94,13 +99,14 @@
 			<p class="row" id="price">$9.99</p>
 			<form class="row" name="login" action="/additem" method="post">
 				<input type="submit" id="orderButton" value="Order"></input>
-				<input type="hidden" name="name" value="Mozza Sticks Fingers"></input>
+				<input type="hidden" name="name" value="Mozza Sticks"></input>
 				<input type="hidden" name="price" value="9.99"></input>
 			</form>
 	</div>
 	
 					<div align="center" class="container col-md-4" id="productPanel" style="height:300px; width:250px; margin:10px">
 			<div class="row"><h3 id="productTitle">Oven Baked Spaghetti</h3></div>
+			<span th:text="${FoodRatings.average('Spaghetti')}"></span>
 			<div class="row">
 			<img src="images/spaghetti.jpg"/>
 			<p id="description">Oven baked spaghetti served with a layer of cheese and meatballs.</p>
@@ -115,6 +121,7 @@
 	
 					<div align="center" class="container col-md-4" id="productPanel" style="height:300px; width:250px; margin:10px">
 			<div class="row"><h3 id="productTitle">Chicken Wings</h3></div>
+			<span th:text="${FoodRatings.average('Chicken Wings')}"></span>
 			<div class="row">
 			<img src="images/Wings.jpg"/>
 			<p id="description">Crispy baked chicken wings served with hot or ranch dip.</p>
@@ -131,19 +138,30 @@
 	
 	<div align="center" class="container col-md-3">
 	    <div id="cart" class="row container">
-	    <div class="row">Shopping Cart</div>
-	     <div class="row" th:each="item : ${items}">
-        <p th:text="${item.quantity + ' x ' + item.name + ':'+item.price*item.quantity}" style="font-size: 10px"></p>
-	     </div>
+	    <div class="row">Current Order</div>
+	    <table class="table">
+					<tr>
+						<td>Item</td>
+						<td>Qty</td>
+						<td>Price</td>
+					</tr>
+					<tr th:each="item : ${items}">
+						<td><span th:text="${item.name}"></span></td>
+						<td><span th:text="${item.quantity}"></span></td>
+						<td><span th:text="${item.quantity*item.price}"></span></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>Total:</td>
+						<td th:text="${total}"></td>
+					</tr>
+					</table>
 	     <div>
-	       		<p th:text="${total}"></p>
-	       		<p th:text="${HST}"></p>
-	       		<p th:text="${grandtotal}"></p>
   			<form action="/clearCart">
-				<input type="submit" value="Clear"></input>
+				<input class="btn" style="" type="submit" value="Clear"></input>
 			</form>
-  			<form action="/confirmOrder">
-				<input type="submit" value="Submit Order"></input>
+  			<form action="/confirmOrder" style="height:10%;">
+				<input type="submit" style="width:100%; height:100%; background:red; color:white; font-weight:bold;" value="Submit Order"></input>
 			</form>
 		</div>
     </div>

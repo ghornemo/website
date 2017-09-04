@@ -1,9 +1,12 @@
 package com.example.model;
 
+import com.google.api.client.util.DateTime;
+
 public class Item {
 	String name;
 	float price;
 	int quantity;
+	DateTime ordered;
 	public int getOrderId() {
 		return orderId;
 	}

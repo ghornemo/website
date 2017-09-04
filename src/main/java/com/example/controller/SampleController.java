@@ -19,6 +19,7 @@ import com.example.model.GoogleProfile;
 import com.example.model.Item;
 import com.example.model.Post;
 import com.example.model.Profile;
+import com.example.model.Rating;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
@@ -61,6 +62,70 @@ import org.springframework.web.servlet.view.RedirectView;
 @EnableAutoConfiguration
 @Repository
 public class SampleController {
+	
+	public Profile getProfile(HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+        if(session != null) {
+        	Profile profile = (Profile) session.getAttribute("profile");
+	        	if(profile != null) {
+	        		return profile;
+	        	}
+	}
+        
+		return null;
+        
+	}
+	
+    public double averageCost(ArrayList<Cart> orders) {
+		double cost = 0;
+		int size = orders.size();
+			for(Cart order : orders) {
+				cost += order.total();
+			}
+			if(size > 0)
+				cost /= size;
+		return cost;
+    }
+    
+    public double totalCost(ArrayList<Cart> orders) {
+    		double total = 0;
+    			for(Cart order : orders) {
+    				total += order.total();
+    			}
+    		return total;
+    }
+
+
+	
+	@ModelAttribute("totalSpent")
+	public double totalCashSpent(HttpServletRequest request){
+        	Profile profile = getProfile(request);
+        	double total = 0;
+        	if(profile != null) {
+        		String email = profile.getEmail();
+        		ArrayList<Cart> orders = getOrders(email);
+        			for(Cart order : orders) {
+        				total += order.total();
+        			}
+        	}
+		return total;
+	}
+	
+	@ModelAttribute("averageSpent")
+	public double averageCashSpent(HttpServletRequest request){
+        	Profile profile = getProfile(request);
+        	double total = 0;
+        	if(profile != null) {
+        		String email = profile.getEmail();
+        		ArrayList<Cart> orders = getOrders(email);
+        			for(Cart order : orders) {
+        				total += order.total();
+        			}
+                	if(orders.size() > 0)
+                		total /= orders.size();
+        	}
+		return total;
+	}
 	
 	@ModelAttribute("previousOrders")
 	public ArrayList<Cart> getOrderHistory(HttpServletRequest request){
@@ -159,6 +224,9 @@ public class SampleController {
 	
 	public ArrayList<Cart> todayOrders = new ArrayList<Cart>();
 	
+	//@Autowired
+	//public FoodRatings FoodRatings;
+	
     @Autowired
     public void setDataSource(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
@@ -175,6 +243,36 @@ public class SampleController {
         this.twitter = twitter;
         this.connectionRepository = connectionRepository;
     }*/
+    
+    @PostMapping("submitRating")
+    String rating(Model model, HttpServletRequest request, @RequestParam("itemName") String itemName , @RequestParam("title") String title, @RequestParam("score") short score, @RequestParam("comment") String comment) {
+        HttpSession session = request.getSession(false);
+        String header = "";
+        String inner = "";
+        if(session != null) {
+        		Profile profile = (Profile)session.getAttribute("profile");
+        		String email = profile.getEmail();
+        		Rating rating = new Rating();
+	    		String reviewer = profile.getName();
+	    		rating.setScore(score);
+	    		rating.setComment(comment);
+	    		rating.setEmail(email);
+	    		rating.setItemName(itemName);
+	    		rating.setTitle(title);
+	    		rating.setReviewer(reviewer);
+	    		rating.print();
+	    		insertRating(rating);
+	    		header = "Thank you for your review";
+	    		inner = "Thank you for using your time to write a review. Writing a review helps ";
+	    		inner += "our staff to ensure optimal food quality.";
+        }else {
+	    		header = "Rating Not Submitted";
+	    		inner = "There was a problem submitting your review, please try again.";
+        }
+    		model.addAttribute("header", header);
+    		model.addAttribute("body", inner);
+    		return "template";
+    }
     
     @PostMapping("repeatOrder")
     String repeat(Model model, HttpServletRequest request, @RequestParam("orderid") int Id) {
@@ -290,6 +388,7 @@ public class SampleController {
     }
     @RequestMapping("/store")
     String home(Model model, HttpServletRequest request) {
+    		model.addAttribute("FoodRatings", new FoodRatings(getRatings("*")));
         HttpSession session = request.getSession(false);
         if(session != null) {
         	Profile profile = (Profile) session.getAttribute("profile");
@@ -297,7 +396,7 @@ public class SampleController {
         	double total = cart.total();
         	if(total <= 0) {
             	model.addAttribute("name", profile.getName());
-            	model.addAttribute("total", "Total: $0.00");
+            	model.addAttribute("total", "$0.00");
             	model.addAttribute("HST", "HST: $0.00");
             	model.addAttribute("grandtotal", "Grand total: $0.00");
         	}else{
@@ -491,6 +590,21 @@ public ArrayList<Cart> getOrders(String email) {
 	System.out.println("items returned: "+items.size());
 	return convertItemsToOrders(items);
 }
+
+final class RatingMapper implements RowMapper<Rating> {
+
+    public Rating mapRow(ResultSet rs, int rowNum) throws SQLException {
+    		Rating rating = new Rating();
+    		//score, email, comment, reviewer, itemName
+    		rating.setScore(rs.getShort("score"));
+    		rating.setEmail(rs.getString("email"));
+    		rating.setComment(rs.getString("comment"));
+    		rating.setReviewer(rs.getString("reviewer"));
+    		rating.setItemName(rs.getString("itemName"));
+    		rating.setTitle(rs.getString("title"));
+        return rating;
+    }
+}
     
 final class ItemMapper implements RowMapper<Item> {
 
@@ -561,23 +675,62 @@ final class ItemMapper implements RowMapper<Item> {
     		return null;
     }
     
-    public double averageCost(ArrayList<Cart> orders) {
-		double cost = 0;
-		int size = orders.size();
-			for(Cart order : orders) {
-				cost += order.total();
-			}
-			if(size > 0)
-				cost /= size;
-		return cost;
+    private class FoodRating {
+    		ArrayList<Rating> ratings;
+    		String itemName;
+    		public FoodRating(String itemName) {
+    			this.itemName = itemName;
+    		}
     }
     
-    public double totalCost(ArrayList<Cart> orders) {
-    		double total = 0;
-    			for(Cart order : orders) {
-    				total += order.total();
-    			}
-    		return total;
+    public void insertRating(Rating rating) {
+			short score = rating.score;
+			String email = rating.getEmail();
+			String comment = rating.getComment();
+			String reviewer = rating.getReviewer();
+			String itemName = rating.getItemName();
+			String sql = "insert into rating (score, email, comment, reviewer, itemName) values ("+score+", '"+email+"', '"+comment+"', '"+reviewer+"', '"+itemName+"')";
+			jdbcTemplate.update(sql);
+		}
+    
+    private class FoodRatings {
+		ArrayList<Rating> ratings;
+		public FoodRatings(List<Rating> list) {
+			this.ratings = (ArrayList<Rating>) list;
+			System.out.println("# ratings: "+this.ratings.size());
+		}
+		public ArrayList<Rating> getRatings(String itemName) {
+			if(ratings == null) return null;
+			ArrayList<Rating> list = new ArrayList<>();
+			for(Rating rating : ratings) {
+				if(rating.getItemName().equalsIgnoreCase(itemName))
+					list.add(rating);
+			}
+			return list;
+		}
+		public String average(String itemName) {
+			double average = 0;
+			double counter = 0;
+			if(ratings == null) return "0 reviews";
+			for(Rating rating : ratings) {
+				if(rating.getItemName().equalsIgnoreCase(itemName)) {
+					average += rating.score;
+					counter++;
+				}
+			}
+			if(counter > 0) 
+				average = (double) (average / counter);
+			else
+				return "0 Reviews";
+			String rating = average+"";
+			rating = rating.substring(0, 3);
+			return rating+" stars";
+		}
+}
+    
+    public List<Rating> getRatings(String name) {
+    		String sql = "select * from rating";
+    		 return this.jdbcTemplate.query(sql, new RatingMapper());
     }
 
     public static void main(String[] args) throws Exception {

@@ -9,10 +9,11 @@
 }
 
 #cart {
-	height:300px;
 	width: 100%;
-	border: 2px solid black;
-    border-radius: 12px;
+	border-bottom: thin solid black;
+	border-left: thin solid black;
+	margin-bottom:100px;
+	padding:0px!important;
 }
 
 #map {

@@ -11,14 +11,60 @@
 </head>
 <body>
 	<div id="mySidenav" class="sidenav" th:fragment="Sidebar">
-	<span style="font-size:100px; text-align: center; margin:auto;" class="glyphicon glyphicon-user"></span>
-	<button type="button" class="btn btn-info" data-toggle="modal" data-target="#pictureModal">Change</button>
-	<div class="page-header">
+					<div class="page-header">
 		<h3 style="color:white;">Account details</h3>
 	</div>
 		<span style="color:white" th:text="${'Name: '+fullName}"></span>  <br/>
 		<span style="color:white" th:text="${'Email: '+email}"></span><br/>
 		<span style="color:white" th:text="*{'Member since: '+#calendars.format(memberSince,'dd MMM, yyyy')}"></span>
+		
+			<div class="page-header">
+		<h3 style="color:white;">Order History</h3>
+	</div>
+				<span style="color:white" th:text="${'Total orders:'+#lists.size(previousOrders)}"></span> <br/>
+				<span style="color:white" th:text="${'Average Order Cost: $'+#numbers.formatDecimal(averageSpent, 0, 'COMMA', 2, 'POINT')}"></span> <br/>
+				<span style="color:white" th:text="${'Total Order Cost: $'+#numbers.formatDecimal(totalSpent, 0, 'COMMA', 2, 'POINT')}"></span>
+
+				  <div class="dropdown" style="padding-top:0px;">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">View Orders
+    <b class="caret"></b></button>
+		<div class="container dropdown-menu orderHistoryPanel">
+				<table class="table" style="width:30%;">
+				<tr>
+					<td>ID</td>
+					<td>Cost</td>
+					<td>Time</td>
+				</tr>
+					<tr th:each="order : ${previousOrders}">
+						<td>
+						<span th:text="${order.ID}"></span>
+						</td>
+						<td>
+						<span th:text="${order.total()}"></span>
+						</td>
+						<td>
+						<span th:text="${'June 17, 2017, 5:32pm'}"></span>
+						</td>
+						<td>
+							<form name="orderDetails" action="/OrderDetails" method="post">
+								
+								<input type="hidden" th:value="${order.ID}" name="orderid" />
+								<input type="submit" class="btn" value="Details"></input>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td>Total</td>
+						<td>
+							<span style="color:white" th:text="${'$'+#numbers.formatDecimal(totalSpent, 0, 'COMMA', 2, 'POINT')}"></span>
+						</td>
+					</tr>
+				</table>
+		</div>
+		</div>
+		<div class="page-header">
+		<h3 style="color:white;">Communications</h3>
+	</div>
 		  <div class="dropdown" style="">
     <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Followed Tweets
     <span class="badge" th:text="${#lists.size(followedPosts)}"></span></button>
@@ -36,23 +82,6 @@
 								th:value="${post.body}" name="body" /><input type="hidden"
 								th:value="${post.date}" name="date" />  <input type="submit"
 								class="btn" value="View"></input>
-							</form>
-						</td>
-					</tr>
-				</table>
-		</div>
-		</div>
-				  <div class="dropdown" style="padding-top:100px;">
-    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Previous Orders
-    <span class="badge" th:text="${#lists.size(previousOrders)}"></span></button>
-		<div class="container dropdown-menu well orderHistoryPanel">
-							<table class="table">
-					<tr th:each="order : ${previousOrders}">
-						<td>
-							<form name="orderDetails" action="/OrderDetails" method="post">
-								<span th:text="${'Cost: $'+order.total()}"></span>
-								<input type="hidden" th:value="${order.ID}" name="orderid" />
-								<input type="submit" class="btn" value="Details"></input>
 							</form>
 						</td>
 					</tr>

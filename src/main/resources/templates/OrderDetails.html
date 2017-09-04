@@ -15,6 +15,17 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="js/login.js"></script>
+<script>
+	var itemName = "";
+	function setItem(name) {
+		var item = name.toString();
+		item = item.replace('/', '');
+		item = item.replace('/', '');
+		itemName = item;
+		$("#productName").text("Product: "+item);
+		$("#itemName").val(item);
+	}
+</script>
 <style>
 	.detailLabel, .historyLabel {
 		font-weight:500;
@@ -37,7 +48,7 @@
 		</div>
 		<div class="container row" style="width:100%;">
 			<div class="col-sm-8">
-				<h3>Details</h3>
+				<h3>Summary</h3>
 				<span class="detailLabel">Order ID: </span><span th:text="${order.ID}"></span> <br/>
 				<span class="detailLabel">Total cost: </span><span th:text="${order.total()}"></span> <br/>
 				<span class="detailLabel">Time: </span><span th:text="${'Order time: '}"></span> <br/>
@@ -59,10 +70,34 @@
 						<td th:text="${item.price}"></td>
 						<td th:text="${item.quantity}"></td>
 						<td th:text="${item.price * item.quantity}"></td>
+						<td>
+							<button type="button" th:onclick="'javascript:setItem(/' + ${item.name} + '/)'" class="btn-info btn-lg" data-toggle="modal" data-target="#reviewModal">Rate Item</button>
+						</td>
 					</tr>
 				</table>
 			</div>
 		</div>
 	</div>
+			<div class="modal fade" id="reviewModal" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-header">Leave Review</h4>
+						<span id="productName">item: </span>
+					</div>
+
+					<div class="modal-body" style="height: 80%; overflow: auto">
+						<form name="reviewModal" action="/submitRating" method="post">
+						<input style="width: 80%;" type="number" name="score" placeholder="Rating*" min="0" max="5" required="true"></input> <br/>
+						<input type="text" name="title" placeholder="Title"></input><br/>
+						<input type="text" name="comment" placeholder="Comment"></input><br/>
+						<input type="hidden" name="itemName" id="itemName"></input><br/>
+						<input type="submit"></input>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 </body>
 </html>

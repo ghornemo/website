@@ -46,15 +46,15 @@
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li><p class="navbar-text" id="nameField" th:text="${name}"></p></li>
-				<li th:if="${loggedIn and #lists.size(session.cart.items) > 0}" class="dropdown navbar-text" style="margin-bottom:0px!important;">
-					<div class="dropdown-toggle glyphicon glyphicon-shopping-cart" style="position: relative; font-size:25px;" data-toggle="dropdown">
-						<span class="badge badge-error" style="position: absolute; top: -15px; font-size:16px;font-weight: bold;" th:text="${#lists.size(session.cart.items)}">
-						</span>
-					</div>
-								      <ul class="dropdown-menu">
-								        <li th:each="item : ${session.cart.items}" th:text="${item.name+' x '+item.quantity}"></li>
-								      </ul>
-				</li>
+				<th:block th:if="${loggedIn}">
+					<li th:if="${loggedIn and #lists.size(session.cart.items) > 0}" class="dropdown navbar-text" style="margin-bottom:0px!important;">
+						<div class="dropdown-toggle glyphicon glyphicon-shopping-cart" style="position: relative; font-size:25px;" data-toggle="dropdown">
+						</div>
+				      <ul class="dropdown-menu">
+				        <li th:each="item : ${session.cart.items}" th:text="${item.name+' x '+item.quantity}"></li>
+				      </ul>
+					</li>
+				</th:block>
 				<li><a href="/logout"  th:unless="${!loggedIn}">logout</a></li>
 						        <li class="dropdown">
           <a href="#" class="dropdown-toggle" th:unless="${loggedIn}" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
