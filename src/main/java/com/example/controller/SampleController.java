@@ -244,6 +244,13 @@ public class SampleController {
         this.connectionRepository = connectionRepository;
     }*/
     
+    @RequestMapping("Ratings") 
+    String input(Model model, @RequestParam("itemName") String itemName) {
+    		model.addAttribute("itemName", itemName);
+    		model.addAttribute("reviews", new FoodRatings(getRatings(itemName)));
+    		return "Ratings";
+    }
+    
     @PostMapping("submitRating")
     String rating(Model model, HttpServletRequest request, @RequestParam("itemName") String itemName , @RequestParam("title") String title, @RequestParam("score") short score, @RequestParam("comment") String comment) {
         HttpSession session = request.getSession(false);
@@ -388,7 +395,7 @@ public class SampleController {
     }
     @RequestMapping("/store")
     String home(Model model, HttpServletRequest request) {
-    		model.addAttribute("FoodRatings", new FoodRatings(getRatings("*")));
+    		model.addAttribute("FoodRatings", new FoodRatings(getRatings()));
         HttpSession session = request.getSession(false);
         if(session != null) {
         	Profile profile = (Profile) session.getAttribute("profile");
@@ -587,7 +594,6 @@ public class SampleController {
     
 public ArrayList<Cart> getOrders(String email) {
 	ArrayList<Item> items = (ArrayList<Item>) findAllItems(email);
-	System.out.println("items returned: "+items.size());
 	return convertItemsToOrders(items);
 }
 
@@ -602,6 +608,7 @@ final class RatingMapper implements RowMapper<Rating> {
     		rating.setReviewer(rs.getString("reviewer"));
     		rating.setItemName(rs.getString("itemName"));
     		rating.setTitle(rs.getString("title"));
+    		rating.setTime(rs.getDate("date"));
         return rating;
     }
 }
@@ -659,14 +666,6 @@ final class ItemMapper implements RowMapper<Item> {
         }
     }
     
-    @ResponseBody
-    @PostMapping("/changePicture")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file,
-            RedirectAttributes redirectAttributes) {
-
-    		return "You successfully uploaded " + file.getOriginalFilename() + "!";
-    }
-    
     public Cart findOrder(List<Cart> orders, int ID) {
     		for(Cart order : orders) {
     			if(order.ID == ID)
@@ -689,12 +688,13 @@ final class ItemMapper implements RowMapper<Item> {
 			String comment = rating.getComment();
 			String reviewer = rating.getReviewer();
 			String itemName = rating.getItemName();
-			String sql = "insert into rating (score, email, comment, reviewer, itemName) values ("+score+", '"+email+"', '"+comment+"', '"+reviewer+"', '"+itemName+"')";
+			String title = rating.getTitle();
+			String sql = "insert into rating (score, email, title, comment, reviewer, itemName) values ("+score+", '"+email+"', '"+title+"', '"+comment+"', '"+reviewer+"', '"+itemName+"')";
 			jdbcTemplate.update(sql);
 		}
     
     private class FoodRatings {
-		ArrayList<Rating> ratings;
+		public ArrayList<Rating> ratings;
 		public FoodRatings(List<Rating> list) {
 			this.ratings = (ArrayList<Rating>) list;
 			System.out.println("# ratings: "+this.ratings.size());
@@ -728,10 +728,14 @@ final class ItemMapper implements RowMapper<Item> {
 		}
 }
     
-    public List<Rating> getRatings(String name) {
+    public List<Rating> getRatings() {
     		String sql = "select * from rating";
     		 return this.jdbcTemplate.query(sql, new RatingMapper());
     }
+    public List<Rating> getRatings(String name) {
+		String sql = "select * from rating where itemName = '"+name+"'";
+		 return this.jdbcTemplate.query(sql, new RatingMapper());
+}
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(SampleController.class, args);

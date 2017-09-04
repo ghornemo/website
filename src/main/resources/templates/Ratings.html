@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="google-signin-scope" content="profile email"></meta>
+<meta name="google-signin-client_id"
+	content="852521934104-53fctdku5insugcv04iejnloqjqjtmot.apps.googleusercontent.com"></meta>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+<link href="css/main.css" rel="stylesheet" />
+<script src="https://apis.google.com/js/platform.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="js/login.js"></script>
+<style>
+	.ratingPanel {
+		border-bottom: thin solid black;
+		border-top: thin solid black;
+	}
+	.reviewTitle {
+		font-weight:bold;
+	}
+</style>
+<title>Reviews</title>
+</head>
+<body>
+	<div th:replace="Header :: Header"></div>
+	<div class="divider" style="height:100px"></div>
+	<div class="outer-page" style="padding-left:25%;padding-right:25%;">
+		<div class="page-title" style="">Product Reviews
+		</div>
+		<span style="margin-bottom:100px;" th:text="${'Showing reviews for: '+itemName+' ('+#lists.size(reviews.ratings)+' Reviews)'}"></span>
+		<div style="height:150px;"></div>
+		<div th:each="rating : ${reviews.ratings}" class="row ratingPanel">
+			<div class="col-sm-4">
+				<span th:text="${'Reviewer: '+rating.reviewer}"></span> <br/>
+				<span th:text="${'Rating: '+rating.score+'/5'}"></span> <br/>
+				<span th:text="${'Review date: '+#calendars.format(rating.time,'MMM dd, yyyy')}"></span>
+			</div>
+			<div class="col-sm-8">
+				<span class="reviewTitle" th:text="${rating.title}"></span><br/>
+				<span th:text="${rating.comment}"></span>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
