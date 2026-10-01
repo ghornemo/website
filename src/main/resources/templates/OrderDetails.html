@@ -1,103 +1,688 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8"></meta>
-<meta name="google-signin-scope" content="profile email"></meta>
-<meta name="google-signin-client_id"
-	content="852521934104-53fctdku5insugcv04iejnloqjqjtmot.apps.googleusercontent.com"></meta>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
-<link href="css/comment.css" rel="stylesheet" />
-<link href="css/main.css" rel="stylesheet" />
-<script src="https://apis.google.com/js/platform.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="js/login.js"></script>
-<script>
-	var itemName = "";
-	function setItem(name) {
-		var item = name.toString();
-		item = item.replace('/', '');
-		item = item.replace('/', '');
-		itemName = item;
-		$("#productName").text("Product: "+item);
-		$("#itemName").val(item);
-	}
-</script>
-<style>
-	.detailLabel, .historyLabel {
-		font-weight:500;
-		font-size:30px;
-		margin:auto;
-	}
-</style>
+    <meta charset="UTF-8"></meta>
 
-<title>Order Details</title>
+    <meta name="google-signin-scope" content="profile email"></meta>
+    <meta name="google-signin-client_id"
+          content="852521934104-53fctdku5insugcv04iejnloqjqjtmot.apps.googleusercontent.com"></meta>
+
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+
+    <link href="css/main.css" rel="stylesheet" />
+
+    <script src="https://apis.google.com/js/platform.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="js/login.js"></script>
+
+    <title>Order Details</title>
+
+    <script>
+        var itemName = "";
+
+        function setItem(name) {
+            var item = name.toString();
+
+            item = item.replace('/', '');
+            item = item.replace('/', '');
+
+            itemName = item;
+
+            $("#productName").text(item);
+            $("#itemName").val(item);
+        }
+    </script>
+
+    <style>
+        body {
+            background: #f3f7fb;
+        }
+
+        .order-details-page {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 95px 30px 70px;
+        }
+
+        /* --------------------------------------------------
+           PAGE HEADER
+           -------------------------------------------------- */
+
+        .order-details-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 30px;
+        }
+
+        .order-details-header h1 {
+            margin: 0;
+
+            color: #09253a;
+            font-size: 34px;
+            font-weight: 700;
+        }
+
+        .order-details-header p {
+            margin: 6px 0 0;
+
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .order-again-button {
+            padding: 11px 18px;
+
+            border: 0;
+            border-radius: 7px;
+
+            background: #168ff0;
+            color: white;
+
+            font-weight: 600;
+        }
+
+        .order-again-button:hover,
+        .order-again-button:focus {
+            background: #087ed8;
+            color: white;
+        }
+
+
+        /* --------------------------------------------------
+           SUMMARY CARDS
+           -------------------------------------------------- */
+
+        .order-summary-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 22px;
+
+            margin-bottom: 25px;
+        }
+
+        .details-card {
+            overflow: hidden;
+
+            border: 1px solid #d5e1eb;
+            border-radius: 12px;
+
+            background: white;
+
+            box-shadow: 0 5px 18px rgba(20, 45, 65, 0.06);
+        }
+
+        .details-card-header {
+            padding: 18px 22px;
+
+            border-bottom: 1px solid #e2eaf1;
+        }
+
+        .details-card-header h2 {
+            margin: 0;
+
+            color: #09253a;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .details-card-body {
+            padding: 22px;
+        }
+
+
+        /* --------------------------------------------------
+           ORDER SUMMARY
+           -------------------------------------------------- */
+
+        .summary-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 11px 0;
+
+            border-bottom: 1px solid #edf2f6;
+        }
+
+        .summary-row:last-child {
+            border-bottom: 0;
+        }
+
+        .summary-label {
+            color: #718096;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .summary-value {
+            color: #09253a;
+
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .summary-value.total {
+            color: #168ff0;
+
+            font-size: 20px;
+        }
+
+
+        /* --------------------------------------------------
+           HISTORY
+           -------------------------------------------------- */
+
+        .history-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .history-stat {
+            padding: 16px 8px;
+
+            border: 1px solid #dce7ef;
+            border-radius: 8px;
+
+            background: #f6f9fc;
+
+            text-align: center;
+        }
+
+        .history-stat strong {
+            display: block;
+
+            margin-bottom: 4px;
+
+            color: #09253a;
+
+            font-size: 20px;
+        }
+
+        .history-stat span {
+            color: #718096;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+
+        /* --------------------------------------------------
+           ORDER ITEMS
+           -------------------------------------------------- */
+
+        .items-card {
+            border: 1px solid #d5e1eb;
+            border-radius: 12px;
+
+            background: white;
+
+            box-shadow: 0 5px 18px rgba(20, 45, 65, 0.06);
+        }
+
+        .items-header {
+            padding: 18px 22px;
+
+            border-bottom: 1px solid #e2eaf1;
+        }
+
+        .items-header h2 {
+            margin: 0;
+
+            color: #09253a;
+
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .order-items-table {
+            width: 100%;
+            margin: 0;
+
+            border-collapse: collapse;
+        }
+
+        .order-items-table th {
+            padding: 13px 20px;
+
+            border-bottom: 1px solid #dce6ee;
+
+            background: #f6f9fc;
+
+            color: #718096;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .order-items-table td {
+            padding: 17px 20px;
+
+            border-bottom: 1px solid #edf2f6;
+
+            color: #243b4d;
+
+            vertical-align: middle;
+        }
+
+        .order-items-table tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .item-name {
+            color: #09253a;
+
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .rate-button {
+            padding: 8px 14px;
+
+            border: 1px solid #168ff0;
+            border-radius: 6px;
+
+            background: white;
+            color: #087ed8;
+
+            font-weight: 600;
+        }
+
+        .rate-button:hover {
+            background: #168ff0;
+            color: white;
+        }
+
+
+        /* --------------------------------------------------
+           REVIEW MODAL
+           -------------------------------------------------- */
+
+        .review-modal .modal-content {
+            overflow: hidden;
+
+            border: 0;
+            border-radius: 12px;
+
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .review-modal .modal-header {
+            padding: 20px 24px;
+
+            border-bottom: 1px solid #e1e8ee;
+
+            background: #09253a;
+            color: white;
+        }
+
+        .review-modal .modal-header h4 {
+            margin: 0 0 5px;
+
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+        .review-modal .modal-header .close {
+            color: white;
+            opacity: 0.8;
+        }
+
+        #productName {
+            color: #9ed5ff;
+
+            font-size: 13px;
+        }
+
+        .review-modal .modal-body {
+            padding: 24px;
+        }
+
+        .review-field {
+            width: 100%;
+
+            margin-bottom: 14px;
+            padding: 11px 12px;
+
+            border: 1px solid #ccd8e2;
+            border-radius: 6px;
+
+            outline: none;
+        }
+
+        .review-field:focus {
+            border-color: #168ff0;
+
+            box-shadow: 0 0 0 2px rgba(22, 143, 240, 0.1);
+        }
+
+        textarea.review-field {
+            min-height: 100px;
+
+            resize: vertical;
+        }
+
+        .review-submit {
+            width: 100%;
+
+            padding: 11px;
+
+            border: 0;
+            border-radius: 6px;
+
+            background: #168ff0;
+            color: white;
+
+            font-weight: 700;
+        }
+
+        .review-submit:hover {
+            background: #087ed8;
+        }
+
+
+        /* --------------------------------------------------
+           RESPONSIVE
+           -------------------------------------------------- */
+
+        @media (max-width: 768px) {
+            .order-details-page {
+                padding: 85px 15px 40px;
+            }
+
+            .order-details-header {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .order-summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .history-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .items-card {
+                overflow-x: auto;
+            }
+
+            .order-items-table {
+                min-width: 650px;
+            }
+        }
+    </style>
 </head>
-<body>
-	<div th:replace="Header :: Header"></div>
-	<div class="divider" style="height:100px"></div>
-	<div class="outer-page" style="padding-left:25%;padding-right:25%;">
-		<div class="page-title" style="margin-bottom:100px;">Order Details			
-			<form name="login" action="/repeatOrder" method="post" style="float:right; padding-right:40%;">
-				<input type="hidden" th:value="${order.ID}" name="orderid"></input>
-				<button type="submit" class="btn btn-primary">Order Again<span class="glyphicon glyphicon-arrow-right"></span></button>
-			</form>
-		</div>
-		<div class="container row" style="width:100%;">
-			<div class="col-sm-8">
-				<h3>Summary</h3>
-				<span class="detailLabel">Order ID: </span><span th:text="${order.ID}"></span> <br/>
-				<span class="detailLabel">Total cost: </span><span th:text="${order.total()}"></span> <br/>
-				<span class="detailLabel">Time: </span><span th:text="${'Order time: '}"></span> <br/>
-				<span class="detailLabel">Cart size: </span><span th:text="${#lists.size(order.items)} "></span>
-			</div>
-			<div class="col-sm-4">
-				<h3>History</h3>
-				<span class="historyLabel">Total orders: </span><span th:text="${#lists.size(previousOrders)}"></span> <br/>
-				<span class="historyLabel">Average Cost: </span><span th:text="${#numbers.formatDecimal(averageCost, 0, 'COMMA', 2, 'POINT')}"></span> <br/>
-				<span class="historyLabel">Total cost: </span><span th:text="${#numbers.formatDecimal(totalCost, 0, 'COMMA', 2, 'POINT')}"></span>
-			</div>
-			<div class="row col-sm-12">
-				<table style="padding:100px; margin:50px; width: 100%; border-top: thin solid black;">
-					<tr>
-						<td>Name</td>   <td>Unit Price</td>    <td>Quantity</td>     <td>Total Cost</td>
-					</tr>
-					<tr th:each="item : ${order.items}">
-						<td th:text="${item.name}"></td>
-						<td th:text="${item.price}"></td>
-						<td th:text="${item.quantity}"></td>
-						<td th:text="${item.price * item.quantity}"></td>
-						<td>
-							<button type="button" th:onclick="'javascript:setItem(/' + ${item.name} + '/)'" class="btn-info btn-lg" data-toggle="modal" data-target="#reviewModal">Rate Item</button>
-						</td>
-					</tr>
-				</table>
-			</div>
-		</div>
-	</div>
-			<div class="modal fade" id="reviewModal" role="dialog">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-header">Leave Review</h4>
-						<span id="productName">item: </span>
-					</div>
 
-					<div class="modal-body" style="height: 80%; overflow: auto">
-						<form name="reviewModal" action="/submitRating" method="post">
-						<input style="width: 80%;" type="number" name="score" placeholder="Rating*" min="0" max="5" required="true"></input> <br/>
-						<input type="text" name="title" placeholder="Title"></input><br/>
-						<input type="text" name="comment" placeholder="Comment"></input><br/>
-						<input type="hidden" name="itemName" id="itemName"></input><br/>
-						<input type="submit"></input>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
+<body>
+
+    <div th:replace="Header :: Header"></div>
+
+    <main class="order-details-page">
+
+        <!-- PAGE HEADER -->
+        <div class="order-details-header">
+
+            <div>
+                <h1>Order Details</h1>
+                <p>
+                    Review this order, rate your items, or add everything
+                    back to your cart.
+                </p>
+            </div>
+
+            <form name="login"
+                  action="/repeatOrder"
+                  method="post">
+
+                <input type="hidden"
+                       th:value="${order.ID}"
+                       name="orderid"></input>
+
+                <button type="submit"
+                        class="order-again-button">
+                    Order Again
+                    <span class="glyphicon glyphicon-arrow-right"></span>
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- SUMMARY + HISTORY -->
+        <div class="order-summary-grid">
+
+            <!-- ORDER SUMMARY -->
+            <section class="details-card">
+
+                <div class="details-card-header">
+                    <h2>Order Summary</h2>
+                </div>
+
+                <div class="details-card-body">
+
+                    <div class="summary-row">
+                        <span class="summary-label">Order ID</span>
+
+                        <span class="summary-value"
+                              th:text="${'#' + order.ID}">
+                        </span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span class="summary-label">Total Cost</span>
+
+                        <span class="summary-value total"
+                              th:text="${'$' + #numbers.formatDecimal(order.total(), 0, 'COMMA', 2, 'POINT')}">
+                        </span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span class="summary-label">Order Time</span>
+
+                        <span class="summary-value">
+                            Not recorded
+                        </span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span class="summary-label">Items</span>
+
+                        <span class="summary-value"
+                              th:text="${#lists.size(order.items)}">
+                        </span>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ORDER HISTORY -->
+            <section class="details-card">
+
+                <div class="details-card-header">
+                    <h2>Your History</h2>
+                </div>
+
+                <div class="details-card-body">
+
+                    <div class="history-stats">
+
+                        <div class="history-stat">
+                            <strong th:text="${#lists.size(previousOrders)}">
+                                0
+                            </strong>
+                            <span>Orders</span>
+                        </div>
+
+                        <div class="history-stat">
+                            <strong th:text="${'$' + #numbers.formatDecimal(averageCost, 0, 'COMMA', 2, 'POINT')}">
+                                $0.00
+                            </strong>
+                            <span>Average</span>
+                        </div>
+
+                        <div class="history-stat">
+                            <strong th:text="${'$' + #numbers.formatDecimal(totalCost, 0, 'COMMA', 2, 'POINT')}">
+                                $0.00
+                            </strong>
+                            <span>Total</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <!-- ORDER ITEMS -->
+        <section class="items-card">
+
+            <div class="items-header">
+                <h2>Items in this Order</h2>
+            </div>
+
+            <table class="order-items-table">
+
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Unit Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr th:each="item : ${order.items}">
+
+                        <td>
+                            <span class="item-name"
+                                  th:text="${item.name}">
+                            </span>
+                        </td>
+
+                        <td th:text="${'$' + #numbers.formatDecimal(item.price, 0, 'COMMA', 2, 'POINT')}">
+                        </td>
+
+                        <td th:text="${item.quantity}">
+                        </td>
+
+                        <td th:text="${'$' + #numbers.formatDecimal(item.price * item.quantity, 0, 'COMMA', 2, 'POINT')}">
+                        </td>
+
+                        <td>
+
+                            <button type="button"
+                                    class="rate-button"
+                                    th:onclick="'javascript:setItem(/' + ${item.name} + '/)'"
+                                    data-toggle="modal"
+                                    data-target="#reviewModal">
+                                ★ Rate Item
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </main>
+
+
+    <!-- REVIEW MODAL -->
+    <div class="modal fade review-modal"
+         id="reviewModal"
+         role="dialog">
+
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <button type="button"
+                            class="close"
+                            data-dismiss="modal">
+                        &times;
+                    </button>
+
+                    <h4>Leave a Review</h4>
+
+                    <span id="productName">
+                        Item
+                    </span>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <form name="reviewModal"
+                          action="/submitRating"
+                          method="post">
+
+                        <input class="review-field"
+                               type="number"
+                               name="score"
+                               placeholder="Rating from 0–5"
+                               min="0"
+                               max="5"
+                               required="true"></input>
+
+                        <input class="review-field"
+                               type="text"
+                               name="title"
+                               placeholder="Review title"></input>
+
+                        <textarea class="review-field"
+                                  name="comment"
+                                  placeholder="Tell us what you thought..."></textarea>
+
+                        <input type="hidden"
+                               name="itemName"
+                               id="itemName"></input>
+
+                        <button type="submit"
+                                class="review-submit">
+                            Submit Review
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </body>
 </html>

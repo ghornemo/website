@@ -1,5 +1,9 @@
 package com.example.controller;
-
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.social.*;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionRepository;
@@ -20,6 +24,7 @@ import com.example.model.Item;
 import com.example.model.Post;
 import com.example.model.Profile;
 import com.example.model.Rating;
+import com.example.model.XPost;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
@@ -29,6 +34,10 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -244,12 +253,19 @@ public class SampleController {
         this.connectionRepository = connectionRepository;
     }*/
     
-    @RequestMapping("Ratings") 
-    String input(Model model, @RequestParam("itemName") String itemName) {
-    		model.addAttribute("itemName", itemName);
-    		model.addAttribute("reviews", new FoodRatings(getRatings(itemName)));
-    		return "Ratings";
-    }
+	@RequestMapping("/Ratings")
+	String input(Model model, @RequestParam("itemName") String itemName) {
+
+		List<Rating> ratings = getRatings(itemName);
+
+		System.out.println("ITEM NAME: [" + itemName + "]");
+		System.out.println("REVIEWS FOUND: " + ratings.size());
+
+		model.addAttribute("itemName", itemName);
+		model.addAttribute("reviews", new FoodRatings(ratings));
+
+		return "Ratings";
+	}
     
     @PostMapping("submitRating")
     String rating(Model model, HttpServletRequest request, @RequestParam("itemName") String itemName , @RequestParam("title") String title, @RequestParam("score") short score, @RequestParam("comment") String comment) {
@@ -487,25 +503,132 @@ public class SampleController {
         
     	return "redirect:";
         }
+
+
+		//NEW FUNCTION TO RETRIEVE TWITTER TWEETS
+
+
+
+	private List<XPost> getXPosts(
+        String userId,
+        String username,
+        String bearerToken) {
+
+    List<XPost> posts = new ArrayList<>();
+
+    RestTemplate restTemplate = new RestTemplate();
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.set("Authorization", "Bearer " + bearerToken);
+
+    HttpEntity<String> entity = new HttpEntity<>(headers);
+
+    ResponseEntity<String> response = restTemplate.exchange(
+            "https://api.x.com/2/users/" + userId
+                    + "/tweets?max_results=5&tweet.fields=created_at",
+            HttpMethod.GET,
+            entity,
+            String.class
+    );
+
+    JsonObject json =
+            new JsonParser().parse(response.getBody()).getAsJsonObject();
+
+    JsonArray data = json.getAsJsonArray("data");
+
+    if (data != null) {
+        for (JsonElement element : data) {
+
+            JsonObject tweet = element.getAsJsonObject();
+
+            String id = tweet.get("id").getAsString();
+            String text = tweet.get("text").getAsString();
+            String createdAt = tweet.get("created_at").getAsString();
+
+            XPost post = new XPost(
+                    id,
+                    text,
+                    username,
+                    createdAt
+            );
+
+            posts.add(post);
+        }
+    }
+
+    return posts;
+}
+
+private synchronized void refreshXPostsIfNeeded(String bearerToken) {
+
+    long now = System.currentTimeMillis();
+
+    boolean cacheExpired =
+            now - lastXRefresh > X_CACHE_DURATION;
+
+    boolean cacheEmpty =
+            cachedTrumpPosts.isEmpty()
+            || cachedCarneyPosts.isEmpty();
+
+    if (cacheEmpty || cacheExpired) {
+
+        try {
+
+            List<XPost> newTrumpPosts = getXPosts(
+                    "25073877",
+                    "realDonaldTrump",
+                    bearerToken
+            );
+
+            List<XPost> newCarneyPosts = getXPosts(
+                    "192272849",
+                    "MarkJCarney",
+                    bearerToken
+            );
+
+            cachedTrumpPosts = newTrumpPosts;
+            cachedCarneyPosts = newCarneyPosts;
+
+            lastXRefresh = now;
+
+        } catch (Exception e) {
+
+            System.out.println(
+                    "Failed to refresh X posts. Using cached posts."
+            );
+
+            e.printStackTrace();
+        }
+    }
+}
+
+	private List<XPost> cachedTrumpPosts = new ArrayList<>();
+	private List<XPost> cachedCarneyPosts = new ArrayList<>();
+
+	private long lastXRefresh = 0;
+
+	private static final long X_CACHE_DURATION =
+			6 * 60 * 60 * 4000; // 24 hours
     
     @RequestMapping("/")
     String readTweets(Model model, HttpServletRequest request) {
 
-    	//Add trump tweets to the view
-    	String consumerKey = "Iub87O9Z8J8MAVoLKqH01GCNZ"; // The application's consumer key
-    	String consumerSecret = "XpeyafpCowjQ2CUhl1t84G73li1VECMcdJYV0kLzc0cznsMhcz"; // The application's consumer secret
-    	//Twitter twitter = new TwitterTemplate(consumerKey, consumerSecret);
-    	//List<Tweet> tweets = twitter.timelineOperations().getUserTimeline("realDonaldTrump");
-    	//List<Tweet> TrudeauTweets = twitter.timelineOperations().getUserTimeline("JustinTrudeau");
-		List<Tweet> tweets = new ArrayList<>();
-	    List<Tweet> TrudeauTweets = new ArrayList<>();
+
+		String bearerToken = "AAAAAAAAAAAAAAAAAAAAANgB%2FwEAAAAA7OzapnO7axDgkjFzNSeL8A%2B9Ri0%3Dakx047JRjnHtoRodFqnSQMOGEm3uLkqLzdQOuEPnkBSWjaXjWO";
+
+		refreshXPostsIfNeeded(bearerToken);
+
+		List<XPost> tweets = cachedTrumpPosts;
+		List<XPost> TrudeauTweets = cachedCarneyPosts;
+
+		//List<Tweet> tweets = new ArrayList<>();
         model.addAttribute("tweets", tweets);
         model.addAttribute("trudeauTweets", TrudeauTweets);
         
         List<String> pictureURLs = new ArrayList<>();
-        for(Tweet t : tweets) {
-        	pictureURLs.add(t.getProfileImageUrl());
-        }
+        //for(Tweet t : tweets) {
+        //	pictureURLs.add(t.getProfileImageUrl());
+        //}
         model.addAttribute("pictures", pictureURLs);
         //Add all posts to the view
         List<Post> posts = findAllPosts();
@@ -522,6 +645,18 @@ public class SampleController {
         model.addAttribute("tweetsize", tweets.size()+TrudeauTweets.size());
     	return "index";
     }
+
+	@GetMapping("/register")
+	public String register(Model model, HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+        if(session != null) {
+        	Profile profile = (Profile) session.getAttribute("profile");
+        	if(profile != null)
+        		model.addAttribute("name", profile.getName());
+       		}else
+        		model.addAttribute("name", "Not signed in");
+    	return "register";
+	}
     
     public void addDetails(HttpSession session) {
     	String token = (String)session.getAttribute("idToken");
@@ -728,15 +863,26 @@ final class ItemMapper implements RowMapper<Item> {
 			rating = rating.substring(0, 3);
 			return rating+" stars";
 		}
+		public int count(String itemName) {
+			int count = 0;
+
+			for (Rating rating : ratings) {
+				if (rating.getItemName().equalsIgnoreCase(itemName)) {
+					count++;
+				}
+			}
+
+			return count;
+		}
 }
     
     public List<Rating> getRatings() {
     		String sql = "select * from rating";
     		 return this.jdbcTemplate.query(sql, new RatingMapper());
     }
-    public List<Rating> getRatings(String name) {
-		String sql = "select * from rating where itemName = '"+name+"'";
-		 return this.jdbcTemplate.query(sql, new RatingMapper());
+public List<Rating> getRatings(String name) {
+    String sql = "select * from rating where LOWER(itemName) = LOWER(?)";
+    return this.jdbcTemplate.query(sql, new Object[]{name}, new RatingMapper());
 }
 
     public static void main(String[] args) throws Exception {

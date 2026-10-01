@@ -1,49 +1,359 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8"></meta>
-<meta name="google-signin-scope" content="profile email"></meta>
-<meta name="google-signin-client_id"
-	content="852521934104-53fctdku5insugcv04iejnloqjqjtmot.apps.googleusercontent.com"></meta>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
-<link href="css/main.css" rel="stylesheet" />
-<script src="https://apis.google.com/js/platform.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="js/login.js"></script>
-<style>
-	.ratingPanel {
-		border-bottom: thin solid black;
-		border-top: thin solid black;
-	}
-	.reviewTitle {
-		font-weight:bold;
-	}
-</style>
-<title>Reviews</title>
+    <meta charset="UTF-8"></meta>
+
+    <meta name="google-signin-scope"
+          content="profile email"></meta>
+
+    <meta name="google-signin-client_id"
+          content="852521934104-53fctdku5insugcv04iejnloqjqjtmot.apps.googleusercontent.com"></meta>
+
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+
+    <link href="css/main.css"
+          rel="stylesheet" />
+
+    <script src="https://apis.google.com/js/platform.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script src="js/login.js"></script>
+
+    <title>Product Reviews</title>
+
+    <style>
+        body {
+            background-color: #f3f7fb;
+        }
+
+        .reviews-page {
+            width: 900px;
+            max-width: calc(100% - 40px);
+
+            margin: 0 auto;
+            padding-top: 95px;
+            padding-bottom: 60px;
+        }
+
+
+        /* ========================================
+           PAGE HEADER
+           ======================================== */
+
+        .reviews-header {
+            margin-bottom: 30px;
+        }
+
+        .reviews-label {
+            margin-bottom: 5px;
+
+            color: #168ff0;
+
+            font-size: 12px;
+            font-weight: bold;
+
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .reviews-title {
+            margin: 0 0 8px 0;
+
+            color: #09253a;
+
+            font-size: 34px;
+            font-weight: bold;
+        }
+
+        .reviews-description {
+            margin: 0;
+
+            color: #6b7c8f;
+
+            font-size: 15px;
+        }
+
+        .reviews-product {
+            color: #09253a;
+            font-weight: bold;
+        }
+
+        .reviews-count {
+            display: inline-block;
+
+            margin-left: 5px;
+            padding: 4px 10px;
+
+            border-radius: 20px;
+
+            background-color: #e5f3ff;
+            color: #168ff0;
+
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+
+        /* ========================================
+           REVIEW CARD
+           ======================================== */
+
+        .review-card {
+            display: table;
+
+            width: 100%;
+            margin-bottom: 16px;
+
+            overflow: hidden;
+
+            border: 1px solid #d7e2eb;
+            border-radius: 10px;
+
+            background-color: #ffffff;
+
+            box-shadow: 0 5px 18px rgba(20, 45, 65, 0.06);
+        }
+
+
+        /* ========================================
+           REVIEWER INFORMATION
+           ======================================== */
+
+        .review-meta {
+            display: table-cell;
+
+            width: 210px;
+            padding: 22px;
+
+            vertical-align: top;
+
+            border-right: 1px solid #e2eaf1;
+
+            background-color: #f8fbfd;
+        }
+
+        .review-avatar {
+            display: block;
+
+            width: 42px;
+            height: 42px;
+
+            margin-bottom: 12px;
+
+            border-radius: 50%;
+
+            background-color: #168ff0;
+            color: #ffffff;
+
+            font-size: 18px;
+            font-weight: bold;
+            line-height: 42px;
+            text-align: center;
+        }
+
+        .reviewer-name {
+            display: block;
+
+            margin-bottom: 10px;
+
+            color: #09253a;
+
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .review-stars {
+            margin-bottom: 5px;
+
+            color: #f4b400;
+
+            font-size: 17px;
+            letter-spacing: 1px;
+        }
+
+        .review-score {
+            display: block;
+
+            color: #657789;
+
+            font-size: 12px;
+        }
+
+        .review-date {
+            display: block;
+
+            margin-top: 10px;
+
+            color: #8a9bab;
+
+            font-size: 11px;
+        }
+
+
+        /* ========================================
+           REVIEW CONTENT
+           ======================================== */
+
+        .review-content {
+            display: table-cell;
+
+            padding: 24px 28px;
+
+            vertical-align: top;
+        }
+
+        .review-title {
+            display: block;
+
+            margin-bottom: 10px;
+
+            color: #09253a;
+
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .review-comment {
+            margin: 0;
+
+            color: #405366;
+
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+
+        /* ========================================
+           RESPONSIVE
+           ======================================== */
+
+        @media screen and (max-width: 650px) {
+
+            .reviews-page {
+                max-width: calc(100% - 30px);
+                padding-top: 80px;
+            }
+
+            .review-card {
+                display: block;
+            }
+
+            .review-meta {
+                display: block;
+
+                width: 100%;
+
+                border-right: none;
+                border-bottom: 1px solid #e2eaf1;
+            }
+
+            .review-content {
+                display: block;
+            }
+        }
+    </style>
 </head>
+
 <body>
-	<div th:replace="Header :: Header"></div>
-	<div class="divider" style="height:100px"></div>
-	<div class="outer-page" style="padding-left:25%;padding-right:25%;">
-		<div class="page-title" style="">Product Reviews
-		</div>
-		<span style="margin-bottom:100px;" th:text="${'Showing reviews for: '+itemName+' ('+#lists.size(reviews.ratings)+' Reviews)'}"></span>
-		<div style="height:150px;"></div>
-		<div th:each="rating : ${reviews.ratings}" class="row ratingPanel">
-			<div class="col-sm-4">
-				<span th:text="${'Reviewer: '+rating.reviewer}"></span> <br/>
-				<span th:text="${'Rating: '+rating.score+'/5'}"></span> <br/>
-				<span th:text="${'Review date: '+#calendars.format(rating.time,'MMM dd, yyyy')}"></span>
-			</div>
-			<div class="col-sm-8">
-				<span class="reviewTitle" th:text="${rating.title}"></span><br/>
-				<span th:text="${rating.comment}"></span>
-			</div>
-		</div>
-	</div>
+
+    <!-- MAIN NAVIGATION -->
+    <div th:replace="Header :: Header"></div>
+
+
+    <!-- REVIEWS PAGE -->
+    <div class="reviews-page">
+
+        <!-- PAGE HEADER -->
+        <div class="reviews-header">
+
+            <div class="reviews-label">
+                The Kitchen
+            </div>
+
+            <h1 class="reviews-title">
+                Product Reviews
+            </h1>
+
+            <p class="reviews-description">
+                Showing reviews for:
+
+                <span class="reviews-product"
+                      th:text="${itemName}">
+                    Product
+                </span>
+
+                <span class="reviews-count"
+                      th:text="${#lists.size(reviews.ratings) + ' Reviews'}">
+                    0 Reviews
+                </span>
+            </p>
+
+        </div>
+
+
+        <!--
+            REVIEWS
+
+            IMPORTANT:
+            This is intentionally the exact same loop structure
+            used by the original 2017 page.
+        -->
+        <div th:each="rating : ${reviews.ratings}"
+             class="review-card">
+
+            <!-- REVIEWER DETAILS -->
+            <div class="review-meta">
+
+                <span class="review-avatar">
+                    ★
+                </span>
+
+                <span class="reviewer-name"
+                      th:text="${rating.reviewer}">
+                    Reviewer
+                </span>
+
+                <div class="review-stars">
+                    ★★★★★
+                </div>
+
+                <span class="review-score"
+                      th:text="${'Rating: ' + rating.score + '/5'}">
+                    Rating: 5/5
+                </span>
+
+                <span class="review-date"
+                      th:text="${'Reviewed ' + #calendars.format(rating.time, 'MMM dd, yyyy')}">
+                    Reviewed Oct 01, 2026
+                </span>
+
+            </div>
+
+
+            <!-- REVIEW TEXT -->
+            <div class="review-content">
+
+                <span class="review-title"
+                      th:text="${rating.title}">
+                    Review Title
+                </span>
+
+                <p class="review-comment"
+                   th:text="${rating.comment}">
+                    Review comment goes here.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </body>
+
 </html>

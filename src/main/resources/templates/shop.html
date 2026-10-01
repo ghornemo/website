@@ -1,179 +1,568 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Order Menu</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="google-signin-scope" content="profile email"></meta>
-    <meta name="google-signin-client_id" content="852521934104-53fctdku5insugcv04iejnloqjqjtmot.apps.googleusercontent.com"></meta>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
-    <link href="css/shop.css" rel="stylesheet"/>
-    <link href="css/main.css" rel="stylesheet"/>
+<head>
+    <title>The Kitchen</title>
+
+    <meta charset="UTF-8" />
+    <meta name="google-signin-scope" content="profile email" />
+    <meta
+        name="google-signin-client_id"
+        content="852521934104-53fctdku5insugcv04iejnloqjqjtmot.apps.googleusercontent.com"
+    />
+
+    <link
+        rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    />
+    <link href="css/main.css" rel="stylesheet" />
+    <link href="css/shop.css" rel="stylesheet" />
+
     <script src="https://apis.google.com/js/platform.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYyBk1Gmex9qo6Qvv8aYVqsPH1OQJaEaM"></script>
 
-	<script src="js/login.js"></script>
+    <script src="js/login.js"></script>
     <script src="js/shop.js"></script>
     <script src="js/main.js"></script>
 </head>
-<body>
-<div th:replace="Header :: Header"></div>
-<div class="container-fluid" style="margin-top:50px">
-<div class="row">
-    <div class="col-md-4"></div>
-    <div class="col-md-3">
-	<h1>The Kitchen</h1>
-    <p>"Fresh food prepared every day"</p>
-    </div>
-	</div>
-	
-	<div id="menuWrapper" class="container col-md-9">
-	
-	<div align="center" class="container col-md-4" id="productPanel" style="height:300px; width:250px; margin:10px">
-			<div class="row"><h3 id="productTitle">12" Pepperoni Pizza</h3></div>
-			<a href="/Ratings?itemName=pepperoni%20pizza" th:text="${FoodRatings.average('pepperoni pizza')}"></a>
-			<div class="row">
-			<img src="images/pizza.png"/>
-			<p id="description">A delicious pepperoni made using delicious store made dough, covered in tons of mozzarella cheese</p>
-			</div>
-			<p class="row" id="price">$12.99</p>
-			<form class="row" name="login" action="/additem" method="post">
-				<input type="submit" id="orderButton" value="Order"></input>
-				<input type="hidden" name="name" value="Pepperoni PIzza"></input>
-				<input type="hidden" name="price" value="12.99"></input>
-			</form>
-	</div>	
-			<div align="center" class="container col-md-4" id="productPanel" style="height:300px; width:250px; margin:10px">
-			<div class="row"><h3 id="productTitle">Bread Sticks</h3></div>
-			<a href="/Ratings?itemName=bread%20sticks" th:text="${FoodRatings.average('bread sticks')}"></a>
-			<div class="row">
-			<img src="images/breadsticks.jpeg"/>
-			<p id="description">A generous portion of bread sticks made from house made dough, served with marinara sauce.</p>
-			</div>
-			<p class="row" id="price">$7.99</p>
-			<form class="row" name="login" action="/additem" method="post">
-				<input type="submit" id="orderButton" value="Order"></input>
-				<input type="hidden" name="name" value="Bread Sticks"></input>
-				<input type="hidden" name="price" value="7.99"></input>
-			</form>
-	</div>	
-			<div align="center" class="container col-md-4" id="productPanel" style="height:300px; width:250px; margin:10px">
-			<div class="row"><h3 id="productTitle">Donair</h3></div>
-			<a href="/Ratings?itemName=Donair" th:text="${FoodRatings.average('Donair')}"></a>
-			<div class="row">
-			<img src="images/donair.jpg"/>
-			<p id="description">A donair made with spicy donair meat, donair sauce, tomatoes, and onions.</p>
-			</div>
-			<p class="row" id="price">$9.99</p>
-			<form class="row" name="login" action="/additem" method="post">
-				<input type="submit" id="orderButton" value="Order"></input>
-				<input type="hidden" name="name" value="Donair"></input>
-				<input type="hidden" name="price" value="9.99"></input>
-			</form>
-	</div>	
-	
-			<div align="center" class="container col-md-4" id="productPanel" style="height:300px; width:250px; margin:10px">
-			<div class="row"><h3 id="productTitle">12" Garlic Finger</h3></div>
-			<a href="/Ratings?itemName=Garlic%20Fingers" th:text="${FoodRatings.average('Garlic Fingers')}"></a>
-			<div class="row">
-			<img src="images/garlicfingers.jpeg"/>
-			<p id="description">Fresh garlic fingers made with mozzeralla cheese, served with donair sauce.</p>
-			</div>
-			<p class="row" id="price">$9.99</p>
-			<form class="row" name="login" action="/additem" method="post">
-				<input type="submit" id="orderButton" value="Order"></input>
-				<input type="hidden" name="name" value="Garlic Fingers"></input>
-				<input type="hidden" name="price" value="9.99"></input>
-			</form>
-	</div>	
-	
-				<div align="center" class="container col-md-4" id="productPanel" style="height:300px; width:250px; margin:10px">
-			<div class="row"><h3 id="productTitle">Mozzeralla Cheese Sticks</h3></div>
-			<a href="/Ratings?itemName=mozza%20sticks" th:text="${FoodRatings.average('mozza sticks')}"></a>
-			<div class="row">
-			<img src="images/mozzasticks.jpg"/>
-			<p id="description">8 cheese filled mozzeralla cheese served with marinara sauce or ranch.</p>
-			</div>
-			<p class="row" id="price">$9.99</p>
-			<form class="row" name="login" action="/additem" method="post">
-				<input type="submit" id="orderButton" value="Order"></input>
-				<input type="hidden" name="name" value="Mozza Sticks"></input>
-				<input type="hidden" name="price" value="9.99"></input>
-			</form>
-	</div>
-	
-					<div align="center" class="container col-md-4" id="productPanel" style="height:300px; width:250px; margin:10px">
-			<div class="row"><h3 id="productTitle">Oven Baked Spaghetti</h3></div>
-			<a href="/Ratings?itemName=Spaghetti" th:text="${FoodRatings.average('spaghetti')}"></a>
-			<div class="row">
-			<img src="images/spaghetti.jpg"/>
-			<p id="description">Oven baked spaghetti served with a layer of cheese and meatballs.</p>
-			<p class="row" id="price">$10.99</p>
-			</div>
-			<form class="row" name="login" action="/additem" method="post">
-				<input type="submit" id="orderButton" value="Order"></input>
-				<input type="hidden" name="name" value="Spaghetti"></input>
-				<input type="hidden" name="price" value="10.99"></input>
-			</form>
-	</div>
-	
-					<div align="center" class="container col-md-4" id="productPanel" style="height:300px; width:250px; margin:10px">
-			<div class="row"><h3 id="productTitle">Chicken Wings</h3></div>
-			<a href="/Ratings?itemName=chicken%20wings" th:text="${FoodRatings.average('chicken wings')}"></a>
-			<div class="row">
-			<img src="images/Wings.jpg"/>
-			<p id="description">Crispy baked chicken wings served with hot or ranch dip.</p>
-			</div>
-			<p class="row" id="price">$9.99</p>
-			<form class="row" name="login" action="/additem" method="post">
-				<input type="submit" id="orderButton" value="Order"></input>
-				<input type="hidden" name="name" value="Chicken Wings"></input>
-				<input type="hidden" name="price" value="9.99"></input>
-			</form>
-	</div>
-	</div>
-	
-	
-	<div align="center" class="container col-md-3">
-	    <div id="cart" class="row container">
-	    <div class="row">Current Order</div>
-	    <table class="table">
-					<tr>
-						<td>Item</td>
-						<td>Qty</td>
-						<td>Price</td>
-					</tr>
-					<tr th:each="item : ${items}">
-						<td><span th:text="${item.name}"></span></td>
-						<td><span th:text="${item.quantity}"></span></td>
-						<td><span th:text="${item.quantity*item.price}"></span></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td>Total:</td>
-						<td th:text="${total}"></td>
-					</tr>
-					</table>
-	     <div>
-  			<form action="/clearCart">
-				<input class="btn" style="" type="submit" value="Clear"></input>
-			</form>
-  			<form action="/confirmOrder" style="height:10%;">
-				<input type="submit" style="width:100%; height:100%; background:red; color:white; font-weight:bold;" value="Submit Order"></input>
-			</form>
-		</div>
-    </div>
-	<div id="details" class="row">
-<div id="map"></div>
-<label for="map"><span class="glyphicon glyphicon-map-marker"></span>39 example street,</label>
-<label for="map"><span class="glyphicon glyphicon-earphone"></span>(123)456-7890</label>
-<label for="map"><span class="glyphicon glyphicon-time"></span>Mon-Sat, 11am - 1am</label>
-<label for="map"><span class="glyphicon glyphicon-envelope"></span>Admin@example.com</label>
 
-</div>
-    </div>
-</div>
+<body class="kitchen-page">
+
+    <div th:replace="Header :: Header"></div>
+
+    <section class="kitchen-hero">
+
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+
+            <div class="chef-icon">♨</div>
+
+            <div class="hero-title-row">
+                <span class="hero-line"></span>
+                <h1>THE KITCHEN</h1>
+                <span class="hero-line"></span>
+            </div>
+
+            <div class="hero-subtitle">
+                <span></span>
+                FRESH FOOD PREPARED EVERY DAY
+                <span></span>
+            </div>
+
+            <div class="hero-features">
+
+                <div class="hero-feature">
+                    <div class="feature-icon">△</div>
+                    <strong>PIZZA</strong>
+                </div>
+
+                <div class="hero-feature">
+                    <div class="feature-icon">♨</div>
+                    <strong>APPETIZERS</strong>
+                </div>
+
+                <div class="hero-feature">
+                    <div class="feature-icon">⌒</div>
+                    <strong>ENTRÉES</strong>
+                </div>
+
+                <div class="hero-feature">
+                    <div class="feature-icon">◷</div>
+                    <strong>MADE DAILY</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <main class="kitchen-main">
+
+        <section class="menu-area">
+
+            <header class="menu-heading">
+                <h2>Our Menu</h2>
+                <div class="menu-flourish">
+                    <span></span>
+                    <b>◆</b>
+                    <span></span>
+                </div>
+            </header>
+
+            <div class="menu-grid">
+
+                <article class="menu-card">
+
+                    <img
+                        src="assets/kitchen/pepperoni.jpg"
+                        alt="Pepperoni pizza"
+                    />
+
+                    <div class="menu-card-content">
+
+                        <h3>12&quot; Pepperoni Pizza</h3>
+
+                        <a
+                            class="rating-link"
+                            href="/Ratings?itemName=pepperoni%20pizza"
+                        >
+                            <span class="stars">★★★★★</span>
+                            <span th:text="${FoodRatings.average('pepperoni pizza')}">
+                                5.0 stars
+                            </span>
+
+                            <span th:if="${FoodRatings.count('pepperoni pizza') > 0}"
+                                th:text="${'(' + FoodRatings.count('pepperoni pizza') +
+                                    (FoodRatings.count('pepperoni pizza') == 1 ? ' Review)' : ' Reviews)')}">
+                            </span>
+                        </a>
+
+                        <p>
+                            A delicious pepperoni made using delicious store
+                            made dough, covered in tons of mozzarella cheese.
+                        </p>
+
+                        <strong class="price">$12.99</strong>
+
+                        <form action="/additem" method="post">
+                            <input type="hidden" name="name" value="Pepperoni PIzza" />
+                            <input type="hidden" name="price" value="12.99" />
+
+                            <button class="add-button" type="submit">
+                                <span class="glyphicon glyphicon-shopping-cart"></span>
+                                Add to Order
+                            </button>
+                        </form>
+
+                    </div>
+
+                </article>
+
+                <article class="menu-card">
+
+                    <img
+                        src="assets/kitchen/breadsticks.jpg"
+                        alt="Bread sticks"
+                    />
+
+                    <div class="menu-card-content">
+
+                        <h3>Bread Sticks</h3>
+
+                        <a
+                            class="rating-link"
+                            href="/Ratings?itemName=bread%20sticks"
+                        >
+                            <span class="stars">★★★★★</span>
+                            <span th:text="${FoodRatings.average('bread sticks')}">
+                                5.0 stars
+                            </span>
+
+                            <span th:if="${FoodRatings.count('bread sticks') > 0}"
+                                th:text="${'(' + FoodRatings.count('bread sticks') +
+                                    (FoodRatings.count('bread sticks') == 1 ? ' Review)' : ' Reviews)')}">
+                            </span>
+                        </a>
+
+                        <p>
+                            A generous portion of bread sticks made from
+                            house made dough, served with marinara sauce.
+                        </p>
+
+                        <strong class="price">$7.99</strong>
+
+                        <form action="/additem" method="post">
+                            <input type="hidden" name="name" value="Bread Sticks" />
+                            <input type="hidden" name="price" value="7.99" />
+
+                            <button class="add-button" type="submit">
+                                <span class="glyphicon glyphicon-shopping-cart"></span>
+                                Add to Order
+                            </button>
+                        </form>
+
+                    </div>
+
+                </article>
+
+                <article class="menu-card">
+
+                    <img
+                        src="assets/kitchen/donair.jpg"
+                        alt="Donair"
+                    />
+
+                    <div class="menu-card-content">
+
+                        <h3>Donair</h3>
+
+                        <a
+                            class="rating-link empty-rating"
+                            href="/Ratings?itemName=Donair"
+                        >
+                            <span class="stars">★★★★★</span>
+                            <span th:text="${FoodRatings.average('Donair')}">
+                                5.0 stars
+                            </span>
+
+                            <span th:if="${FoodRatings.count('Donair') > 0}"
+                                th:text="${'(' + FoodRatings.count('Donair') +
+                                    (FoodRatings.count('Donair') == 1 ? ' Review)' : ' Reviews)')}">
+                            </span>
+                        </a>
+
+                        <p>
+                            A donair made with spicy donair meat, donair
+                            sauce, tomatoes, and onions.
+                        </p>
+
+                        <strong class="price">$9.99</strong>
+
+                        <form action="/additem" method="post">
+                            <input type="hidden" name="name" value="Donair" />
+                            <input type="hidden" name="price" value="9.99" />
+
+                            <button class="add-button" type="submit">
+                                <span class="glyphicon glyphicon-shopping-cart"></span>
+                                Add to Order
+                            </button>
+                        </form>
+
+                    </div>
+
+                </article>
+
+                <article class="menu-card">
+
+                    <img
+                        src="assets/kitchen/garlic-fingers.jpg"
+                        alt="Garlic fingers"
+                    />
+
+                    <div class="menu-card-content">
+
+                        <h3>12&quot; Garlic Finger</h3>
+
+                        <a
+                            class="rating-link empty-rating"
+                            href="/Ratings?itemName=Garlic%20Fingers"
+                        >
+                            <span class="stars">★★★★★</span>
+                            <span th:text="${FoodRatings.average('Garlic Fingers')}">
+                                5.0 stars
+                            </span>
+
+                            <span th:if="${FoodRatings.count('Garlic Fingers') > 0}"
+                                th:text="${'(' + FoodRatings.count('Garlic Fingers') +
+                                    (FoodRatings.count('Garlic Fingers') == 1 ? ' Review)' : ' Reviews)')}">
+                            </span>
+                        </a>
+
+                        <p>
+                            Fresh garlic fingers made with mozzarella cheese,
+                            served with donair sauce.
+                        </p>
+
+                        <strong class="price">$9.99</strong>
+
+                        <form action="/additem" method="post">
+                            <input type="hidden" name="name" value="Garlic Fingers" />
+                            <input type="hidden" name="price" value="9.99" />
+
+                            <button class="add-button" type="submit">
+                                <span class="glyphicon glyphicon-shopping-cart"></span>
+                                Add to Order
+                            </button>
+                        </form>
+
+                    </div>
+
+                </article>
+
+                <article class="menu-card">
+
+                    <img
+                        src="assets/kitchen/mozza-sticks.jpg"
+                        alt="Mozzarella cheese sticks"
+                    />
+
+                    <div class="menu-card-content">
+
+                        <h3>Mozzarella Cheese Sticks</h3>
+
+                        <a
+                            class="rating-link empty-rating"
+                            href="/Ratings?itemName=mozza%20sticks"
+                        >
+                            <span class="stars">★★★★★</span>
+                            <span th:text="${FoodRatings.average('mozza sticks')}">
+                                5.0 stars
+                            </span>
+
+                            <span th:if="${FoodRatings.count('mozza sticks') > 0}"
+                                th:text="${'(' + FoodRatings.count('mozza sticks') +
+                                    (FoodRatings.count('mozza sticks') == 1 ? ' Review)' : ' Reviews)')}">
+                            </span>
+                        </a>
+
+                        <p>
+                            8 cheese filled mozzarella cheese sticks served
+                            with marinara sauce or ranch.
+                        </p>
+
+                        <strong class="price">$9.99</strong>
+
+                        <form action="/additem" method="post">
+                            <input type="hidden" name="name" value="Mozza Sticks" />
+                            <input type="hidden" name="price" value="9.99" />
+
+                            <button class="add-button" type="submit">
+                                <span class="glyphicon glyphicon-shopping-cart"></span>
+                                Add to Order
+                            </button>
+                        </form>
+
+                    </div>
+
+                </article>
+
+                <article class="menu-card">
+
+                    <img
+                        src="assets/kitchen/spaghetti.jpg"
+                        alt="Oven baked spaghetti"
+                    />
+
+                    <div class="menu-card-content">
+
+                        <h3>Oven Baked Spaghetti</h3>
+
+                        <a
+                            class="rating-link empty-rating"
+                            href="/Ratings?itemName=Spaghetti"
+                        >
+                            <span class="stars">★★★★★</span>
+                            <span th:text="${FoodRatings.average('spaghetti')}">
+                                5.0 stars
+                            </span>
+
+                            <span th:if="${FoodRatings.count('spaghetti') > 0}"
+                                th:text="${'(' + FoodRatings.count('spaghetti') +
+                                    (FoodRatings.count('spaghetti') == 1 ? ' Review)' : ' Reviews)')}">
+                            </span>
+                        </a>
+
+                        <p>
+                            Oven baked spaghetti served with a layer of
+                            cheese and meatballs.
+                        </p>
+
+                        <strong class="price">$10.99</strong>
+
+                        <form action="/additem" method="post">
+                            <input type="hidden" name="name" value="Spaghetti" />
+                            <input type="hidden" name="price" value="10.99" />
+
+                            <button class="add-button" type="submit">
+                                <span class="glyphicon glyphicon-shopping-cart"></span>
+                                Add to Order
+                            </button>
+                        </form>
+
+                    </div>
+
+                </article>
+
+                <article class="menu-card chicken-card">
+
+                    <img
+                        src="images/Wings.jpg"
+                        alt="Chicken wings"
+                    />
+
+                    <div class="menu-card-content">
+
+                        <h3>Chicken Wings</h3>
+
+                        <a
+                            class="rating-link empty-rating"
+                            href="/Ratings?itemName=chicken%20wings"
+                        >
+                            <span class="stars">★★★★★</span>
+                            <span th:text="${FoodRatings.average('chicken wings')}">
+                                0 Reviews
+                            </span>
+                        </a>
+
+                        <p>
+                            Crispy baked chicken wings served with hot or ranch dip.
+                        </p>
+
+                        <strong class="price">$9.99</strong>
+
+                        <form action="/additem" method="post">
+                            <input type="hidden" name="name" value="Chicken Wings" />
+                            <input type="hidden" name="price" value="9.99" />
+
+                            <button class="add-button" type="submit">
+                                <span class="glyphicon glyphicon-shopping-cart"></span>
+                                Add to Order
+                            </button>
+                        </form>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+<aside class="restaurant-sidebar">
+
+    <!-- ORDER -->
+    <section class="sidebar-section order-section">
+
+        <header class="sidebar-heading">
+
+            <div class="sidebar-heading-title">
+                <span class="cart-icon glyphicon glyphicon-shopping-cart"></span>
+                <h2>Your Order</h2>
+            </div>
+
+            <span
+                class="cart-badge"
+                th:text="${items == null ? 0 : items.size()}">
+                0
+            </span>
+
+        </header>
+
+        <table class="cart-table">
+
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr th:each="item : ${items}">
+                    <td th:text="${item.name}">
+                        Bread Sticks
+                    </td>
+
+                    <td th:text="${item.quantity}">
+                        1
+                    </td>
+
+                    <td
+                        th:text="${'$' + #numbers.formatDecimal(item.quantity * item.price, 1, 2)}">
+                        $7.99
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+        <div class="cart-totals">
+
+            <div class="cart-total-row">
+                <span th:text="${total}">
+                    Subtotal: $0.00
+                </span>
+            </div>
+
+            <div class="cart-total-row">
+                <span th:text="${HST}">
+                    HST: $0.00
+                </span>
+            </div>
+
+            <div class="cart-total-row grand-total">
+                <span th:text="${grandtotal}">
+                    Grand total: $0.00
+                </span>
+            </div>
+
+        </div>
+
+        <form action="/clearCart">
+            <button
+                class="clear-order-button"
+                type="submit">
+
+                <span class="glyphicon glyphicon-trash"></span>
+                Clear Order
+
+            </button>
+        </form>
+
+        <form action="/confirmOrder">
+            <button
+                class="submit-order-button"
+                type="submit">
+
+                <span class="glyphicon glyphicon-shopping-cart"></span>
+                Submit Order
+
+            </button>
+        </form>
+
+    </section>
+
+
+    <!-- FIND US -->
+    <section class="sidebar-section find-us-section">
+
+        <header class="find-us-heading">
+
+            <span class="glyphicon glyphicon-map-marker"></span>
+
+            <h2>Find Us</h2>
+
+        </header>
+
+        <div id="map"></div>
+
+        <div class="contact-list">
+
+            <div>
+                <span class="glyphicon glyphicon-map-marker"></span>
+                <span>39 example street, Saint John, NB</span>
+            </div>
+
+            <div>
+                <span class="glyphicon glyphicon-earphone"></span>
+                <span>(123) 456-7890</span>
+            </div>
+
+            <div>
+                <span class="glyphicon glyphicon-time"></span>
+                <span>Mon-Sat, 11am - 1am</span>
+            </div>
+
+            <div>
+                <span class="glyphicon glyphicon-envelope"></span>
+                <span>admin@example.com</span>
+            </div>
+
+        </div>
+
+    </section>
+
+</aside>
+
+    </main>
+
 </body>
+
 </html>

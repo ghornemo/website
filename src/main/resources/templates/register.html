@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Create Account | Gemal's World</title>
+
+    <!-- Bootstrap -->
+    <link
+        rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    />
+
+    <!-- Site Styles -->
+    <link href="css/main.css" rel="stylesheet" />
+    <link href="css/register.css" rel="stylesheet" />
+
+    <!-- JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="js/register.js"></script>
+</head>
+
+<body class="register-page">
+
+    <!-- Shared Navigation -->
+    <div th:replace="Header :: Header"></div>
+
+
+    <!-- Registration Page -->
+    <main class="register-shell">
+
+        <!-- Left Side: Project Introduction -->
+        <section class="register-intro">
+
+            <div class="eyebrow">
+                GEMAL'S WORLD
+            </div>
+
+            <h1>
+                Welcome to the<br />
+                <span>2017 Internet.</span>
+            </h1>
+
+            <p>
+                This account system is part of the original Gemal's World
+                application, built with Java and Spring Boot and revived
+                in 2026.
+            </p>
+
+            <div class="legacy-note">
+
+                <div class="legacy-icon">
+                    &lt;/&gt;
+                </div>
+
+                <div>
+                    <strong>
+                        Original functionality, modernized.
+                    </strong>
+
+                    <span>
+                        Registration, Google authentication, ordering,
+                        ratings, comments and account history all came
+                        from the original application.
+                    </span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Right Side: Registration Form -->
+        <section class="register-card">
+
+            <header class="register-card-header">
+
+                <div class="account-icon">
+                    <span class="glyphicon glyphicon-user"></span>
+                </div>
+
+                <div>
+                    <h2>Create an Account</h2>
+                    <p>Enter your details to join Gemal's World.</p>
+                </div>
+
+            </header>
+
+
+            <form
+                id="registerForm"
+                action="/registration"
+                method="post"
+            >
+
+                <!-- Name -->
+                <div class="name-row">
+
+                    <div class="field-group">
+
+                        <label for="firstName">
+                            First Name
+                        </label>
+
+                        <input
+                            class="form-control"
+                            type="text"
+                            id="firstName"
+                            name="firstName"
+                            autocomplete="given-name"
+                            required="required"
+                        />
+
+                    </div>
+
+
+                    <div class="field-group">
+
+                        <label for="lastName">
+                            Last Name
+                        </label>
+
+                        <input
+                            class="form-control"
+                            type="text"
+                            id="lastName"
+                            name="lastName"
+                            autocomplete="family-name"
+                            required="required"
+                        />
+
+                    </div>
+
+                </div>
+
+
+                <!-- Email -->
+                <div class="field-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <div class="input-with-icon">
+
+                        <span class="glyphicon glyphicon-envelope"></span>
+
+                        <input
+                            class="form-control"
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            required="required"
+                        />
+
+                    </div>
+
+                </div>
+
+
+                <!-- Telephone -->
+                <div class="field-group">
+
+                    <label for="telephone">
+                        Telephone
+                    </label>
+
+                    <div class="input-with-icon">
+
+                        <span class="glyphicon glyphicon-earphone"></span>
+
+                        <input
+                            class="form-control"
+                            type="tel"
+                            id="telephone"
+                            name="telephone"
+                            placeholder="(506) 555-1234"
+                            autocomplete="tel"
+                            required="required"
+                        />
+
+                    </div>
+
+                </div>
+
+
+                <!-- Password -->
+                <div class="field-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="input-with-icon">
+
+                        <span class="glyphicon glyphicon-lock"></span>
+
+                        <input
+                            class="form-control"
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Choose a password"
+                            autocomplete="new-password"
+                            required="required"
+                        />
+
+                    </div>
+
+                </div>
+
+
+                <!-- Date of Birth -->
+                <div class="field-group">
+
+                    <label for="dob">
+                        Date of Birth
+                    </label>
+
+                    <input
+                        class="form-control"
+                        type="date"
+                        id="dob"
+                        name="dob"
+                        autocomplete="bday"
+                    />
+
+                </div>
+
+
+                <!-- Submit -->
+                <button
+                    class="register-button"
+                    type="submit"
+                >
+                    Create Account
+                    <span class="glyphicon glyphicon-arrow-right"></span>
+                </button>
+
+
+                <!-- Return Home -->
+                <p class="signin-copy">
+                    Already have an account?
+                    <a href="/">Return home</a>
+                </p>
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="register-footer">
+
+        <span>Gemal's World</span>
+
+        <span class="footer-dot">
+            •
+        </span>
+
+        <span>
+            Originally built in 2017 · Revived in 2026
+        </span>
+
+    </footer>
+
+</body>
+
+</html>

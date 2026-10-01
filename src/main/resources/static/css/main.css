@@ -1,36 +1,717 @@
 @CHARSET "UTF-8";
 
-.page-title {
-	width: 80%;
-	border-bottom: thin solid black;
-	font-size:30px;
+
+/* ==========================================================
+   GLOBAL VARIABLES
+   ========================================================== */
+
+:root {
+    --navy: #071d2c;
+    --navy-light: #0d3049;
+    --blue: #168ff0;
+    --blue-dark: #0876ce;
+
+    --text: #172635;
+    --muted: #718492;
+
+    --border: #d8e3eb;
+    --background: #f1f6fa;
+
+    --sidebar: #0a1822;
+    --sidebar-light: #102532;
 }
 
-.followedTweetPanel {
-	
-	width:80%;
-	margin-left:10%;
-	
+
+/* ==========================================================
+   SHARED NAVBAR
+   ========================================================== */
+
+.navbar {
+    min-height: 54px;
+
+    margin-bottom: 0;
+
+    border: none;
+    border-radius: 0;
+
+    background: var(--navy);
+
+    box-shadow:
+        0 2px 12px rgba(0, 0, 0, 0.16);
 }
 
-.changePicture {
-	cursor:pointer;
+.navbar-fixed-top {
+    z-index: 3000;
 }
+
+.sidebar-menu-button {
+    font-size: 20px !important;
+    line-height: 20px !important;
+    color: #d8e4ec !important;
+    cursor: pointer;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+}
+
+.sidebar-menu-button:hover {
+    color: white !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+}
+
+.sidenav {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 0;
+    height: 100vh;
+
+    padding: 0;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    background: #0b2230;
+
+    z-index: 9999;
+
+    transition: width 0.3s ease;
+}
+
+/* Sidebar content spacing — only applies while open */
+.sidenav > * {
+    margin-left: 24px;
+    margin-right: 24px;
+}
+
+/* Don't let sidebar content get crushed while drawer animates */
+.sidenav {
+    white-space: nowrap;
+}
+
+/* Sidebar section separators */
+.sidenav .page-header {
+    margin-top: 24px;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Account / section headings */
+.sidenav h3 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 21px;
+    font-weight: 700;
+}
+
+/* Normal sidebar text */
+.sidenav span,
+.sidenav td {
+    color: #d7e3ea;
+}
+
+/* Dropdown buttons */
+.sidenav .dropdown-toggle {
+    width: 100%;
+
+    margin-top: 14px;
+    padding: 10px 12px;
+
+    text-align: left;
+
+    color: #e8f1f5;
+    background: rgba(255, 255, 255, 0.05);
+
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 6px;
+}
+
+/* Push caret to right */
+.sidenav .dropdown-toggle .caret {
+    float: right;
+    margin-top: 8px;
+}
+
+/* Give the first section some breathing room */
+.sidenav > .page-header:first-child {
+    margin-top: 18px;
+}
+
+.hamburger {
+    font-size: 22px;
+    color: white;
+    cursor: pointer;
+    padding: 10px 14px;
+}
+
+/* Brand */
+
+.navbar-brand {
+    height: 54px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 18px;
+
+    color: #ffffff !important;
+
+    font-size: 17px;
+    font-weight: 750;
+    letter-spacing: -0.2px;
+}
+
+
+/* Main navigation links */
+
+.navbar-nav > li > a {
+    height: 54px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 16px;
+
+    color: #c7d5df !important;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    transition:
+        color 0.15s ease,
+        background 0.15s ease;
+}
+
+
+.navbar-nav > li > a:hover,
+.navbar-nav > li > a:focus {
+    color: #ffffff !important;
+
+    background: rgba(255, 255, 255, 0.06) !important;
+}
+
+
+/* Active page */
+
+.navbar-nav > .active > a,
+.navbar-nav > .active > a:hover,
+.navbar-nav > .active > a:focus {
+    color: #ffffff !important;
+
+    background: rgba(22, 143, 240, 0.12) !important;
+
+    box-shadow:
+        inset 0 -3px 0 var(--blue);
+}
+
+
+/* Right-side navbar */
+
+.navbar-right > li > a {
+    color: #aebfca !important;
+}
+
+
+/* Navbar dropdown */
+
+.navbar .dropdown-menu {
+    padding: 6px;
+
+    border: 1px solid #d7e1e8;
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 12px 30px rgba(7, 29, 44, 0.18);
+}
+
+
+.navbar .dropdown-menu > li > a {
+    padding: 9px 12px;
+
+    border-radius: 5px;
+
+    color: #405665;
+
+    font-size: 12px;
+}
+
+
+.navbar .dropdown-menu > li > a:hover {
+    color: var(--navy);
+
+    background: #edf5fb;
+}
+
+
+/* Mobile hamburger */
+
+.navbar-toggle {
+    margin-top: 10px;
+
+    border-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+
+.navbar-toggle .icon-bar {
+    background: #d4e0e7 !important;
+}
+
+
+/* ==========================================================
+   SIDEBAR
+   ========================================================== */
+
+.sidenav {
+    position: fixed;
+    top: 54px; /* starts below navbar */
+    left: 0;
+
+    width: 0;
+    height: calc(100vh - 54px);
+
+    padding: 0;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    background: #0b2230;
+
+    z-index: 2000;
+
+    transition: width 0.3s ease;
+}
+
+
+/* ==========================================================
+   SIDEBAR PROFILE
+   ========================================================== */
+
+.sidebar-eyebrow {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #58b3f7;
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+
+.sidebar-section {
+    padding: 22px 0;
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.10);
+}
+
+
+.sidebar-section:first-child {
+    padding-top: 4px;
+}
+
+
+.sidebar-section:last-child {
+    border-bottom: none;
+}
+
+
+.sidebar-section h3 {
+    margin: 0 0 18px;
+
+    color: #ffffff;
+
+    font-size: 20px;
+    font-weight: 750;
+}
+
+
+.sidebar-profile {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 12px;
+
+    align-items: center;
+
+    margin-bottom: 18px;
+}
+
+
+.sidebar-avatar {
+    width: 44px;
+    height: 44px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--blue),
+            #5ab9ff
+        );
+
+    font-size: 17px;
+
+    box-shadow:
+        0 5px 15px rgba(22, 143, 240, 0.25);
+}
+
+
+.sidebar-profile strong {
+    display: block;
+
+    color: #ffffff;
+
+    font-size: 14px;
+}
+
+
+.sidebar-profile span {
+    display: block;
+
+    margin-top: 2px;
+
+    color: #91a7b5;
+
+    font-size: 11px;
+
+    overflow-wrap: anywhere;
+}
+
+
+.account-details {
+    display: grid;
+    gap: 9px;
+}
+
+
+.account-detail {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    color: #b9cad4;
+
+    font-size: 12px;
+}
+
+
+.account-detail .glyphicon {
+    width: 17px;
+
+    color: #5eb8fa;
+
+    text-align: center;
+}
+
+
+/* ==========================================================
+   ORDER STATS
+   ========================================================== */
+
+.order-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+
+    margin-bottom: 15px;
+}
+
+
+.order-stat {
+    padding: 11px 8px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 7px;
+
+    background:
+        rgba(255, 255, 255, 0.04);
+
+    text-align: center;
+}
+
+
+.order-stat strong {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: #ffffff;
+
+    font-size: 15px;
+}
+
+
+.order-stat span {
+    color: #8fa5b3;
+
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+
+/* ==========================================================
+   SIDEBAR BUTTONS
+   ========================================================== */
+
+.sidebar-button {
+    width: 100%;
+
+    padding: 9px 12px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 6px;
+
+    color: #dce8ef !important;
+
+    background:
+        rgba(255, 255, 255, 0.05);
+
+    font-size: 12px;
+    font-weight: 700;
+
+    text-align: left;
+
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease;
+}
+
+
+.sidebar-button:hover,
+.sidebar-button:focus {
+    color: #ffffff !important;
+
+    border-color:
+        rgba(22, 143, 240, 0.55);
+
+    background:
+        rgba(22, 143, 240, 0.13);
+}
+
+
+.sidebar-button .caret {
+    float: right;
+
+    margin-top: 7px;
+}
+
+
+.sidebar-button .badge {
+    margin-left: 5px;
+
+    color: var(--blue);
+
+    background: #ffffff;
+}
+
+
+/* ==========================================================
+   SIDEBAR DROPDOWNS
+   ========================================================== */
+
+.sidenav .dropdown {
+    width: 100%;
+}
+
+
+.sidenav .dropdown-menu {
+    position: static;
+    float: none;
+
+    width: 100%;
+
+    margin: 8px 0 0;
+    padding: 0;
+
+    border: none;
+    border-radius: 7px;
+
+    background: rgba(0, 0, 0, 0.18);
+
+    box-shadow: none;
+}
+
+
+/*
+   Preserve original animated dropdown behaviour
+*/
 
 .dropdown .dropdown-menu {
-    -webkit-transition: all 0.6s;
-    -moz-transition: all 0.6s;
-    -ms-transition: all 0.6s;
-    -o-transition: all 0.6s;
-    transition: all 0.6s;
-
     max-height: 0;
+
     display: block;
+
     overflow: hidden;
+
     opacity: 0;
+
+    transition:
+        max-height 0.35s ease,
+        opacity 0.25s ease;
 }
 
+
 .dropdown.open .dropdown-menu {
-    max-height: 300px;
+    max-height: 500px;
+
     opacity: 1;
+}
+
+
+/* ==========================================================
+   ORDER HISTORY
+   ========================================================== */
+
+.orderHistoryPanel {
+    width: 100% !important;
+
+    padding: 10px !important;
+}
+
+
+.orderHistoryPanel .table {
+    width: 100% !important;
+
+    margin: 0;
+
+    color: #c8d6df;
+
+    font-size: 11px;
+}
+
+
+.orderHistoryPanel .table > tbody > tr > td {
+    padding: 8px 5px;
+
+    border-top:
+        1px solid rgba(255, 255, 255, 0.07);
+
+    vertical-align: middle;
+}
+
+
+.orderHistoryPanel .table > tbody > tr:first-child > td {
+    color: #7f98a8;
+
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+
+.orderHistoryPanel .btn {
+    padding: 4px 8px;
+
+    border: none;
+    border-radius: 4px;
+
+    color: white;
+
+    background: var(--blue);
+
+    font-size: 10px;
+}
+
+
+/* ==========================================================
+   FOLLOWED POSTS
+   ========================================================== */
+
+.followedTweetPanel {
+    width: 100% !important;
+
+    margin: 8px 0 0 !important;
+    padding: 8px !important;
+}
+
+
+.followedTweetPanel .table {
+    margin: 0;
+
+    color: #c8d6df;
+
+    font-size: 11px;
+}
+
+
+.followedTweetPanel .table td {
+    border-top:
+        1px solid rgba(255, 255, 255, 0.07) !important;
+}
+
+
+.followedTweetPanel .btn {
+    margin-top: 6px;
+    padding: 4px 9px;
+
+    border: none;
+    border-radius: 4px;
+
+    color: #ffffff;
+
+    background: var(--blue);
+
+    font-size: 10px;
+}
+
+
+/* ==========================================================
+   OLD SHARED CLASSES
+   ========================================================== */
+
+.page-title {
+    width: 80%;
+
+    padding-bottom: 8px;
+
+    border-bottom:
+        1px solid var(--border);
+
+    color: var(--navy);
+
+    font-size: 30px;
+    font-weight: 750;
+}
+
+
+.changePicture {
+    cursor: pointer;
+}
+
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width: 767px) {
+
+    .navbar-nav > li > a {
+        height: auto;
+
+        padding: 12px 18px;
+    }
+
+
+    .order-stats {
+        grid-template-columns: 1fr;
+    }
+
 }

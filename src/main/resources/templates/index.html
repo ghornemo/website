@@ -5,150 +5,138 @@
 <meta name="google-signin-scope" content="profile email"></meta>
 <meta name="google-signin-client_id" content="852521934104-53fctdku5insugcv04iejnloqjqjtmot.apps.googleusercontent.com"></meta>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
-<link href="css/index.css" rel="stylesheet" />
 <link href="css/main.css" rel="stylesheet" />
+<link href="css/index.css" rel="stylesheet" />
 <script src="https://apis.google.com/js/platform.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="js/index.js"></script>
 <script src="js/login.js"></script>
-
 <title>Gemal's World</title>
 </head>
 <body>
 <div th:replace="Header :: Header"></div>
 
-	<div style="height: 100px;"></div>
-	<div class="container" id="introduction">
-		<h1 style="margin-top: 50px">Welcome to the blog center.</h1>
-		<p>This is the blog center. This blog is used to analyze a
-			collection of presidential
-		social media messages, and to comment and discuss the impacts on
-			society.</p>
-		<p>Effortless authentication using your Google Account.</p>
-		<span th:text="${'model value: '+test}"></span>
+<main class="page-shell">
+<section class="feed-hero">
+  <div>
+    <div class="eyebrow">GEMAL'S WORLD · REVIVED 2026</div>
+    <h1>Political Social Feed</h1>
+    <p>Live posts from Donald Trump and Mark Carney via the X API.</p>
+  </div>
+  <div class="hero-actions">
+    <button type="button" class="primary-action" data-toggle="modal" data-target="#myModal">
+      <span class="glyphicon glyphicon-pushpin"></span> View Pinned Posts
+    </button>
+    <span class="hero-count" th:text="'Showing ' + ${tweetsize} + ' recent posts'">Showing recent posts</span>
+  </div>
+</section>
 
-	
-		<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-	
-			<!-- Identify your business so that you can collect the payments. -->
-			<input type="hidden" name="business" value="gemal.horne@unb.ca"></input>
-	
-			<!-- Specify a Donate button. -->
-			<input type="hidden" name="cmd" value="_donations"></input>
-	
-			<!-- Specify details about the contribution -->
-			<input type="hidden" name="item_name"
-				value="Website Development Funds."></input> <input type="hidden"
-				name="item_number" value="Help build a better website."></input> <input
-				type="hidden" name="currency_code" value="CAD"></input>
-	
-			<!-- Display the payment button. -->
-			<input type="image" name="submit"
-				src="https://www.paypalobjects.com/webstatic/en_US/i/btn/png/btn_donate_92x26.png"
-				alt="Donate"></input> <img alt="" width="1" height="1"
-				src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif"></img>
-	
-		</form>
-	</div>
-	<div class="container-fluid row">
+<div class="content-grid">
+<section class="feeds-grid">
 
-		<div class="modal fade" id="myModal" role="dialog">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-header">Pinned Posts</h4>
-						<label class="radio-inline"><input type="radio" value="trump" id="radiotrump" name="optradio">Trump</input></label>
-						<label class="radio-inline"><input type="radio" value="trudeau" id="radiotrudeau" name="optradio">Trudeau</input></label>
-						<input type="text" onkeyup="searchPosts()" id="searchBar" name="search" placeholder="Search.."></input>
-					</div>
+<article class="feed-column">
+<header class="profile-header">
+  <img class="profile-avatar" src="/assets/trump.jpg" alt="Donald Trump" />
+  <div><h2>Donald Trump</h2><p>@realDonaldTrump</p></div>
+  <span class="live-badge">LIVE</span>
+</header>
+<div class="post-list">
+<article class="social-post" th:each="tweet : ${tweets}">
+<form action="post" method="post">
+  <p class="post-text" th:text="${tweet.text}">Post text</p>
+  <input type="hidden" th:value="${tweet.text}" name="body" />
+  <input type="hidden" th:value="${tweet.fromUser}" name="user" />
+  <input type="hidden" th:value="${tweet.createdAt}" name="date" />
+  <div class="post-footer">
+    <span class="tweetTime" th:text="${tweet.createdAt}">Timestamp</span>
+    <button type="submit" value="save" class="pin-button"><span class="glyphicon glyphicon-pushpin"></span> Pin</button>
+  </div>
+</form>
+</article>
+</div>
+</article>
 
-					<div class="modal-body" style="height: 80%; overflow: auto">
-						<table class="table" id="pinnedPosts">
-							<tr th:each="post : ${posts}">
-								<td>
-									<form name="login" action="/comments" method="post">
-										<span th:text="${' @' + post.user}"
-											style="text-decoration: underline"></span> <span
-											th:text="${post.body}" data-toggle="tooltip"
-											th:title="${post.date}"></span> <input type="hidden"
-											th:value="${post.id}" name="id" /> <input type="hidden"
-											th:value="${post.user}" name="user" /> <input type="hidden"
-											th:value="${post.body}" name="body" /><input type="hidden"
-											th:value="${post.date}" name="date" />  <input type="submit"
-											class="btn" value="Comments"></input><span class="tweetTime" style="float:right;" th:text="${post.date}"></span>
-									</form>
-								</td>
-							</tr>
-						</table>
-					</div>
-					<div class="modal-footer">
-						<p th:text="'Total pinned posts: ' + ${size} + ''" />
-					</div>
-				</div>
-			</div>
-		</div>
+<article class="feed-column">
+<header class="profile-header">
+  <img class="profile-avatar" src="/assets/carney.jpg" alt="Mark Carney" />
+  <div><h2>Mark Carney</h2><p>@MarkJCarney</p></div>
+  <span class="live-badge">LIVE</span>
+</header>
+<div class="post-list">
+<!-- Existing model name retained so the controller does not need to change. -->
+<article class="social-post" th:each="tweet : ${trudeauTweets}">
+<form action="post" method="post">
+  <p class="post-text" th:text="${tweet.text}">Post text</p>
+  <input type="hidden" th:value="${tweet.text}" name="body" />
+  <input type="hidden" th:value="${tweet.fromUser}" name="user" />
+  <input type="hidden" th:value="${tweet.createdAt}" name="date" />
+  <div class="post-footer">
+    <span class="tweetTime" th:text="${tweet.createdAt}">Timestamp</span>
+    <button type="submit" value="save" class="pin-button"><span class="glyphicon glyphicon-pushpin"></span> Pin</button>
+  </div>
+</form>
+</article>
+</div>
+</article>
 
+</section>
 
-		<div class="container presidentContainer col-md-6">
-			<h2>President Tweets!</h2>
-			<button type="button" class="btn-info btn-lg" data-toggle="modal"
-				data-target="#myModal">View pinned tweets</button>
-			<p th:text="'Result tweets: ' + ${tweetsize} + ''" />
-			<div class="row">
-				<div class="panel presidentPanel col-sm-6"
-					style="border-right: 2px solid black;">
-					<div class="panel-header">Trump</div>
-					<div class="panel-body">
-						<table class="table presidentTable" id="theTable">
-							<tr th:each="tweet : ${tweets}">
-								<td>
-									<form action="post" method="post">
-										 <span
-											th:text="${tweet.text}" data-toggle="tooltip"
-											th:title="${tweet.createdAt}"></span> <input type="hidden"
-											th:value="${tweet.text}" name="body" /> <input type="hidden"
-											th:value="${tweet.fromUser}" name="user" /> <input
-											type="hidden" th:value="${tweet.createdAt}" name="date" />
-										<button type="submit" value="save" class="btn">
-											Pin <i class="glyphicon glyphicon-pushpin"></i>
-										</button>
-										<br/>
-										<span class="tweetTime" th:text="${tweet.createdAt}"></span>
-									</form>
-								</td>
-							</tr>
-						</table>
-					</div>
-				</div>
-				<div class="panel presidentPanel col-sm-6">
-					<div class="panel-header">Trudeau</div>
-					<div class="panel-body">
-						<table class="table presidentTable" id="theTable">
-							<tr th:each="tweet : ${trudeauTweets}">
-								<td>
-									<form action="post" method="post"> 
-											<span th:text="${tweet.text}" data-toggle="tooltip"
-											th:title="${tweet.createdAt}"></span> <input type="hidden"
-											th:value="${tweet.text}" name="body" /> <input type="hidden"
-											th:value="${tweet.fromUser}" name="user" /> <input
-											type="hidden" th:value="${tweet.createdAt}" name="date" />
-										<button type="submit" value="save" class="btn">
-											Pin <i class="glyphicon glyphicon-pushpin"></i>
-										</button>
-										<br/>
-										<span class="tweetTime" th:text="${tweet.createdAt}"></span>
-									</form>
-								</td>
-							</tr>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
+<aside class="project-sidebar">
+<section class="info-card revived-card">
+<div class="card-accent"></div>
+<div class="eyebrow">ABOUT THIS PROJECT</div>
+<h2>A 2017 Spring App, Revived.</h2>
+<p>Gemal's World was originally built in 2017 as a Java/Spring Boot project for exploring political social-media posts and community discussion.</p>
+<p>In 2026, I brought the original application back to life: containerizing its legacy Java runtime and PostgreSQL database, restoring Google authentication, and replacing its obsolete Twitter integration with the modern X API v2.</p>
+<p>The original application workflow remains intact, including live political feeds, pinned posts, comments, the store, ordering, ratings, account history and Google authentication.</p>
+<div class="tech-stack">
+<span>Java 8</span><span>Spring Boot</span><span>Thymeleaf</span><span>PostgreSQL</span><span>Docker</span><span>X API v2</span>
+</div>
+</section>
 
-	</div>
+<section class="info-card">
+<div class="eyebrow">HOW IT WORKS</div>
+<h3>Old application. Modern plumbing.</h3>
+<div class="how-row"><div class="how-icon">↻</div><p>Recent X posts are fetched and cached for 24 hours to keep API usage tiny.</p></div>
+<div class="how-row"><div class="how-icon">◆</div><p>Pin posts to persist them in PostgreSQL and keep the original discussion workflow alive.</p></div>
+<div class="how-row"><div class="how-icon">◌</div><p>Open pinned posts to search, filter and continue into the original comments system.</p></div>
+</section>
+</aside>
+</div>
+</main>
+
+<div class="modal fade modern-modal" id="myModal" role="dialog">
+<div class="modal-dialog"><div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal">&times;</button>
+<div class="eyebrow">SAVED DISCUSSION</div><h3>Pinned Posts</h3>
+<div class="modal-tools">
+<label><input type="radio" value="trump" id="radiotrump" name="optradio" /> Trump</label>
+<label><input type="radio" value="trudeau" id="radiotrudeau" name="optradio" /> Carney</label>
+<input type="text" onkeyup="searchPosts()" id="searchBar" name="search" placeholder="Search pinned posts..." />
+</div>
+</div>
+<div class="modal-body">
+<table class="table" id="pinnedPosts">
+<tr th:each="post : ${posts}"><td>
+<form name="login" action="/comments" method="post">
+<div class="pinned-author" th:text="${'@' + post.user}">@user</div>
+<p class="pinned-copy" th:text="${post.body}" th:title="${post.date}">Post</p>
+<input type="hidden" th:value="${post.id}" name="id" />
+<input type="hidden" th:value="${post.user}" name="user" />
+<input type="hidden" th:value="${post.body}" name="body" />
+<input type="hidden" th:value="${post.date}" name="date" />
+<div class="pinned-footer">
+<span class="tweetTime" th:text="${post.date}">Date</span>
+<input type="submit" class="comments-button" value="Comments" />
+</div>
+</form>
+</td></tr>
+</table>
+</div>
+<div class="modal-footer"><p th:text="'Total pinned posts: ' + ${size}">Total pinned posts</p></div>
+</div></div>
+</div>
 </body>
-
 </html>

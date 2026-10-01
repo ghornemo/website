@@ -1,16 +1,105 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8"></meta>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
-     <script src="https://apis.google.com/js/platform.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Gemal's World</title>
+
+    <!-- Bootstrap -->
+    <link
+        rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    />
+
+    <!-- Site Styles -->
+    <link href="css/main.css" rel="stylesheet" />
+    <link href="css/template.css" rel="stylesheet" />
+
+    <!-- JavaScript -->
+    <script src="https://apis.google.com/js/platform.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<title>Gemal's World</title>
 </head>
-<body>
-<div th:replace="Header :: Header"></div>
-	<h1 style="margin-top:150px" th:text="${header}"></h1>
-	<p th:text="${body}"></p>
+
+<body class="result-page">
+
+    <!-- Shared Navigation -->
+    <div th:replace="Header :: Header"></div>
+
+
+    <main class="result-shell">
+
+        <section class="result-card">
+
+            <!-- Icon -->
+            <div class="result-icon">
+                <span class="glyphicon glyphicon-ok"></span>
+            </div>
+
+
+            <!-- Result -->
+            <div class="result-content">
+
+                <div class="result-eyebrow">
+                    GEMAL'S WORLD
+                </div>
+
+                <h1 th:text="${header}">
+                    Thank you for your order
+                </h1>
+
+                <p th:text="${body}">
+                    Your order has been accepted and is now being prepared.
+                </p>
+
+
+                <!-- Actions -->
+                <div class="result-actions">
+
+                    <a
+                        href="/store"
+                        class="primary-action"
+                    >
+                        <span class="glyphicon glyphicon-cutlery"></span>
+                        Back to The Kitchen
+                    </a>
+
+                    <a
+                        href="/"
+                        class="secondary-action"
+                    >
+                        <span class="glyphicon glyphicon-home"></span>
+                        Return Home
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Project Note -->
+        <div class="legacy-result-note">
+
+            <span class="glyphicon glyphicon-time"></span>
+
+            <div>
+                <strong>Still running after all these years.</strong>
+
+                <span>
+                    This ordering workflow is part of the original
+                    Gemal's World application built in 2017 and
+                    revived in 2026.
+                </span>
+            </div>
+
+        </div>
+
+    </main>
+
 </body>
+
 </html>

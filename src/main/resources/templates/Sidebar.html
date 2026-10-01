@@ -1,93 +1,335 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<script src="https://apis.google.com/js/platform.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<meta charset="UTF-8"></meta>
-<title>Insert title here</title>
-</head>
-<body>
-	<div id="mySidenav" class="sidenav" th:fragment="Sidebar">
-					<div class="page-header">
-		<h3 style="color:white;">Account details</h3>
-	</div>
-		<span style="color:white" th:text="${'Name: '+fullName}"></span>  <br/>
-		<span style="color:white" th:text="${'Email: '+email}"></span><br/>
-		<span style="color:white" th:text="*{'Member since: '+#calendars.format(memberSince,'dd MMM, yyyy')}"></span>
-		
-			<div class="page-header">
-		<h3 style="color:white;">Order History</h3>
-	</div>
-				<span style="color:white" th:text="${'Total orders:'+#lists.size(previousOrders)}"></span> <br/>
-				<span style="color:white" th:text="${'Average Order Cost: $'+#numbers.formatDecimal(averageSpent, 0, 'COMMA', 2, 'POINT')}"></span> <br/>
-				<span style="color:white" th:text="${'Total Order Cost: $'+#numbers.formatDecimal(totalSpent, 0, 'COMMA', 2, 'POINT')}"></span>
 
-				  <div class="dropdown" style="padding-top:0px;">
-    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">View Orders
-    <b class="caret"></b></button>
-		<div class="container dropdown-menu orderHistoryPanel">
-				<table class="table" style="width:30%;">
-				<tr>
-					<td>ID</td>
-					<td>Cost</td>
-					<td>Time</td>
-				</tr>
-					<tr th:each="order : ${previousOrders}">
-						<td>
-						<span th:text="${order.ID}"></span>
-						</td>
-						<td>
-						<span th:text="${order.total()}"></span>
-						</td>
-						<td>
-						<span th:text="${'June 17, 2017, 5:32pm'}"></span>
-						</td>
-						<td>
-							<form name="orderDetails" action="/OrderDetails" method="post">
-								
-								<input type="hidden" th:value="${order.ID}" name="orderid" />
-								<input type="submit" class="btn" value="Details"></input>
-							</form>
-						</td>
-					</tr>
-					<tr>
-						<td>Total</td>
-						<td>
-							<span style="color:white" th:text="${'$'+#numbers.formatDecimal(totalSpent, 0, 'COMMA', 2, 'POINT')}"></span>
-						</td>
-					</tr>
-				</table>
-		</div>
-		</div>
-		<div class="page-header">
-		<h3 style="color:white;">Communications</h3>
-	</div>
-		  <div class="dropdown" style="">
-    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Followed Tweets
-    <span class="badge" th:text="${#lists.size(followedPosts)}"></span></button>
-		<div class="container dropdown-menu well followedTweetPanel">
-							<table class="table">
-					<tr th:each="post : ${followedPosts}">
-						<td>
-							<form name="login" action="/comments" method="post">
-							<span th:text="${' @' + post.user}"
-								style="text-decoration: underline"></span> <span
-								th:text="${post.date}" data-toggle="tooltip"
-								th:title="${post.body}"></span> <input type="hidden"
-								th:value="${post.id}" name="id" /> <input type="hidden"
-								th:value="${post.user}" name="user" /> <input type="hidden"
-								th:value="${post.body}" name="body" /><input type="hidden"
-								th:value="${post.date}" name="date" />  <input type="submit"
-								class="btn" value="View"></input>
-							</form>
-						</td>
-					</tr>
-				</table>
-		</div>
-		</div>
-	</div>
+<head>
+    <meta charset="UTF-8" />
+
+    <title>Gemal's World</title>
+
+    <script src="https://apis.google.com/js/platform.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+    <aside
+        id="mySidenav"
+        class="sidenav"
+        th:fragment="Sidebar"
+    >
+
+        <!-- ==================================================
+             ACCOUNT
+             ================================================== -->
+
+        <section class="sidebar-section">
+
+            <span class="sidebar-eyebrow">
+                YOUR ACCOUNT
+            </span>
+
+            <h3>Account Details</h3>
+
+
+            <div class="sidebar-profile">
+
+                <div class="sidebar-avatar">
+                    <span class="glyphicon glyphicon-user"></span>
+                </div>
+
+                <div>
+                    <strong th:text="${fullName}">
+                        Gemal Horne
+                    </strong>
+
+                    <span th:text="${email}">
+                        example@email.com
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="account-details">
+
+                <div class="account-detail">
+
+                    <span class="glyphicon glyphicon-calendar"></span>
+
+                    <span
+                        th:text="*{'Member since ' + #calendars.format(memberSince,'dd MMM, yyyy')}"
+                    >
+                        Member since 17 Jun, 2017
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==================================================
+             ORDER HISTORY
+             ================================================== -->
+
+        <section class="sidebar-section">
+
+            <span class="sidebar-eyebrow">
+                THE KITCHEN
+            </span>
+
+            <h3>Order History</h3>
+
+
+            <div class="order-stats">
+
+                <div class="order-stat">
+
+                    <strong th:text="${#lists.size(previousOrders)}">
+                        4
+                    </strong>
+
+                    <span>Orders</span>
+
+                </div>
+
+
+                <div class="order-stat">
+
+                    <strong
+                        th:text="${'$' + #numbers.formatDecimal(averageSpent, 0, 'COMMA', 2, 'POINT')}"
+                    >
+                        $10.24
+                    </strong>
+
+                    <span>Average</span>
+
+                </div>
+
+
+                <div class="order-stat">
+
+                    <strong
+                        th:text="${'$' + #numbers.formatDecimal(totalSpent, 0, 'COMMA', 2, 'POINT')}"
+                    >
+                        $40.96
+                    </strong>
+
+                    <span>Total</span>
+
+                </div>
+
+            </div>
+
+
+            <div class="dropdown">
+
+                <button
+                    class="sidebar-button dropdown-toggle"
+                    type="button"
+                    data-toggle="dropdown"
+                >
+                    <span class="glyphicon glyphicon-list-alt"></span>
+                    View Orders
+
+                    <b class="caret"></b>
+                </button>
+
+
+                <div class="dropdown-menu orderHistoryPanel">
+
+                    <table class="table">
+
+                        <tr>
+                            <td>ID</td>
+                            <td>Cost</td>
+                            <td>Time</td>
+                            <td></td>
+                        </tr>
+
+
+                        <tr th:each="order : ${previousOrders}">
+
+                            <td>
+                                <span th:text="${order.ID}"></span>
+                            </td>
+
+                            <td>
+                                <span th:text="${order.total()}"></span>
+                            </td>
+
+                            <td>
+                                <span th:text="${'June 17, 2017, 5:32pm'}"></span>
+                            </td>
+
+                            <td>
+
+                                <form
+                                    name="orderDetails"
+                                    action="/OrderDetails"
+                                    method="post"
+                                >
+
+                                    <input
+                                        type="hidden"
+                                        th:value="${order.ID}"
+                                        name="orderid"
+                                    />
+
+                                    <input
+                                        type="submit"
+                                        class="btn"
+                                        value="Details"
+                                    />
+
+                                </form>
+
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Total
+                            </td>
+
+                            <td
+                                colspan="3"
+                                th:text="${'$' + #numbers.formatDecimal(totalSpent, 0, 'COMMA', 2, 'POINT')}"
+                            >
+                                $0.00
+                            </td>
+
+                        </tr>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==================================================
+             COMMUNICATIONS
+             ================================================== -->
+
+        <section class="sidebar-section">
+
+            <span class="sidebar-eyebrow">
+                SOCIAL
+            </span>
+
+            <h3>Communications</h3>
+
+
+            <div class="dropdown">
+
+                <button
+                    class="sidebar-button dropdown-toggle"
+                    type="button"
+                    data-toggle="dropdown"
+                >
+                    <span class="glyphicon glyphicon-comment"></span>
+
+                    Followed Posts
+
+                    <span
+                        class="badge"
+                        th:text="${#lists.size(followedPosts)}"
+                    >
+                        0
+                    </span>
+
+                    <b class="caret"></b>
+
+                </button>
+
+
+                <div class="dropdown-menu followedTweetPanel">
+
+                    <table class="table">
+
+                        <tr th:each="post : ${followedPosts}">
+
+                            <td>
+
+                                <form
+                                    name="login"
+                                    action="/comments"
+                                    method="post"
+                                >
+
+                                    <strong th:text="${'@' + post.user}">
+                                        @user
+                                    </strong>
+
+                                    <br />
+
+                                    <span
+                                        th:text="${post.date}"
+                                        data-toggle="tooltip"
+                                        th:title="${post.body}"
+                                    >
+                                    </span>
+
+
+                                    <!-- Preserve original form data -->
+
+                                    <input
+                                        type="hidden"
+                                        th:value="${post.id}"
+                                        name="id"
+                                    />
+
+                                    <input
+                                        type="hidden"
+                                        th:value="${post.user}"
+                                        name="user"
+                                    />
+
+                                    <input
+                                        type="hidden"
+                                        th:value="${post.body}"
+                                        name="body"
+                                    />
+
+                                    <input
+                                        type="hidden"
+                                        th:value="${post.date}"
+                                        name="date"
+                                    />
+
+
+                                    <br />
+
+                                    <input
+                                        type="submit"
+                                        class="btn"
+                                        value="View Discussion"
+                                    />
+
+                                </form>
+
+                            </td>
+
+                        </tr>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </aside>
+
 </body>
+
 </html>

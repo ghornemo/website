@@ -1,234 +1,1045 @@
-@CHARSET "UTF-8";
-table#theTable 
-{
-    border-collapse:inherit;
-    border-spacing:0 2px
-}
-input[type=text] {
-    width: 130px;
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    background-color: white;
-    background-image: url('searchicon.png');
-    background-position: 10px 10px; 
-    background-repeat: no-repeat;
-    padding: 12px 20px 12px 40px;
-    -webkit-transition: width 0.4s ease-in-out;
-    transition: width 0.4s ease-in-out;
+/* ============================================================
+   GEMAL'S WORLD — INDEX
+   2017 fossil, 2026 clothes
+   Bootstrap 3 compatible
+   ============================================================ */
+
+:root {
+    --navy: #0b1f36;
+    --navy-light: #173d63;
+    --blue: #1687f8;
+    --blue-dark: #0871db;
+
+    --ink: #10233d;
+    --body-text: #263d57;
+    --muted: #647b94;
+
+    --border: #dbe6f0;
+    --page: #f1f6fb;
+    --card: #ffffff;
+    --card-soft: #f8fbfe;
+
+    --shadow:
+        0 10px 30px rgba(21, 48, 78, 0.08);
+
+    --shadow-hover:
+        0 12px 28px rgba(21, 48, 78, 0.12);
 }
 
-input[type=text]:focus {
-    width: 70%;
-}
-.tweetTime {
-	font-size:8px;
-	float:right;
-}
-.presidentContainer {
-	width:700px;
-    border-radius: 25px;
-    border: 2px solid black;
-    background: #99f4f9;
-}
-#introduction {
-	border: 2px solid black;
-	height:300px;
-	width:400px;
-	float:right;
-	text-align:left;
-}
-.btn {
-	border: 2px solid black;
-	background: #99f4f9;
-}
-.btn:hover {
-	color:white;
-}
-.presidentPanel {
-	width:348px;
-	height:600px;
-}
-.presidentTable {
-}
-.panel-body {
-	height:90%;
-	overflow:auto;
-}
-#login-dp{
-    min-width: 250px;
-    padding: 14px 14px 0;
-    overflow:hidden;
-    background-color:rgba(255,255,255,.8);
-}
-#login-dp .help-block{
-    font-size:12px    
-}
-#login-dp .bottom{
-    background-color:rgba(255,255,255,.8);
-    border-top:1px solid #ddd;
-    clear:both;
-    padding:14px;
-}
-#login-dp .social-buttons{
-    margin:12px 0    
-}
-#login-dp .social-buttons a{
-    width: 49%;
-}
-#login-dp .form-group {
-    margin-bottom: 10px;
-}
-.btn-fb{
-    color: #fff;
-    background-color:#3b5998;
-}
-.btn-fb:hover{
-    color: #fff;
-    background-color:#496ebc 
-}
-.btn-tw{
-    color: #fff;
-    background-color:#55acee;
-}
-.btn-tw:hover{
-    color: #fff;
-    background-color:#59b5fa;
-}
-@media(max-width:768px){
-    #login-dp{
-        background-color: inherit;
-        color: #fff;
-    }
-    #login-dp .bottom{
-        background-color: inherit;
-        border-top:0 none;
-    }
-}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+
+html,
 body {
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0 20px 0 20px;
-  text-align: center;
-  background: white;
+    min-height: 100%;
 }
-.scrollingtable {
-  box-sizing: border-box;
-  display: inline-block;
-  vertical-align: middle;
-  overflow: hidden;
-  width: 100%; /*if you want a fixed width, set it here, else set to auto*/
-  min-width: 0/*100%*/; /*if you want a % width, set it here, else set to 0*/
-  height: 400px/*100%*/; /*set table height here; can be fixed value or %*/
-  min-height: 0/*104px*/; /*if using % height, make this large enough to fit scrollbar arrows + caption + thead*/
-  font-family: Verdana, Tahoma, sans-serif;
-  font-size: 15px;
-  line-height: 20px;
-  padding: 20px 0 20px 0; /*need enough padding to make room for caption*/
-  text-align: left;
+
+body {
+    margin: 0;
+
+    background:
+        radial-gradient(
+            circle at 15% 0%,
+            rgba(22, 135, 248, 0.07),
+            transparent 32rem
+        ),
+        var(--page);
+
+    color: var(--ink);
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+
+    font-size: 15px;
+
+    -webkit-font-smoothing: antialiased;
 }
-.scrollingtable * {box-sizing: border-box;}
-.scrollingtable > div {
-  position: relative;
-  border-top: 1px solid black;
-  height: 100%;
-  padding-top: 20px; /*this determines column header height*/
+
+
+/* ============================================================
+   EXISTING NAVBAR
+   ============================================================ */
+
+.navbar,
+.navbar-inverse {
+    min-height: 58px;
+    margin-bottom: 0;
+
+    border: 0;
+    border-radius: 0;
+
+    background: #091b2e;
+
+    box-shadow:
+        0 4px 18px rgba(3, 20, 38, 0.12);
 }
-.scrollingtable > div:before {
-  top: 0;
-  background: #0d0101; /*header row background color*/
+
+.navbar-inverse .navbar-brand {
+    color: white;
+
+    font-size: 19px;
+    font-weight: 750;
 }
-.scrollingtable > div:before,
-.scrollingtable > div > div:after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  left: 0;
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #bdccda;
+
+    font-size: 14px;
 }
-.scrollingtable > div > div {
-  min-height: 0/*43px*/; /*if using % height, make this large enough to fit scrollbar arrows*/
-  max-height: 100%;
-  overflow: scroll/*auto*/; /*set to auto if using fixed or % width; else scroll*/
-  overflow-x: hidden;
-  border: 1px solid black; /*border around table body*/
+
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a:hover {
+    color: white;
+    background: transparent;
 }
-.scrollingtable > div > div:after {background: white;} /*match page background color*/
-.scrollingtable > div > div > table {
-  width: 100%;
-  border-spacing: 0;
-  margin-top: -20px; /*inverse of column header height*/
-  /*margin-right: 17px;*/ /*uncomment if using % width*/
+
+
+/* ============================================================
+   PAGE
+   ============================================================ */
+
+.page-shell {
+    width: min(1280px, calc(100% - 48px));
+
+    margin: 34px auto 70px;
 }
-.scrollingtable > div > div > table > caption {
-  position: absolute;
-  top: -20px; /*inverse of caption height*/
-  margin-top: -1px; /*inverse of border-width*/
-  width: 100%;
-  font-weight: bold;
-  text-align: center;
+
+
+/* ============================================================
+   HERO
+   ============================================================ */
+
+.feed-hero {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 35px;
+
+    min-height: 165px;
+
+    padding: 32px 42px;
+
+    margin-bottom: 24px;
+
+    overflow: hidden;
+
+    border-radius: 16px;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            105deg,
+            rgba(8, 29, 52, 0.98),
+            rgba(27, 75, 119, 0.92)
+        ),
+        url("../assets/civic-skyline.svg")
+        center / cover no-repeat;
+
+    box-shadow:
+        0 14px 35px rgba(11, 39, 67, 0.13);
 }
-.scrollingtable > div > div > table > * > tr > * {padding: 0;}
-.scrollingtable > div > div > table > thead {
-  vertical-align: bottom;
-  white-space: nowrap;
-  text-align: center;
+
+
+/* subtle glow */
+
+.feed-hero::after {
+    content: "";
+
+    position: absolute;
+
+    width: 400px;
+    height: 400px;
+
+    right: -150px;
+    top: -250px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(53, 159, 255, 0.14);
 }
-.scrollingtable > div > div > table > thead > tr > * > div {
-  display: inline-block;
-  padding: 0 6px 0 6px; /*header cell padding*/
+
+.feed-hero > * {
+    position: relative;
+    z-index: 2;
 }
-.scrollingtable > div > div > table > thead > tr > :first-child:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 20px; /*match column header height*/
-  border-left: 1px solid black; /*leftmost header border*/
+
+
+/* ============================================================
+   HERO TEXT
+   ============================================================ */
+
+.eyebrow {
+    margin-bottom: 8px;
+
+    color: var(--blue);
+
+    font-size: 12px;
+    font-weight: 800;
+
+    letter-spacing: 0.12em;
 }
-.scrollingtable > div > div > table > thead > tr > * > div[label]:before,
-.scrollingtable > div > div > table > thead > tr > * > div > div:first-child,
-.scrollingtable > div > div > table > thead > tr > * + :before {
-  position: absolute;
-  top: 0;
-  white-space: pre-wrap;
-  color: white; /*header row font color*/
+
+.feed-hero .eyebrow {
+    color: #70baff;
 }
-.scrollingtable > div > div > table > thead > tr > * > div[label]:before,
-.scrollingtable > div > div > table > thead > tr > * > div[label]:after {content: attr(label);}
-.scrollingtable > div > div > table > thead > tr > * + :before {
-  content: "";
-  display: block;
-  min-height: 20px; /*match column header height*/
-  padding-top: 1px;
-  border-left: 1px solid black; /*borders between header cells*/
+
+.feed-hero h1 {
+    margin: 0 0 10px;
+
+    font-size: 48px;
+    line-height: 1.05;
+
+    font-weight: 750;
+
+    letter-spacing: -0.035em;
 }
-.scrollingtable .scrollbarhead {float: right;}
-.scrollingtable .scrollbarhead:before {
-  position: absolute;
-  width: 100px;
-  top: -1px; /*inverse border-width*/
-  background: white; /*match page background color*/
+
+.feed-hero p {
+    margin: 0;
+
+    color: #d9e9f8;
+
+    font-size: 18px;
+    line-height: 1.5;
 }
-.scrollingtable > div > div > table > tbody > tr:after {
-  content: "";
-  display: table-cell;
-  position: relative;
-  padding: 0;
-  border-top: 1px solid black;
-  top: -1px; /*inverse of border width*/
+
+
+/* ============================================================
+   HERO BUTTON
+   ============================================================ */
+
+.hero-actions {
+    min-width: 230px;
+
+    text-align: center;
 }
-.scrollingtable > div > div > table > tbody {vertical-align: top;}
-.scrollingtable > div > div > table > tbody > tr {background: white;}
-.scrollingtable > div > div > table > tbody > tr > * {
-  border-bottom: 1px solid black;
-  padding: 0 6px 0 6px;
-  height: 20px; /*match column header height*/
+
+.primary-action {
+    padding: 13px 20px;
+
+    border: 0;
+    border-radius: 10px;
+
+    background: var(--blue);
+
+    color: white;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    box-shadow:
+        0 8px 22px rgba(22, 135, 248, 0.32);
+
+    transition:
+        transform 0.16s ease,
+        background 0.16s ease,
+        box-shadow 0.16s ease;
 }
-.scrollingtable > div > div > table > tbody:last-of-type > tr:last-child > * {border-bottom: none;}
-.scrollingtable > div > div > table > tbody > tr:nth-child(even) {background: gainsboro;} /*alternate row color*/
-.scrollingtable > div > div > table > tbody > tr > * + * {border-left: 1px solid black;} /*borders between body cells*/
+
+.primary-action:hover,
+.primary-action:focus {
+    color: white;
+
+    background: #3197fb;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 10px 25px rgba(22, 135, 248, 0.4);
+}
+
+.primary-action .glyphicon {
+    margin-right: 5px;
+}
+
+.hero-count {
+    display: block;
+
+    margin-top: 11px;
+
+    color: #d2e3f3;
+
+    font-size: 13px;
+}
+
+
+/* ============================================================
+   MAIN LAYOUT
+   ============================================================ */
+
+.content-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 2.35fr)
+        minmax(330px, 0.9fr);
+
+    gap: 24px;
+
+    align-items: start;
+}
+
+
+/* ============================================================
+   FEED COLUMNS
+   ============================================================ */
+
+.feeds-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 20px;
+}
+
+.feed-column {
+    overflow: hidden;
+
+    background: rgba(255, 255, 255, 0.98);
+
+    border:
+        1px solid rgba(205, 219, 233, 0.95);
+
+    border-radius: 16px;
+
+    box-shadow: var(--shadow);
+}
+
+
+/* ============================================================
+   PROFILE HEADER
+   ============================================================ */
+
+.profile-header {
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    min-height: 96px;
+
+    padding: 17px 22px;
+
+    border-bottom:
+        1px solid var(--border);
+
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff,
+            #fcfdff
+        );
+}
+
+.profile-avatar {
+    width: 62px;
+    height: 62px;
+
+    flex: 0 0 62px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+    object-position: center top;
+
+    border: 3px solid white;
+
+    box-shadow:
+        0 0 0 1px #d4e0ec,
+        0 5px 14px rgba(15, 40, 70, 0.14);
+}
+
+.profile-header h2 {
+    margin: 0;
+
+    color: var(--ink);
+
+    font-size: 23px;
+    line-height: 1.15;
+
+    font-weight: 750;
+
+    letter-spacing: -0.015em;
+}
+
+.profile-header p {
+    margin: 5px 0 0;
+
+    color: var(--muted);
+
+    font-size: 15px;
+}
+
+.live-badge {
+    margin-left: auto;
+
+    padding: 6px 10px;
+
+    border-radius: 999px;
+
+    background: #e9f5ff;
+
+    color: #0877df;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 0.08em;
+}
+
+
+/* ============================================================
+   FEED SCROLL AREA
+   ============================================================ */
+
+.post-list {
+    max-height: 790px;
+
+    overflow-y: auto;
+
+    padding: 18px;
+}
+
+
+/* Chrome / Edge scrollbar */
+
+.post-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.post-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.post-list::-webkit-scrollbar-thumb {
+    background: #c5d3e1;
+
+    border-radius: 999px;
+}
+
+.post-list::-webkit-scrollbar-thumb:hover {
+    background: #aebfd0;
+}
+
+
+/* ============================================================
+   INDIVIDUAL POSTS
+   ============================================================ */
+
+.social-post {
+    margin-bottom: 15px;
+
+    padding: 20px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff,
+            #f8fbfe
+        );
+
+    transition:
+        transform 0.16s ease,
+        border-color 0.16s ease,
+        box-shadow 0.16s ease;
+}
+
+.social-post:last-child {
+    margin-bottom: 0;
+}
+
+.social-post:hover {
+    transform: translateY(-1px);
+
+    border-color: #b8d7f4;
+
+    box-shadow: var(--shadow-hover);
+}
+
+.social-post form {
+    margin: 0;
+}
+
+.post-text {
+    margin: 0;
+
+    color: #162b45;
+
+    font-size: 16px;
+    line-height: 1.55;
+
+    white-space: pre-wrap;
+
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+
+/* ============================================================
+   POST FOOTER
+   ============================================================ */
+
+.post-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-top: 17px;
+}
+
+.tweetTime {
+    color: var(--muted);
+
+    font-size: 12px;
+    line-height: 1.3;
+}
+
+.pin-button {
+    flex-shrink: 0;
+
+    padding: 8px 13px;
+
+    border:
+        1px solid #91c7fb;
+
+    border-radius: 8px;
+
+    background: #f3f9ff;
+
+    color: #0875df;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    transition:
+        background 0.15s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.pin-button:hover {
+    color: #0566c5;
+
+    background: #e3f2ff;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 12px rgba(22, 135, 248, 0.12);
+}
+
+.pin-button .glyphicon {
+    margin-right: 3px;
+}
+
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+
+.project-sidebar {
+    display: grid;
+
+    gap: 20px;
+}
+
+.info-card {
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 28px;
+
+    background:
+        rgba(255, 255, 255, 0.98);
+
+    border:
+        1px solid rgba(205, 219, 233, 0.95);
+
+    border-radius: 16px;
+
+    box-shadow: var(--shadow);
+}
+
+.revived-card .card-accent {
+    position: absolute;
+
+    top: 0;
+    bottom: 0;
+    left: 0;
+
+    width: 5px;
+
+    background: var(--blue);
+}
+
+.info-card h2 {
+    margin:
+        3px
+        0
+        20px;
+
+    color: var(--ink);
+
+    font-size: 29px;
+    line-height: 1.12;
+
+    font-weight: 760;
+
+    letter-spacing: -0.025em;
+}
+
+.info-card h3 {
+    margin:
+        3px
+        0
+        20px;
+
+    color: var(--ink);
+
+    font-size: 22px;
+    line-height: 1.25;
+
+    font-weight: 750;
+}
+
+.info-card p {
+    margin:
+        0
+        0
+        15px;
+
+    color: #314861;
+
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+
+/* ============================================================
+   TECHNOLOGY TAGS
+   ============================================================ */
+
+.tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-top: 22px;
+
+    padding-top: 20px;
+
+    border-top:
+        1px solid var(--border);
+}
+
+.tech-stack span {
+    padding:
+        8px
+        12px;
+
+    border-radius: 999px;
+
+    background: #eaf2fb;
+
+    color: #284d73;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+/* ============================================================
+   HOW IT WORKS
+   ============================================================ */
+
+.how-row {
+    display: grid;
+
+    grid-template-columns:
+        38px
+        1fr;
+
+    gap: 12px;
+
+    align-items: start;
+
+    margin:
+        18px
+        0;
+}
+
+.how-row p {
+    margin: 0;
+
+    font-size: 14px;
+}
+
+.how-icon {
+    display: grid;
+
+    place-items: center;
+
+    width: 36px;
+    height: 36px;
+
+    border-radius: 9px;
+
+    background: #edf6ff;
+
+    color: var(--blue);
+
+    font-size: 18px;
+    font-weight: 800;
+}
+
+
+/* ============================================================
+   PINNED POSTS MODAL
+   ============================================================ */
+
+.modern-modal .modal-dialog {
+    margin-top: 7vh;
+}
+
+.modern-modal .modal-content {
+    overflow: hidden;
+
+    border: 0;
+    border-radius: 16px;
+
+    box-shadow:
+        0 25px 75px rgba(5, 25, 47, 0.28);
+}
+
+.modern-modal .modal-header {
+    padding: 25px 26px;
+
+    border-bottom:
+        1px solid var(--border);
+}
+
+.modern-modal .modal-header h3 {
+    margin:
+        0
+        0
+        20px;
+
+    color: var(--ink);
+
+    font-size: 27px;
+    font-weight: 750;
+}
+
+.modern-modal .close {
+    font-size: 28px;
+}
+
+
+/* ============================================================
+   MODAL TOOLS
+   ============================================================ */
+
+.modal-tools {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 14px;
+}
+
+.modal-tools label {
+    margin: 0;
+
+    color: #30465e;
+
+    font-weight: 600;
+}
+
+#searchBar {
+    flex: 1;
+
+    min-width: 210px;
+
+    margin-left: auto;
+
+    padding:
+        10px
+        13px;
+
+    border:
+        1px solid #ccd9e7;
+
+    border-radius: 9px;
+
+    outline: none;
+}
+
+#searchBar:focus {
+    border-color: #79baff;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(22, 135, 248, 0.10);
+}
+
+
+/* ============================================================
+   PINNED POST LIST
+   ============================================================ */
+
+.modern-modal .modal-body {
+    max-height: 56vh;
+
+    overflow: auto;
+
+    padding:
+        10px
+        26px;
+}
+
+#pinnedPosts {
+    margin: 0;
+}
+
+#pinnedPosts td {
+    padding:
+        18px
+        0;
+
+    border-color:
+        var(--border);
+}
+
+.pinned-author {
+    margin-bottom: 6px;
+
+    color: #0875df;
+
+    font-weight: 750;
+}
+
+.pinned-copy {
+    margin: 0;
+
+    color: #213a55;
+
+    font-size: 15px;
+    line-height: 1.55;
+}
+
+.pinned-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-top: 15px;
+}
+
+.comments-button {
+    padding:
+        8px
+        13px;
+
+    border: 0;
+    border-radius: 8px;
+
+    background: var(--navy);
+
+    color: white;
+
+    font-weight: 700;
+
+    transition:
+        background 0.15s ease;
+}
+
+.comments-button:hover {
+    background: var(--navy-light);
+}
+
+
+/* ============================================================
+   MODAL FOOTER
+   ============================================================ */
+
+.modern-modal .modal-footer {
+    padding:
+        15px
+        26px;
+
+    border-top:
+        1px solid var(--border);
+
+    background: #f8fbfe;
+}
+
+.modern-modal .modal-footer p {
+    margin: 0;
+
+    color: var(--muted);
+}
+
+
+/* ============================================================
+   TABLE CLEANUP
+   ============================================================ */
+
+.table > tbody > tr > td {
+    vertical-align: middle;
+}
+
+
+/* ============================================================
+   RESPONSIVE — MEDIUM
+   ============================================================ */
+
+@media (max-width: 1150px) {
+
+    .page-shell {
+        width:
+            min(
+                100% - 36px,
+                1280px
+            );
+    }
+
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .project-sidebar {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+/* ============================================================
+   RESPONSIVE — TABLET
+   ============================================================ */
+
+@media (max-width: 800px) {
+
+    .page-shell {
+        width:
+            calc(100% - 24px);
+
+        margin-top: 20px;
+    }
+
+    .feed-hero {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        padding:
+            28px
+            25px;
+    }
+
+    .feed-hero h1 {
+        font-size: 38px;
+    }
+
+    .hero-actions {
+        min-width: 0;
+
+        text-align: left;
+    }
+
+    .feeds-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .project-sidebar {
+        grid-template-columns: 1fr;
+    }
+
+    .post-list {
+        max-height: none;
+    }
+
+}
+
+
+/* ============================================================
+   RESPONSIVE — MOBILE
+   ============================================================ */
+
+@media (max-width: 520px) {
+
+    .feed-hero h1 {
+        font-size: 33px;
+    }
+
+    .feed-hero p {
+        font-size: 16px;
+    }
+
+    .profile-header {
+        padding:
+            16px
+            17px;
+    }
+
+    .profile-avatar {
+        width: 54px;
+        height: 54px;
+
+        flex-basis: 54px;
+    }
+
+    .profile-header h2 {
+        font-size: 20px;
+    }
+
+    .post-list {
+        padding: 12px;
+    }
+
+    .social-post {
+        padding: 17px;
+    }
+
+    .info-card {
+        padding: 23px;
+    }
+
+    .modal-tools {
+        align-items: flex-start;
+    }
+
+    #searchBar {
+        flex-basis: 100%;
+
+        margin-left: 0;
+    }
+
+}

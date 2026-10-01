@@ -1,55 +1,251 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8"></meta>
-<meta name="google-signin-scope" content="profile email"></meta>
-<meta name="google-signin-client_id"
-	content="852521934104-53fctdku5insugcv04iejnloqjqjtmot.apps.googleusercontent.com"></meta>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
-<link href="css/comment.css" rel="stylesheet" />
-<link href="css/main.css" rel="stylesheet" />
-<script src="https://apis.google.com/js/platform.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="js/comment.js"></script>
-<script src="js/login.js"></script>
 
-<title>Make a comment</title>
+<head>
+    <meta charset="UTF-8" />
+
+    <meta name="google-signin-scope" content="profile email" />
+    <meta
+        name="google-signin-client_id"
+        content="852521934104-53fctdku5insugcv04iejnloqjqjtmot.apps.googleusercontent.com"
+    />
+
+    <title>Discussion | Gemal's World</title>
+
+    <!-- Bootstrap -->
+    <link
+        rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    />
+
+    <!-- Site Styles -->
+    <link href="css/main.css" rel="stylesheet" />
+    <link href="css/comment.css" rel="stylesheet" />
+
+    <!-- JavaScript -->
+    <script src="https://apis.google.com/js/platform.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script src="js/comment.js"></script>
+    <script src="js/login.js"></script>
 </head>
-<body>
-	<div th:replace="Header :: Header"></div>
-	<div class="divider" style="height:100px"></div>
-	<div class="container row">
-	<div class="col-sm-3" id="tweetContainer">
-		<h1 style="margin-top: 50px" th:text="${user}"></h1>
-		<span th:text="${body}"></span>
-		<br/>
-		<span th:text="${date}" style="font-size:8px; float:right;"></span>
-	</div>
-			<div id="commentTable" class=" col-sm-7">
-				<table class="table">
-					<tr th:each="Comment : ${comments}">
-						<td><span style="text-decoration: underline"
-							th:text="${Comment.name}"></span> <span
-							th:text="${Comment.comment}"></span><br/><span
-							th:text="*{#calendars.format(Comment.date,'dd MMM yyyy')}" style="font-size:8px; float:right;"></span></td>
-					</tr>
-				</table>
-			</div>
-	
-	<div class="col-sm-2">
-		<form action="addcomment" method="post" id="commentForm"> 
-			<input type="hidden" th:value="${id}" name="id"></input> <input
-			type="hidden" th:value="${name}" name="user"></input> 
-			<textarea name="body" placeholder="Enter Comment*" required="true" form="commentForm"></textarea>
-			 <input type="submit" class="btn"
-			value="Post Comment"></input>
-		</form>
-	</div>
-	</div>
+
+<body class="discussion-page">
+
+    <!-- Shared Navigation -->
+    <div th:replace="Header :: Header"></div>
+
+
+    <main class="discussion-shell">
+
+        <!-- Page Heading -->
+        <header class="discussion-header">
+
+            <div>
+                <span class="discussion-eyebrow">
+                    GEMAL'S WORLD · DISCUSSION
+                </span>
+
+                <h1>Post Discussion</h1>
+
+                <p>
+                    A preserved piece of the original 2017 social discussion system.
+                </p>
+            </div>
+
+            <a href="/" class="back-link">
+                <span class="glyphicon glyphicon-arrow-left"></span>
+                Back to Feed
+            </a>
+
+        </header>
+
+
+        <div class="discussion-layout">
+
+            <!-- Original Post -->
+            <section class="original-post-card">
+
+                <div class="post-label">
+                    ORIGINAL POST
+                </div>
+
+                <div class="post-author">
+
+                    <div class="author-avatar">
+                        <span class="glyphicon glyphicon-user"></span>
+                    </div>
+
+                    <div>
+                        <h2 th:text="${user}">
+                            realDonaldTrump
+                        </h2>
+
+                        <span>via X API</span>
+                    </div>
+
+                </div>
+
+                <div class="post-body" th:text="${body}">
+                    Original post content appears here.
+                </div>
+
+                <div class="post-date">
+                    <span class="glyphicon glyphicon-time"></span>
+
+                    <span th:text="${date}">
+                        2026-09-27
+                    </span>
+                </div>
+
+            </section>
+
+
+            <!-- Discussion -->
+            <section class="comments-card">
+
+                <div class="comments-header">
+
+                    <div>
+                        <span class="section-eyebrow">
+                            COMMUNITY
+                        </span>
+
+                        <h2>Discussion</h2>
+                    </div>
+
+                    <div class="comment-count">
+                        <span th:text="${#lists.size(comments)}">0</span>
+                        comments
+                    </div>
+
+                </div>
+
+
+                <!-- Existing Comments -->
+                <div class="comments-list">
+
+                    <div
+                        class="comment"
+                        th:each="Comment : ${comments}"
+                    >
+
+                        <div class="comment-avatar">
+                            <span class="glyphicon glyphicon-user"></span>
+                        </div>
+
+                        <div class="comment-content">
+
+                            <div class="comment-meta">
+
+                                <strong th:text="${Comment.name}">
+                                    Gemal Horne
+                                </strong>
+
+                                <span
+                                    th:text="*{#calendars.format(Comment.date,'dd MMM yyyy')}"
+                                >
+                                    01 Oct 2026
+                                </span>
+
+                            </div>
+
+                            <p th:text="${Comment.comment}">
+                                Comment text appears here.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Empty State -->
+                    <div
+                        class="empty-comments"
+                        th:if="${#lists.isEmpty(comments)}"
+                    >
+                        <span class="glyphicon glyphicon-comment"></span>
+
+                        <strong>No comments yet</strong>
+
+                        <p>
+                            Be the first to join the discussion.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <!-- Add Comment -->
+                <div class="comment-composer">
+
+                    <div class="composer-heading">
+
+                        <div class="composer-icon">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </div>
+
+                        <div>
+                            <h3>Join the discussion</h3>
+                            <p>Add your comment to this post.</p>
+                        </div>
+
+                    </div>
+
+
+                    <form
+                        action="addcomment"
+                        method="post"
+                        id="commentForm"
+                    >
+
+                        <!-- Preserve original form data -->
+                        <input
+                            type="hidden"
+                            th:value="${id}"
+                            name="id"
+                        />
+
+                        <input
+                            type="hidden"
+                            th:value="${name}"
+                            name="user"
+                        />
+
+                        <textarea
+                            name="body"
+                            placeholder="What do you think?"
+                            required="required"
+                            form="commentForm"
+                        ></textarea>
+
+                        <div class="composer-footer">
+
+                            <span>
+                                Original 2017 commenting system
+                            </span>
+
+                            <button
+                                type="submit"
+                                class="post-comment-button"
+                            >
+                                Post Comment
+                                <span class="glyphicon glyphicon-send"></span>
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
 
 </body>
+
 </html>

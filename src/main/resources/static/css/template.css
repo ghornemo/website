@@ -1,0 +1,297 @@
+:root {
+    --navy: #071d2c;
+    --navy-light: #0d3049;
+    --blue: #168ff0;
+    --blue-dark: #0876ce;
+    --green: #23a66f;
+    --green-light: #e8f8f1;
+    --background: #edf4fa;
+    --text: #172635;
+    --muted: #687a89;
+    --border: #d8e3eb;
+}
+
+
+/* ==========================================================
+   PAGE
+   ========================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body.result-page {
+    min-height: 100vh;
+    margin: 0;
+
+    color: var(--text);
+
+    background:
+        radial-gradient(
+            circle at 50% 30%,
+            rgba(22, 143, 240, 0.09),
+            transparent 430px
+        ),
+        linear-gradient(
+            135deg,
+            #f7fafc 0%,
+            #edf4fa 50%,
+            #e7f0f7 100%
+        );
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+}
+
+
+/* ==========================================================
+   LAYOUT
+   ========================================================== */
+
+.result-shell {
+    width: min(760px, calc(100% - 40px));
+
+    margin: 0 auto;
+    padding: 110px 0 60px;
+}
+
+
+/* ==========================================================
+   RESULT CARD
+   ========================================================== */
+
+.result-card {
+    overflow: hidden;
+
+    border: 1px solid var(--border);
+    border-radius: 16px;
+
+    background: white;
+
+    text-align: center;
+
+    box-shadow:
+        0 25px 65px rgba(27, 61, 86, 0.12),
+        0 3px 8px rgba(27, 61, 86, 0.05);
+}
+
+
+/* ==========================================================
+   ICON
+   ========================================================== */
+
+.result-icon {
+    width: 78px;
+    height: 78px;
+
+    display: grid;
+    place-items: center;
+
+    margin: 48px auto 24px;
+
+    border-radius: 50%;
+
+    color: var(--green);
+    background: var(--green-light);
+
+    font-size: 31px;
+
+    box-shadow:
+        0 0 0 9px rgba(35, 166, 111, 0.06);
+}
+
+
+/* ==========================================================
+   CONTENT
+   ========================================================== */
+
+.result-content {
+    padding: 0 60px 50px;
+}
+
+.result-eyebrow {
+    margin-bottom: 11px;
+
+    color: var(--blue);
+
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.result-content h1 {
+    margin: 0 0 18px;
+
+    color: var(--navy);
+
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -0.7px;
+}
+
+.result-content > p {
+    max-width: 570px;
+
+    margin: 0 auto;
+
+    color: var(--muted);
+
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+
+/* ==========================================================
+   ACTIONS
+   ========================================================== */
+
+.result-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+
+    margin-top: 32px;
+}
+
+.primary-action,
+.secondary-action {
+    min-width: 190px;
+
+    padding: 12px 18px;
+
+    border-radius: 7px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    text-decoration: none !important;
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.primary-action {
+    border: 1px solid var(--blue);
+
+    color: white !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--blue),
+            var(--blue-dark)
+        );
+
+    box-shadow:
+        0 6px 14px rgba(22, 143, 240, 0.20);
+}
+
+.secondary-action {
+    border: 1px solid #cad7e0;
+
+    color: #3f5668 !important;
+
+    background: #f9fbfc;
+}
+
+.primary-action:hover,
+.secondary-action:hover {
+    transform: translateY(-1px);
+}
+
+.primary-action:hover {
+    box-shadow:
+        0 8px 18px rgba(22, 143, 240, 0.28);
+}
+
+.result-actions .glyphicon {
+    margin-right: 6px;
+}
+
+
+/* ==========================================================
+   LEGACY NOTE
+   ========================================================== */
+
+.legacy-result-note {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 13px;
+
+    max-width: 600px;
+
+    margin: 22px auto 0;
+    padding: 15px 18px;
+
+    border: 1px solid rgba(206, 219, 229, 0.8);
+    border-radius: 9px;
+
+    color: var(--muted);
+    background: rgba(255, 255, 255, 0.55);
+
+    font-size: 12px;
+}
+
+.legacy-result-note > .glyphicon {
+    width: 38px;
+    height: 38px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 7px;
+
+    color: var(--blue);
+    background: #e6f3fe;
+
+    font-size: 16px;
+}
+
+.legacy-result-note strong {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: #405566;
+}
+
+.legacy-result-note span {
+    line-height: 1.45;
+}
+
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width: 600px) {
+
+    .result-shell {
+        width: calc(100% - 24px);
+        padding-top: 60px;
+    }
+
+    .result-content {
+        padding: 0 24px 35px;
+    }
+
+    .result-content h1 {
+        font-size: 29px;
+    }
+
+    .result-actions {
+        flex-direction: column;
+    }
+
+    .primary-action,
+    .secondary-action {
+        width: 100%;
+    }
+
+}
