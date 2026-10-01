@@ -494,9 +494,11 @@ public class SampleController {
     	//Add trump tweets to the view
     	String consumerKey = "Iub87O9Z8J8MAVoLKqH01GCNZ"; // The application's consumer key
     	String consumerSecret = "XpeyafpCowjQ2CUhl1t84G73li1VECMcdJYV0kLzc0cznsMhcz"; // The application's consumer secret
-    	Twitter twitter = new TwitterTemplate(consumerKey, consumerSecret);
-    	List<Tweet> tweets = twitter.timelineOperations().getUserTimeline("realDonaldTrump");
-    	List<Tweet> TrudeauTweets = twitter.timelineOperations().getUserTimeline("JustinTrudeau");
+    	//Twitter twitter = new TwitterTemplate(consumerKey, consumerSecret);
+    	//List<Tweet> tweets = twitter.timelineOperations().getUserTimeline("realDonaldTrump");
+    	//List<Tweet> TrudeauTweets = twitter.timelineOperations().getUserTimeline("JustinTrudeau");
+		List<Tweet> tweets = new ArrayList<>();
+	    List<Tweet> TrudeauTweets = new ArrayList<>();
         model.addAttribute("tweets", tweets);
         model.addAttribute("trudeauTweets", TrudeauTweets);
         

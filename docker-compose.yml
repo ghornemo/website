@@ -1,0 +1,44 @@
+services:
+
+  db:
+    image: postgres:15
+    container_name: website-db
+
+    environment:
+      POSTGRES_DB: posts
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - type: bind
+        source: ./db/schema.sql
+        target: /docker-entrypoint-initdb.d/schema.sql
+        read_only: true
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d posts"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+
+  app:
+    build: .
+    container_name: website-app
+
+    ports:
+      - "8081:8080"
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/posts
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin
+
+    depends_on:
+      db:
+        condition: service_healthy
+
+
+volumes:
+  postgres-data:
