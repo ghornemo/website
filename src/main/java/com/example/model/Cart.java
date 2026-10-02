@@ -1,5 +1,6 @@
 package com.example.model;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 
@@ -15,6 +16,16 @@ public class Cart {
 		}
 		i.quantity = 1;
 		items.add(i);
+	}
+
+	private Date orderDate;
+
+	public Date getOrderDate() {
+		return orderDate;
+	}
+
+	public void setOrderDate(Date orderDate) {
+		this.orderDate = orderDate;
 	}
 	
 	public int getID() {

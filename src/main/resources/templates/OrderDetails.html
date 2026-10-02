@@ -495,9 +495,10 @@
                     </div>
 
                     <div class="summary-row">
-                        <span class="summary-label">Order Time</span>
+                        <span class="summary-label">Order Date</span>
 
-                        <span class="summary-value">
+                        <span class="summary-value"
+                            th:text="${#dates.format(order.orderDate, 'MMM dd, yyyy')}">
                             Not recorded
                         </span>
                     </div>

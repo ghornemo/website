@@ -49,7 +49,8 @@ CREATE TABLE comment (
 
 CREATE TABLE orders (
     orderid  SERIAL PRIMARY KEY,
-    email    VARCHAR(255) NOT NULL
+    email    VARCHAR(255) NOT NULL,
+    order_date  DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
 

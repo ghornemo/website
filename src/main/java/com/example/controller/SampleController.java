@@ -708,6 +708,15 @@ private synchronized void refreshXPostsIfNeeded(String bearerToken) {
         this.jdbcTemplate.update(sql);
         }
     }
+
+	public Date getOrderDate(int orderId) {
+		String sql = "SELECT order_date FROM orders WHERE orderid = ?";
+		return jdbcTemplate.queryForObject(
+			sql,
+			new Object[]{orderId},
+			java.sql.Date.class
+		);
+	}
     
     public ArrayList<Cart> convertItemsToOrders(ArrayList<Item> items) {
     		ArrayList<Cart> orders = new ArrayList<>();
@@ -724,8 +733,10 @@ private synchronized void refreshXPostsIfNeeded(String bearerToken) {
     			}
     			order.add(item);
     		}
-    		if(order.items.size() > 0)
-    		orders.add(order);
+    		if(order.items.size() > 0) {
+				order.setOrderDate(getOrderDate(order.getID()));
+	    		orders.add(order);
+			}
     		return orders;
     }
     

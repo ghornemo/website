@@ -145,7 +145,7 @@
                         <tr>
                             <td>ID</td>
                             <td>Cost</td>
-                            <td>Time</td>
+                            <td>Date</td>
                             <td></td>
                         </tr>
 
@@ -161,7 +161,7 @@
                             </td>
 
                             <td>
-                                <span th:text="${'June 17, 2017, 5:32pm'}"></span>
+                                <span th:text="${#dates.format(order.orderDate, 'MMM dd, yyyy')}"></span>
                             </td>
 
                             <td>
